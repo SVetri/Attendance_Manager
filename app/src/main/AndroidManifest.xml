@@ -28,6 +28,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.UserHome" />
         </activity>
+        <activity
+            android:name=".ManageAttendance"
+            android:label="@string/title_activity_manage_attendance"
+            android:parentActivityName=".UserHome" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.UserHome" />
+        </activity>
+        <activity
+            android:name=".UpdateMyAttendance"
+            android:label="@string/title_activity_update_my_attendance"
+            android:parentActivityName=".ManageAttendance" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.ManageAttendance" />
+        </activity>
     </application>
 
 </manifest>

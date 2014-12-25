@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_user_home">User Home</string>
     <string name="title_activity_weekly_timetable">Weekly Timetable</string>
+    <string name="title_activity_manage_attendance">Manage my Attendance</string>
+    <string name="title_activity_update_my_attendance">Update My Attendance</string>
 
 </resources>

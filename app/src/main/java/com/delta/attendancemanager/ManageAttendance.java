@@ -9,31 +9,23 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class UserHome extends ActionBarActivity {
+public class ManageAttendance extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_home);
+        setContentView(R.layout.activity_manage_attendance);
 
-        Button weeklytt = (Button) findViewById(R.id.weeklytt);
-        Button tomtt = (Button) findViewById(R.id.tomtt);
-        Button manageatt = (Button) findViewById(R.id.manage);
-        Button logout = (Button) findViewById(R.id.logoutuserhome);
+        Button updateatt = (Button) findViewById(R.id.updatemyatt);
+        Button viewatt = (Button) findViewById(R.id.viewmyatt);
 
-        weeklytt.setOnClickListener(new View.OnClickListener() {
+        updateatt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserHome.this, WeeklyTimetable.class);
-                startActivity(i);
-            }
-        });
 
-        manageatt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(UserHome.this, ManageAttendance.class);
+                Intent i = new Intent(ManageAttendance.this, UpdateMyAttendance.class);
                 startActivity(i);
+
             }
         });
 
@@ -43,7 +35,7 @@ public class UserHome extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_home, menu);
+        getMenuInflater().inflate(R.menu.menu_manage_attendance, menu);
         return true;
     }
 
