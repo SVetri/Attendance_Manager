@@ -44,6 +44,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.ManageAttendance" />
         </activity>
+        <activity
+            android:name=".ViewMyAttendance"
+            android:label="@string/title_activity_view_my_attendance"
+            android:parentActivityName=".ManageAttendance" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.ManageAttendance" />
+        </activity>
     </application>
 
 </manifest>

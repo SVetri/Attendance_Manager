@@ -29,6 +29,16 @@ public class ManageAttendance extends ActionBarActivity {
             }
         });
 
+
+        viewatt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(ManageAttendance.this, ViewMyAttendance.class);
+                startActivity(i);
+
+            }
+        });
     }
 
 

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -27,11 +28,30 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     }
 
     @Override
-    public void onBindViewHolder(AttendanceViewHolder attendanceviewholder, int i)
+    public void onBindViewHolder(AttendanceViewHolder attendanceviewholder, final int i)
     {
-        CardInfo ci = attendanceList.get(i);
+        final CardInfo ci = attendanceList.get(i);
         attendanceviewholder.subject.setText(ci.coursename);
         attendanceviewholder.date.setText(ci.classdate);
+        attendanceviewholder.present.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            int position = attendanceList.indexOf(ci);
+            attendanceList.remove(position);
+            notifyItemRemoved(position);
+        }
+    });
+        attendanceviewholder.absent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int position = attendanceList.indexOf(ci);
+                attendanceList.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
+
     }
 
     @Override
@@ -47,12 +67,16 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
 
         protected TextView subject;
         protected TextView date;
+        protected Button present;
+        protected Button absent;
 
         public AttendanceViewHolder(View v)
         {
             super(v);
             subject = (TextView) v.findViewById(R.id.subjectcard);
             date = (TextView) v.findViewById(R.id.datecard);
+            present = (Button) v.findViewById(R.id.presentbutton);
+            absent = (Button) v.findViewById(R.id.absentbutton);
         }
 
     }

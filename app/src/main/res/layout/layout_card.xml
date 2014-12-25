@@ -18,21 +18,29 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2">
+        android:weightSum="7"
+        android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/subjectcard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="Subject"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="on"
             android:gravity="center_horizontal"/>
 
         <TextView
             android:id="@+id/datecard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="Date"
             android:gravity="center_horizontal"/>
 
@@ -42,15 +50,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_margin="10dp">
 
         <Button
+            android:id="@+id/presentbutton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Present"/>
 
         <Button
+            android:id="@+id/absentbutton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
