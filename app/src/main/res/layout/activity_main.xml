@@ -1,38 +1,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:weightSum="5"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
         android:hint="Username"/>
 
     <EditText
         android:id="@+id/branch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
         android:hint="Branch"/>
+
+    <EditText
+        android:id="@+id/year"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="20dp"
+        android:hint="Year of graduation"/>
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="20dp"
         android:text="Login"/>
 
     <Button
         android:id="@+id/crmodeswitch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="20dp"
         android:text="Switch to CR mode"/>
 
 </LinearLayout>

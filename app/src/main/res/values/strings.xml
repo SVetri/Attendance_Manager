@@ -9,5 +9,7 @@
     <string name="title_activity_manage_attendance">Manage my Attendance</string>
     <string name="title_activity_update_my_attendance">Update My Attendance</string>
     <string name="title_activity_view_my_attendance">ViewMyAttendance</string>
+    <string name="title_activity_subject_attendance">Subject Attendance</string>
+    <string name="title_activity_edit_history">Edit History</string>
 
 </resources>

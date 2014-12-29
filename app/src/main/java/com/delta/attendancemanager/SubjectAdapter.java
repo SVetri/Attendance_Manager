@@ -1,5 +1,7 @@
 package com.delta.attendancemanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,11 @@ import java.util.List;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
 
     private List<SubjectInfo> subjectList;
+    Context cont;
 
-    public SubjectAdapter(List<SubjectInfo> subList) {
+    public SubjectAdapter(List<SubjectInfo> subList, Context context) {
         this.subjectList = subList;
+        cont = context;
     }
 
     @Override
@@ -26,10 +30,23 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     }
 
     @Override
-    public void onBindViewHolder(SubjectViewHolder subjectviewholder, int i)
+    public void onBindViewHolder(SubjectViewHolder subjectviewholder, final int i)
     {
         SubjectInfo si = subjectList.get(i);
-        subjectviewholder.subject.setText(si.subjectcode + ": " + si.subjectname);
+        subjectviewholder.subject.setText(si.subjectname);
+
+        subjectviewholder.subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent in = new Intent( cont, SubjectAttendance.class);
+                if(i%2==0)
+                {
+                    in.putExtra("pendupd", true);
+                }
+                cont.startActivity(in);
+            }
+        });
     }
 
     @Override

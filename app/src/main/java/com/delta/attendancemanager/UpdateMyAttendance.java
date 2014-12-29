@@ -35,6 +35,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
             CardInfo ci = new CardInfo();
             ci.coursename="Subject " + i;
             ci.classdate="Date" + i;
+            ci.classtime="Time" + i;
 
             result.add(ci);
 

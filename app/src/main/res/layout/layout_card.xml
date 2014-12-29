@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="7"
+        android:weightSum="11"
         android:layout_margin="10dp">
 
         <TextView
@@ -42,6 +42,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="Date"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="at"
+            android:gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/timecard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Time"
             android:gravity="center_horizontal"/>
 
     </LinearLayout>

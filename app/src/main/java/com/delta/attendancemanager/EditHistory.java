@@ -11,31 +11,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ViewMyAttendance extends ActionBarActivity {
+public class EditHistory extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_my_attendance);
+        setContentView(R.layout.activity_edit_history);
 
-        RecyclerView reclist = (RecyclerView) findViewById(R.id.usersubjectList);
+        RecyclerView reclist = (RecyclerView) findViewById(R.id.editcardList);
         reclist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
 
-        SubjectAdapter subadapter = new SubjectAdapter(createList(9), ViewMyAttendance.this);
-        reclist.setAdapter(subadapter);
+        EditAdapter edadapter = new EditAdapter(createList(30));
+        reclist.setAdapter(edadapter);
     }
 
-    private List<SubjectInfo> createList(int size) {
+    private List<EditCardInfo> createList(int size) {
 
-        List<SubjectInfo> result = new ArrayList<SubjectInfo>();
+        List<EditCardInfo> result = new ArrayList<EditCardInfo>();
         for (int i=1; i <= size; i++) {
-            SubjectInfo si = new SubjectInfo();
-            si.subjectname="Subject " + i;
-
-            result.add(si);
+            EditCardInfo eci = new EditCardInfo();
+            eci.coursename="Subject " + i;
+            eci.classdate="Date" + i;
+            eci.classtime="Time" + i;
+            eci.attendance=Boolean.TRUE;
+            result.add(eci);
 
         }
 
@@ -46,7 +48,7 @@ public class ViewMyAttendance extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_my_attendance, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_history, menu);
         return true;
     }
 

@@ -52,6 +52,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.ManageAttendance" />
         </activity>
+        <activity
+            android:name=".SubjectAttendance"
+            android:label="@string/title_activity_subject_attendance"
+            android:parentActivityName=".ViewMyAttendance" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.ViewMyAttendance" />
+        </activity>
+        <activity
+            android:name=".EditHistory"
+            android:label="@string/title_activity_edit_history"
+            android:parentActivityName=".SubjectAttendance" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.SubjectAttendance" />
+        </activity>
     </application>
 
 </manifest>

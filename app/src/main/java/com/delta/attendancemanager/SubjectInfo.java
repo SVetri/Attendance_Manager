@@ -6,5 +6,4 @@ package com.delta.attendancemanager;
 public class SubjectInfo {
 
     protected String subjectname;
-    protected String subjectcode;
 }

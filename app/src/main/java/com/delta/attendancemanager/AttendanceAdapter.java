@@ -33,6 +33,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         final CardInfo ci = attendanceList.get(i);
         attendanceviewholder.subject.setText(ci.coursename);
         attendanceviewholder.date.setText(ci.classdate);
+        attendanceviewholder.time.setText(ci.classtime);
         attendanceviewholder.present.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -67,6 +68,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
 
         protected TextView subject;
         protected TextView date;
+        protected TextView time;
         protected Button present;
         protected Button absent;
 
@@ -75,6 +77,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             super(v);
             subject = (TextView) v.findViewById(R.id.subjectcard);
             date = (TextView) v.findViewById(R.id.datecard);
+            time = (TextView) v.findViewById(R.id.timecard);
             present = (Button) v.findViewById(R.id.presentbutton);
             absent = (Button) v.findViewById(R.id.absentbutton);
         }
