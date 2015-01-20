@@ -14,5 +14,7 @@
     <string name="title_activity_crlogin">CR Login</string>
     <string name="title_activity_crhome">CR Home</string>
     <string name="title_activity_edit_weekly_tt">Edit Weekly</string>
+    <string name="title_activity_upcoming_tt">Upcoming Timetable</string>
+    <string name="title_activity_edit_upcoming_tt">Edit Upcoming TT</string>
 
 </resources>

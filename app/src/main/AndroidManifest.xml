@@ -88,6 +88,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.CRHome" />
         </activity>
+        <activity
+            android:name=".UpcomingTT"
+            android:label="@string/title_activity_upcoming_tt"
+            android:parentActivityName=".CRHome" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.CRHome" />
+        </activity>
+        <activity
+            android:name=".EditUpcomingTT"
+            android:label="@string/title_activity_edit_upcoming_tt"
+            android:parentActivityName=".CRHome" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.CRHome" />
+        </activity>
     </application>
 
 </manifest>

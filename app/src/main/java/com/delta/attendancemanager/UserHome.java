@@ -37,6 +37,14 @@ public class UserHome extends ActionBarActivity {
             }
         });
 
+        tomtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserHome.this, UpcomingTT.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 

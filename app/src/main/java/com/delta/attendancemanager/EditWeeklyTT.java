@@ -23,7 +23,7 @@ public class EditWeeklyTT extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            SlidingTabsFragment fragment = new SlidingTabsFragment();
+            CRSlidingTabsFragment fragment = new CRSlidingTabsFragment();
             transaction.replace(R.id.edit_fragment_content, fragment);
             transaction.commit();
         }

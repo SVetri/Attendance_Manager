@@ -28,6 +28,14 @@ public class CRHome extends ActionBarActivity {
             }
         });
 
+        editupcoming.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CRHome.this, EditUpcomingTT.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 
