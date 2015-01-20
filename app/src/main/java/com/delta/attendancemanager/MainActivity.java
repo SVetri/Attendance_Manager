@@ -22,25 +22,30 @@ public class MainActivity extends ActionBarActivity {
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText branch = (EditText) findViewById(R.id.branch);
         Button loginbutton = (Button) findViewById(R.id.login);
+        Button crswitch = (Button) findViewById(R.id.crmodeswitch);
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username.getText().length()==0)
-                {
+                if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a username", Toast.LENGTH_SHORT).show();
-                }
-                else if(branch.getText().length()==0)
-                {
+                } else if (branch.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a branch", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent i  = new Intent(MainActivity.this, UserHome.class);
+                } else {
+                    Intent i = new Intent(MainActivity.this, UserHome.class);
                     startActivity(i);
                 }
             }
         });
+
+        crswitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, CRLogin.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 

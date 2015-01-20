@@ -11,5 +11,8 @@
     <string name="title_activity_view_my_attendance">ViewMyAttendance</string>
     <string name="title_activity_subject_attendance">Subject Attendance</string>
     <string name="title_activity_edit_history">Edit History</string>
+    <string name="title_activity_crlogin">CR Login</string>
+    <string name="title_activity_crhome">CR Home</string>
+    <string name="title_activity_edit_weekly_tt">Edit Weekly</string>
 
 </resources>

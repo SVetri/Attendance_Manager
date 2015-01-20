@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/selsub1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COA"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/selsub2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Net"/>
+
+        <RadioButton
+            android:id="@+id/selsub3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DS"/>
+
+        <RadioButton
+            android:id="@+id/selsub4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Algo"/>
+
+        <RadioButton
+            android:id="@+id/selsub5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OS"/>
+
+        <RadioButton
+            android:id="@+id/selsub6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IS"/>
+
+        <RadioButton
+            android:id="@+id/selsub7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verilog"/>
+
+        <RadioButton
+            android:id="@+id/selsub8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"/>
+
+        <RadioButton
+            android:id="@+id/selsub9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DCF"/>
+
+        <RadioButton
+            android:id="@+id/selsub10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ECE"/>
+
+        <RadioButton
+            android:id="@+id/selsub11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Probability"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/okbutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="OK"
+            />
+
+        <Button
+            android:id="@+id/cancelbutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

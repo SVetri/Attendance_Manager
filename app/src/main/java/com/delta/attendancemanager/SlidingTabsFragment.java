@@ -2,14 +2,18 @@ package com.delta.attendancemanager;
 
 import com.delta.attendancemanager.SlidingTabLayout;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by S on 12/20/2014.
@@ -98,12 +102,112 @@ public class SlidingTabsFragment extends Fragment {
             // Add the newly created View to the ViewPager
             container.addView(view);
 
+            TextView sub1 = (TextView) view.findViewById(R.id.sub1);
+            TextView sub2 = (TextView) view.findViewById(R.id.sub2);
+            TextView sub3 = (TextView) view.findViewById(R.id.sub3);
+            TextView sub4 = (TextView) view.findViewById(R.id.sub4);
+            TextView sub5 = (TextView) view.findViewById(R.id.sub5);
+            TextView sub6 = (TextView) view.findViewById(R.id.sub6);
+            TextView sub7 = (TextView) view.findViewById(R.id.sub7);
+            TextView sub8 = (TextView) view.findViewById(R.id.sub8);
+
+            sub1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
+            sub8.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+                    //return true;
+                    selectsubdialog();
+                }
+            });
+
             // Retrieve a TextView from the inflated View, and update it's text
             //TextView title = (TextView) view.findViewById(R.id.item_title);
             //title.setText(String.valueOf(position + 1));
 
             // Return the View
             return view;
+        }
+
+        public void selectsubdialog()
+        {
+            /* When getting the number of subjects from the api, if no ofsubjects <11, set the appropriate number of radiobutton's visibility to gone */
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.edit_tt_dialog);
+            dialog.setTitle("Select Subject");
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.okbutton);
+            // if button is clicked, close the custom dialog
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
         }
 
         /**

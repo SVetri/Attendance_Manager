@@ -68,6 +68,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.SubjectAttendance" />
         </activity>
+        <activity
+            android:name=".CRLogin"
+            android:label="@string/title_activity_crlogin"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.MainActivity" />
+        </activity>
+        <activity
+            android:name=".CRHome"
+            android:label="@string/title_activity_crhome" >
+        </activity>
+        <activity
+            android:name=".EditWeeklyTT"
+            android:label="@string/title_activity_edit_weekly_tt"
+            android:parentActivityName=".CRHome" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.delta.attendancemanager.CRHome" />
+        </activity>
     </application>
 
 </manifest>
