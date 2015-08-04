@@ -40,7 +40,6 @@ public class EditWeeklyTT extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_edit_weekly_tt, menu);
         return true;
     }
