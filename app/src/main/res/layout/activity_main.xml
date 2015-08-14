@@ -13,23 +13,16 @@
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:layout_weight="1"
-        android:hint="Username"/>
+        android:hint="Roll No"/>
 
     <EditText
-        android:id="@+id/branch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:inputType="textPassword"
         android:layout_margin="20dp"
+        android:id="@+id/passwordm"
         android:layout_weight="1"
-        android:hint="Branch"/>
-
-    <EditText
-        android:id="@+id/year"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="20dp"
-        android:hint="Year of graduation"/>
+        android:hint="Password" />
 
     <Button
         android:id="@+id/login"

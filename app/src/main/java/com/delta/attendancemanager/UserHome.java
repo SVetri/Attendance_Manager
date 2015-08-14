@@ -20,6 +20,14 @@ public class UserHome extends ActionBarActivity {
         Button tomtt = (Button) findViewById(R.id.tomtt);
         Button manageatt = (Button) findViewById(R.id.manage);
         Button logout = (Button) findViewById(R.id.logoutuserhome);
+        logout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(UserHome.this,MainActivity.class));
+                    }
+                }
+        );
 
         weeklytt.setOnClickListener(new View.OnClickListener() {
             @Override
