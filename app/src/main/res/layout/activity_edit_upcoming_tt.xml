@@ -31,7 +31,7 @@
                     android:id="@+id/sub1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="Computer organization and Architecture"
+                    android:text="Computer organization and  Architecture"
                     android:textSize="25sp"
                     android:padding="5dp"
                     android:gravity="center"
