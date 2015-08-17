@@ -9,11 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by S on 12/24/2014.
- */
-
-
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
 
     private List<CardInfo> attendanceList;
