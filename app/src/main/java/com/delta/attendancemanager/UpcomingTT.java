@@ -2,9 +2,11 @@ package com.delta.attendancemanager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class UpcomingTT extends ActionBarActivity {
@@ -17,6 +19,7 @@ public class UpcomingTT extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming_tt);
         handler=new MySqlHandler(this,null);
+        //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
         all=new String[9];
         sub1=(TextView)findViewById(R.id.sub1);
         sub2=(TextView)findViewById(R.id.sub2);
@@ -36,6 +39,8 @@ public class UpcomingTT extends ActionBarActivity {
         sub7.setText(all[7]);
         sub8.setText(all[8]);
     }
+
+
 
 
     @Override

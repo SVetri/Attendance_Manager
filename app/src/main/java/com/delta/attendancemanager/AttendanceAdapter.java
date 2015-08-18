@@ -35,7 +35,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
 
             int position = attendanceList.indexOf(ci);
             attendanceList.remove(position);
-            notifyItemRemoved(position);
+            //notifyItemRemoved(position);
         }
     });
         attendanceviewholder.absent.setOnClickListener(new View.OnClickListener() {

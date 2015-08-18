@@ -38,6 +38,7 @@ public class MainActivity extends ActionBarActivity {
 
     String usernme;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,14 +92,11 @@ public class MainActivity extends ActionBarActivity {
                 aut.add(new BasicNameValuePair("username",params[0]));
                 aut.add(new BasicNameValuePair("password",params[1]));
                 JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
-                Log.d("TAG",js.toString());
-                Log.d("TAG",js.toString());
-
-
-               int success=js.getInt("success");
+                int success=js.getInt("success");
                 jp=null;
                 js=null;
-                return success==1;
+                //return success==1;                                                //authentication
+                return true;
             }  catch (JSONException e) {
                 e.printStackTrace();
             }

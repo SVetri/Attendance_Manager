@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MySqlHandler extends SQLiteOpenHelper {
-    private static final int VERSION =1;
+    private static final int VERSION =2;
     public static final  String TOMO="tomorrow";
     private static final String DATABASE_NAME="class.db";
     private static final String TABLENAME="timetable";
@@ -45,14 +46,15 @@ public class MySqlHandler extends SQLiteOpenHelper {
                 t400+" TEXT" +
                 ");";
         db.execSQL(query);
-
     }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLENAME);
+        Log.d("hel","drop");
         onCreate(db);
-        db.close();
     }
     public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
         if(ispresent(day))
@@ -69,8 +71,6 @@ public class MySqlHandler extends SQLiteOpenHelper {
         v.put(t400,s400);
         SQLiteDatabase db=getWritableDatabase();
         db.insert(TABLENAME,null,v);
-        db.close();
-
     }
 
     private void delete_day(String day) {
@@ -154,7 +154,6 @@ public class MySqlHandler extends SQLiteOpenHelper {
                 all[6]=c.getString(c.getColumnIndex(t220));
                 all[7]=c.getString(c.getColumnIndex(t310));
                 all[8]=c.getString(c.getColumnIndex(t400));
-
             }
             c.moveToNext();
 

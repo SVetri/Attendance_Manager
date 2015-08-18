@@ -23,7 +23,7 @@ public class UserHome extends ActionBarActivity {
         Bundle b=getIntent().getExtras();
         username="";
         if(b!=null){
-            username=b.getString("rno");
+            username=String.valueOf(b.getString("rno"));
         }
         handler=new MySqlHandler(this,null);
         alls=new ArrayList<>();
