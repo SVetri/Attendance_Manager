@@ -8,13 +8,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class UserHome extends ActionBarActivity {
-
+    public String username;
+    MySqlHandler handler;
+    List<String[]> alls;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
+        Bundle b=getIntent().getExtras();
+        username="";
+        if(b!=null){
+            username=b.getString("rno");
+        }
+        handler=new MySqlHandler(this,null);
+        alls=new ArrayList<>();
+        alls=handler.get_days();
+        if(alls.size()==0){
+            Intent i=new Intent(this,APIManagerService.class);
+            i.putExtra("rno",username);
+            i.putExtra("mode",0);
+            startService(i);
+        }
 
         Button weeklytt = (Button) findViewById(R.id.weeklytt);
         Button tomtt = (Button) findViewById(R.id.tomtt);

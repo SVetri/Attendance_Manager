@@ -35,6 +35,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     public static final String URL="http://10.0.0.109/~rahulzoldyck/login.php";
+
     String usernme;
 
     @Override
@@ -110,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
             super.onPostExecute(aBoolean);
             if(aBoolean){
                 Intent i = new Intent(MainActivity.this, UserHome.class);
-               i.putExtra("rollno",Integer.parseInt(usernme));
+               i.putExtra("rno",Integer.parseInt(usernme));
                 startActivity(i);
                 finish();
             }

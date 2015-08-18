@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.delta.attendancemanager" >
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -104,6 +106,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.CRHome" />
         </activity>
+
+        <service
+            android:name=".APIManagerService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

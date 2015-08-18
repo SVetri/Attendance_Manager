@@ -15,10 +15,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by S on 12/20/2014.
  */
 public class SlidingTabsFragment extends Fragment {
+
+    MySqlHandler handler;
+    List<String[]> all;
 
     private SlidingTabLayout mSlidingTabLayout;
 
@@ -96,18 +102,71 @@ public class SlidingTabsFragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            handler=new MySqlHandler(getActivity(),null);
+            all=new ArrayList<>();
+            all=handler.get_days();
+            String[] m,t,w,th,f,x;
+            m=new String[9];
+            t=new String[9];
+            w=new String[9];
+            th=new String[9];
+            f=new String[9];
+            x=new String[9];
+            for (String[] i : all){
+                if(i[0].equals("Monday"))
+                    m=i;
+                else if(i[0].equals("Tuesday"))
+                    t=i;
+                else if(i[0].equals("Wednesday"))
+                    w=i;
+                else if(i[0].equals("Thursday"))
+                    th=i;
+                else if(i[0].equals("Friday"))
+                    f=i;
+            }
+
             // Inflate a new layout from our resources
             View view = getActivity().getLayoutInflater().inflate(R.layout.pager_item,
                     container, false);
             // Add the newly created View to the ViewPager
             container.addView(view);
 
-            // Retrieve a TextView from the inflated View, and update it's text
-            //TextView title = (TextView) view.findViewById(R.id.item_title);
-            //title.setText(String.valueOf(position + 1));
+            TextView sub1 = (TextView) view.findViewById(R.id.sub1);
+            TextView sub2 = (TextView) view.findViewById(R.id.sub2);
+            TextView sub3 = (TextView) view.findViewById(R.id.sub3);
+            TextView sub4 = (TextView) view.findViewById(R.id.sub4);
+            TextView sub5 = (TextView) view.findViewById(R.id.sub5);
+            TextView sub6 = (TextView) view.findViewById(R.id.sub6);
+            TextView sub7 = (TextView) view.findViewById(R.id.sub7);
+            TextView sub8 = (TextView) view.findViewById(R.id.sub8);
 
-            // Return the View
-            return view;
+            switch (position){
+                case 0:
+                    x=m;
+                    break;
+                case 1:
+                    x=t;
+                    break;
+                case 2:
+                    x=w;
+                    break;
+                case 3:
+                    x=th;
+                    break;
+                case 4:
+                    x=f;
+                    break;
+            }
+            sub1.setText(x[1]);
+            sub2.setText(x[2]);
+            sub3.setText(x[3]);
+            sub4.setText(x[4]);
+            sub5.setText(x[5]);
+            sub6.setText(x[6]);
+            sub7.setText(x[7]);
+            sub8.setText(x[8]);
+            return  view;
+
         }
         /**
          * Destroy the item from the {@link ViewPager}. In our case this is simply removing the
