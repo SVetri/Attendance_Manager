@@ -104,7 +104,7 @@ public class SlidingTabsFragment extends Fragment {
         public Object instantiateItem(ViewGroup container, int position) {
             handler=new MySqlHandler(getActivity(),null);
             all=new ArrayList<>();
-            all=handler.get_days();
+
             String[] m,t,w,th,f,x;
             m=new String[9];
             t=new String[9];
@@ -112,18 +112,11 @@ public class SlidingTabsFragment extends Fragment {
             th=new String[9];
             f=new String[9];
             x=new String[9];
-            for (String[] i : all){
-                if(i[0].equals("Monday"))
-                    m=i;
-                else if(i[0].equals("Tuesday"))
-                    t=i;
-                else if(i[0].equals("Wednesday"))
-                    w=i;
-                else if(i[0].equals("Thursday"))
-                    th=i;
-                else if(i[0].equals("Friday"))
-                    f=i;
-            }
+            m=handler.get_mon();
+            t=handler.get_tue();
+            w=handler.get_wed();
+            th=handler.get_thur();
+            f=handler.get_fri();
 
             // Inflate a new layout from our resources
             View view = getActivity().getLayoutInflater().inflate(R.layout.pager_item,

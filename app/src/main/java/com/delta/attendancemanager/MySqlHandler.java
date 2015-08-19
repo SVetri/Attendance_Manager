@@ -125,7 +125,6 @@ public class MySqlHandler extends SQLiteOpenHelper {
         else
            return true;
     }
-
     public List<String[]>  get_days(){
         String[] all=new String[9];
         List<String[]> s=new ArrayList<>();
@@ -139,7 +138,7 @@ public class MySqlHandler extends SQLiteOpenHelper {
                         t130,
                         t220,
                         t310,
-                t400},
+                        t400},
                 null,
                 null,
                 null, null, null , null);
@@ -162,6 +161,194 @@ public class MySqlHandler extends SQLiteOpenHelper {
         }
         c.close();
         return s;
+    }
+
+    public String[]  get_mon(){
+        String[] all=new String[9];
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TABLENAME, new String[] {
+                        DAY,
+                        t830,
+                        t920,
+                        t1030,
+                        t1120,
+                        t130,
+                        t220,
+                        t310,
+                        t400},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(DAY)).equals("Monday")){
+                all[0]=c.getString(c.getColumnIndex(DAY));
+                all[1]=c.getString(c.getColumnIndex(t830));
+                all[2]=c.getString(c.getColumnIndex(t920));
+                all[3]=c.getString(c.getColumnIndex(t1030));
+                all[4]=c.getString(c.getColumnIndex(t1120));
+                all[5]=c.getString(c.getColumnIndex(t130));
+                all[6]=c.getString(c.getColumnIndex(t220));
+                all[7]=c.getString(c.getColumnIndex(t310));
+                all[8]=c.getString(c.getColumnIndex(t400));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+        return all;
+    }
+
+    public String[]  get_tue(){
+        String[] all=new String[9];
+
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TABLENAME, new String[] {
+                        DAY,
+                        t830,
+                        t920,
+                        t1030,
+                        t1120,
+                        t130,
+                        t220,
+                        t310,
+                        t400},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(DAY)).equals("Tuesday")){
+                all[0]=c.getString(c.getColumnIndex(DAY));
+                all[1]=c.getString(c.getColumnIndex(t830));
+                all[2]=c.getString(c.getColumnIndex(t920));
+                all[3]=c.getString(c.getColumnIndex(t1030));
+                all[4]=c.getString(c.getColumnIndex(t1120));
+                all[5]=c.getString(c.getColumnIndex(t130));
+                all[6]=c.getString(c.getColumnIndex(t220));
+                all[7]=c.getString(c.getColumnIndex(t310));
+                all[8]=c.getString(c.getColumnIndex(t400));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+        return all;
+    }
+
+    public String[]  get_wed(){
+        String[] all=new String[9];
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TABLENAME, new String[] {
+                        DAY,
+                        t830,
+                        t920,
+                        t1030,
+                        t1120,
+                        t130,
+                        t220,
+                        t310,
+                        t400},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(DAY)).equals("Wednesday")){
+                all[0]=c.getString(c.getColumnIndex(DAY));
+                all[1]=c.getString(c.getColumnIndex(t830));
+                all[2]=c.getString(c.getColumnIndex(t920));
+                all[3]=c.getString(c.getColumnIndex(t1030));
+                all[4]=c.getString(c.getColumnIndex(t1120));
+                all[5]=c.getString(c.getColumnIndex(t130));
+                all[6]=c.getString(c.getColumnIndex(t220));
+                all[7]=c.getString(c.getColumnIndex(t310));
+                all[8]=c.getString(c.getColumnIndex(t400));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+        return all;
+    }
+
+    public String[]  get_thur(){
+        String[] all=new String[9];
+
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TABLENAME, new String[] {
+                        DAY,
+                        t830,
+                        t920,
+                        t1030,
+                        t1120,
+                        t130,
+                        t220,
+                        t310,
+                        t400},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(DAY)).equals("Thursday")){
+                all[0]=c.getString(c.getColumnIndex(DAY));
+                all[1]=c.getString(c.getColumnIndex(t830));
+                all[2]=c.getString(c.getColumnIndex(t920));
+                all[3]=c.getString(c.getColumnIndex(t1030));
+                all[4]=c.getString(c.getColumnIndex(t1120));
+                all[5]=c.getString(c.getColumnIndex(t130));
+                all[6]=c.getString(c.getColumnIndex(t220));
+                all[7]=c.getString(c.getColumnIndex(t310));
+                all[8]=c.getString(c.getColumnIndex(t400));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+        return all;
+    }
+
+    public String[]  get_fri(){
+        String[] all=new String[9];
+
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TABLENAME, new String[] {
+                        DAY,
+                        t830,
+                        t920,
+                        t1030,
+                        t1120,
+                        t130,
+                        t220,
+                        t310,
+                        t400},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(DAY)).equals("Friday")){
+                all[0]=c.getString(c.getColumnIndex(DAY));
+                all[1]=c.getString(c.getColumnIndex(t830));
+                all[2]=c.getString(c.getColumnIndex(t920));
+                all[3]=c.getString(c.getColumnIndex(t1030));
+                all[4]=c.getString(c.getColumnIndex(t1120));
+                all[5]=c.getString(c.getColumnIndex(t130));
+                all[6]=c.getString(c.getColumnIndex(t220));
+                all[7]=c.getString(c.getColumnIndex(t310));
+                all[8]=c.getString(c.getColumnIndex(t400));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+        return all;
     }
 
     public String[] get_tomo(){
