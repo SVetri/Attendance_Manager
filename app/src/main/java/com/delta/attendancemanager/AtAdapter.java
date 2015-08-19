@@ -20,7 +20,7 @@ public class AtAdapter {
         athelper = new Athelper(context);
     }
     static class Athelper extends SQLiteOpenHelper{
-        private static final String DATABASE_NAME = "semester";
+        private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
         private static final int DATABASE_VERSION = 1;
@@ -28,7 +28,7 @@ public class AtAdapter {
         private static final String DATETIME = "datetime";
         private static final String SUBJECT = "subject";
         private static final String PRESENT = "present";
-        private static final String create = "CREATE TABLE "+TABLE_NAME+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+SUBJECT+" TEXT, "+DATETIME+" TEXT, "+PRESENT+" INTEGER;";
+        private static final String create = "CREATE TABLE "+TABLE_NAME+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+SUBJECT+" TEXT, "+DATETIME+" TEXT, "+PRESENT+" INTEGER);";
         private static final String drop = "DROP TABLE IF EXISTS "+TABLE_NAME;
         public Athelper(Context context)
         {

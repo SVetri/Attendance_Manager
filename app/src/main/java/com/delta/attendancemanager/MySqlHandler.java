@@ -12,6 +12,7 @@ import java.util.List;
 
 
 public class MySqlHandler extends SQLiteOpenHelper {
+    private static ArrayList<String> subs = new ArrayList<>();
     private static final int VERSION =2;
     public static final  String TOMO="tomorrow";
     private static final String DATABASE_NAME="class.db";
@@ -25,7 +26,8 @@ public class MySqlHandler extends SQLiteOpenHelper {
     private static final String t220="t220";
     private static final String t310="t310";
     private static final String t400="t400";
-
+    private static final String TNAME = "subjects";
+    private static final String CNAME = "subject";
 
     public MySqlHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, VERSION);
@@ -46,15 +48,51 @@ public class MySqlHandler extends SQLiteOpenHelper {
                 t400+" TEXT" +
                 ");";
         db.execSQL(query);
+        String Create_subs  = "CREATE tABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
+        db.execSQL(Create_subs);
     }
-
-
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLENAME);
-        Log.d("hel","drop");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLENAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TNAME);
         onCreate(db);
+    }
+    public void get_ub()
+    {
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c=db.query(true, TNAME, new String[] {
+                        CNAME},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(CNAME))!=null){
+                subs.add(c.getString(c.getColumnIndex(CNAME)));
+            }
+            c.moveToNext();
+        }
+        c.close();
+    }
+    public void add_sub(String sub)
+    {
+        if(subs.isEmpty())
+            get_ub();
+        if(subs.indexOf(sub)>=0)
+            return;
+        else{
+            subs.add(sub);
+            ContentValues v=new ContentValues();
+            v.put(CNAME,sub);
+            SQLiteDatabase db=getWritableDatabase();
+            db.insert(TNAME,null,v);
+        }
+    }
+    public ArrayList<String> getSubs()
+    {
+        if(subs.isEmpty())
+            get_ub();
+        return subs;
     }
     public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
         if(ispresent(day))
