@@ -62,6 +62,8 @@ public class APIManagerService extends IntentService {
                         times[6]=day.getString("220");
                         times[7]=day.getString("310");
                         times[8]=day.getString("400");
+                        for(int k=1;k<9;k++)
+                            handler.add_sub(times[k]);
                         Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
                         Log.d("hel","api manager: "+times[0]+" "+times[5]);
                         handler.add_day(times[0],times[1],times[2],times[3],times[4],times[5],times[6],times[7],times[8]);
