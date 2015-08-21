@@ -36,6 +36,16 @@ public class CRHome extends ActionBarActivity {
             }
         });
 
+        editcourses.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        startActivity(new Intent(CRHome.this,ManageCourse.class));
+                    }
+                }
+        );
+
     }
 
 

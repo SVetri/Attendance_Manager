@@ -32,7 +32,7 @@ public class APIManagerService extends IntentService {
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
-        String URL = "http://10.0.0.109/~rahulzoldyck/timetable.php";
+        String URL = "http://10.0.0.109/~rahulzoldyck/timetable";
 
         all=new ArrayList<>();
         handler=new MySqlHandler(this,null);

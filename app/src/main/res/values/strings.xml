@@ -16,5 +16,6 @@
     <string name="title_activity_edit_weekly_tt">Edit Weekly</string>
     <string name="title_activity_upcoming_tt">Upcoming Timetable</string>
     <string name="title_activity_edit_upcoming_tt">Edit Upcoming TT</string>
+    <string name="title_activity_manage_course">ManageCourse</string>
 
 </resources>

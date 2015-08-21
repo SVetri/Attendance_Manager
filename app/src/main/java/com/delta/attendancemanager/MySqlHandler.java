@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MySqlHandler extends SQLiteOpenHelper {
     private static ArrayList<String> subs = new ArrayList<>();
-    private static final int VERSION =2;
+    private static final int VERSION =3;
     public static final  String TOMO="tomorrow";
     private static final String DATABASE_NAME="class.db";
     private static final String TABLENAME="timetable";

@@ -111,6 +111,11 @@
             android:name=".APIManagerService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".ManageCourse"
+            android:label="@string/title_activity_manage_course" >
+        </activity>
     </application>
 
 </manifest>
