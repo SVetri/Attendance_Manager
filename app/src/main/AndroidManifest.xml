@@ -116,6 +116,15 @@
             android:name=".ManageCourse"
             android:label="@string/title_activity_manage_course" >
         </activity>
+
+        <service
+            android:name=".UpdateTTService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".TomorrowUpdateService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

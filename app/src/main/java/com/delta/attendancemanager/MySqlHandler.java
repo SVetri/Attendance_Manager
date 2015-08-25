@@ -386,4 +386,8 @@ public class MySqlHandler extends SQLiteOpenHelper {
         c.close();
         return  all;
     }
+    public void update_tomo(String[] subs){
+        delete_day(TOMO);
+        add_day(TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
+    }
 }

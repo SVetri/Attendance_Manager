@@ -1,32 +1,102 @@
 package com.delta.attendancemanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManageCourse extends ActionBarActivity {
     MySqlHandler handler;
+    boolean ischanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_course);
+        ischanged=false;
+        Button add=(Button)findViewById(R.id.addbutton);
+        Button del=(Button)findViewById(R.id.deletebutton);
+        handler=new MySqlHandler(this,null);
+        add.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ManageCourse.this);
+                        final EditText t=new EditText(ManageCourse.this);
+                        t.setInputType(InputType.TYPE_CLASS_TEXT);
+                        builder.setView(t);
+                        builder.setMessage("Enter the Name of the course")
+                                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        handler.add_sub(t.getText().toString());
+                                        ischanged=true;
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
+                        builder.show();
+                    }
+                }
+        );
         ListView l=(ListView)findViewById(R.id.courses);
         ArrayList<String> s =new ArrayList();
-        handler=new MySqlHandler(this,null);
+
         s=handler.getSubs();
-        String[] a =new String[s.size()];
+
+         String[] a =new String[s.size()];
         a=s.toArray(a);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,a);
         l.setAdapter(adapter);
+        l.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        String subs=(String)parent.getItemAtPosition(position);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ManageCourse.this);
+                        builder.setMessage("Do you really want to delete the Course "+subs+" CR?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //delete Subject
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
+                        // Create the AlertDialog object and return it
+                        builder.show();
+                        return  true;
+                    }
+                }
+
+
+        );
 
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(ischanged){
+            //update server
+        }
+    }
 }
