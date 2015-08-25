@@ -51,82 +51,63 @@ public class EditUpcomingTT extends ActionBarActivity {
         sub1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"830");
             }
         });
 
         sub2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"920");
             }
         });
 
         sub3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"1030");
             }
         });
 
         sub4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"1120");
             }
         });
 
         sub5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"130");
             }
         });
 
         sub6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"220");
             }
         });
 
         sub7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"310");
             }
         });
 
         sub8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "vClicked", Toast.LENGTH_SHORT).show();
-                //return true;
-                selectsubdialog(v);
+                selectsubdialog(v,"400");
             }
         });
     }
 
-    public void selectsubdialog(View v)
-    {
+    public void selectsubdialog(View v,String time)
+    {   final String times=time;
         final TextView t = (TextView) v;
-        String vname=t.getText().toString();
-        Toast.makeText(EditUpcomingTT.this,vname,Toast.LENGTH_SHORT).show();
-            /* When getting the number of subjects from the api, if no ofsubjects <11, set the appropriate number of radiobutton's visibility to gone */
         final Dialog dialog = new Dialog(EditUpcomingTT.this);
         dialog.setContentView(R.layout.edit_tt_dialog);
         dialog.setTitle("Select Subject");
@@ -135,27 +116,14 @@ public class EditUpcomingTT extends ActionBarActivity {
         subs=handler.getSubs();
         String[] al=new String[subs.size()];
         al=subs.toArray(al);
-        RadioButton ssub1 = (RadioButton) rg.findViewById(R.id.selsub1);
-        RadioButton ssub2 = (RadioButton) rg.findViewById(R.id.selsub2);
-        RadioButton ssub3 = (RadioButton) rg.findViewById(R.id.selsub3);
-        RadioButton ssub4 = (RadioButton) rg.findViewById(R.id.selsub4);
-        RadioButton ssub5 = (RadioButton) rg.findViewById(R.id.selsub5);
-        RadioButton ssub6 = (RadioButton) rg.findViewById(R.id.selsub6);
-        RadioButton ssub7 = (RadioButton) rg.findViewById(R.id.selsub7);
-        RadioButton ssub8 = (RadioButton) rg.findViewById(R.id.selsub8);
-//        for (String i : al){
-//            Log.i("dvgf",i+(ssub1==null));
-//
-//        }
-        ssub1.setText(al[0]);
-        ssub2.setText(al[1]);
-        ssub3.setText(al[2]);
-        ssub4.setText(al[3]);
-        ssub5.setText(al[4]);
-        ssub6.setText(al[5]);
-        ssub7.setText(al[6]);
-        ssub8.setText(al[7]);
 
+        for (String i : al){
+            if(i.equals(" "))
+                continue;
+            RadioButton rb=new RadioButton(this);
+            rb.setText(i);
+            rg.addView(rb);
+        }
 
         Button dialogButton = (Button) dialog.findViewById(R.id.okbutton);
         // if button is clicked, close the custom dialog
@@ -167,6 +135,8 @@ public class EditUpcomingTT extends ActionBarActivity {
                 String su=rd.getText().toString();
                 Toast.makeText(EditUpcomingTT.this,su,Toast.LENGTH_SHORT).show();
                 t.setText(su);
+                //UpdateTTService.startActionUpcoming(EditUpcomingTT.this,times,su);
+                dialog.cancel();
             }
         });
 

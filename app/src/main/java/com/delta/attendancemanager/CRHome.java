@@ -15,6 +15,7 @@ public class CRHome extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crhome);
+        startService(new Intent(this,TomorrowUpdateService.class));//TODO:Delete this
 
         Button editweekly = (Button) findViewById(R.id.editweekly);
         Button editupcoming = (Button) findViewById(R.id.editupcoming);
