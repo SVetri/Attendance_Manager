@@ -13,6 +13,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.TooManyListenersException;
 public class EditUpcomingTT extends ActionBarActivity {
     String[] all;
     MySqlHandler handler;
-
+    public static final String[] slots={"830","920","1030","1120","130","220","310","400"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,63 +54,64 @@ public class EditUpcomingTT extends ActionBarActivity {
         sub1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"830");
+                selectsubdialog(v,"830",1);
             }
         });
 
         sub2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"920");
+                selectsubdialog(v,"920",2);
             }
         });
 
         sub3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"1030");
+                selectsubdialog(v,"1030",3);
             }
         });
 
         sub4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"1120");
+                selectsubdialog(v,"1120",4);
             }
         });
 
         sub5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"130");
+                selectsubdialog(v,"130",5);
             }
         });
 
         sub6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"220");
+                selectsubdialog(v,"220",6);
             }
         });
 
         sub7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"310");
+                selectsubdialog(v,"310",7);
             }
         });
 
         sub8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,"400");
+                selectsubdialog(v,"400",8);
             }
         });
     }
 
-    public void selectsubdialog(View v,String time)
+    public void selectsubdialog(View v,String time,int no)
     {   final String times=time;
         final TextView t = (TextView) v;
+        final int n=no;
         final Dialog dialog = new Dialog(EditUpcomingTT.this);
         dialog.setContentView(R.layout.edit_tt_dialog);
         dialog.setTitle("Select Subject");
@@ -126,16 +130,27 @@ public class EditUpcomingTT extends ActionBarActivity {
         }
 
         Button dialogButton = (Button) dialog.findViewById(R.id.okbutton);
-        // if button is clicked, close the custom dialog
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] a=new String[9];
+                a=handler.get_tomo();
                 int pos=rg.getCheckedRadioButtonId();
                 RadioButton rd= (RadioButton)rg.findViewById(pos);
                 String su=rd.getText().toString();
                 Toast.makeText(EditUpcomingTT.this,su,Toast.LENGTH_SHORT).show();
                 t.setText(su);
-                //UpdateTTService.startActionUpcoming(EditUpcomingTT.this,times,su);
+                a[n]=su;
+                handler.update_tomo(a);
+                JSONObject j=new JSONObject();
+                for (int i=1;i<=8;i++){
+                    try {
+                        j.put(slots[i-1],a[i]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                UpdateTTService.startActionUpcoming(EditUpcomingTT.this,j);
                 dialog.cancel();
             }
         });
