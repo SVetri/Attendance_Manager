@@ -69,7 +69,7 @@ public class ManageCourse extends ActionBarActivity {
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         String subs=(String)parent.getItemAtPosition(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(ManageCourse.this);
-                        builder.setMessage("Do you really want to delete the Course "+subs+" CR?")
+                        builder.setMessage("Do you really want to delete the Course "+subs+" ?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         //delete Subject
@@ -77,10 +77,9 @@ public class ManageCourse extends ActionBarActivity {
                                 })
                                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        // User cancelled the dialog
+                                        dialog.cancel();
                                     }
                                 });
-                        // Create the AlertDialog object and return it
                         builder.show();
                         return  true;
                     }

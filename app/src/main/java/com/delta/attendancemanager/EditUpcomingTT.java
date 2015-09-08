@@ -109,7 +109,7 @@ public class EditUpcomingTT extends ActionBarActivity {
     }
 
     public void selectsubdialog(View v,String time,int no)
-    {   final String times=time;
+    {
         final TextView t = (TextView) v;
         final int n=no;
         final Dialog dialog = new Dialog(EditUpcomingTT.this);

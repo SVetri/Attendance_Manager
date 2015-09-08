@@ -9,7 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +23,7 @@ import java.util.List;
 import javax.net.ssl.HandshakeCompletedListener;
 
 public class CRSlidingTabsFragment extends Fragment{
+
 
     MySqlHandler handler;
     List<String[]> all;
@@ -95,7 +102,7 @@ public class CRSlidingTabsFragment extends Fragment{
          * inflate a layout from the apps resources and then change the text view to signify the position.
          */
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             handler=new MySqlHandler(getActivity(),null);
             all=new ArrayList<>();
 
@@ -152,100 +159,103 @@ public class CRSlidingTabsFragment extends Fragment{
             sub6.setText(x[6]);
             sub7.setText(x[7]);
             sub8.setText(x[8]);
+            final String[] x1=x;
 
             sub1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+
+                    selectsubdialog(position,x1,v,1);
                 }
             });
 
             sub2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,2);
                 }
             });
 
             sub3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,3);
                 }
             });
 
             sub4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,4);
                 }
             });
 
             sub5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,5);
                 }
             });
 
             sub6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,6);
                 }
             });
 
             sub7.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,7);
                 }
             });
 
             sub8.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,8);
                 }
             });
-
-            // Retrieve a TextView from the inflated View, and update it's text
-            //TextView title = (TextView) view.findViewById(R.id.item_title);
-            //title.setText(String.valueOf(position + 1));
-
-            // Return the View
             return view;
         }
 
-        public void selectsubdialog()
-        {
-            /* When getting the number of subjects from the api, if no ofsubjects <11, set the appropriate number of radiobutton's visibility to gone */
+        public void selectsubdialog(int position,String[] s,View v,int no)
+        {   final String[] sub=s;
+            final int n=no;
+            final TextView t = (TextView) v;
             final Dialog dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.edit_tt_dialog);
             dialog.setTitle("Select Subject");
+            List<String> subs=new ArrayList<>();
+            final RadioGroup rg= (RadioGroup)dialog.findViewById(R.id.rg);
+            subs=handler.getSubs();
+            String[] al=new String[subs.size()];
+            al=subs.toArray(al);
+
+            for (String i : al){
+                if(i.equals(" "))
+                    continue;
+                RadioButton rb=new RadioButton(getActivity());
+                rb.setText(i);
+                rg.addView(rb);
+            }
 
             Button dialogButton = (Button) dialog.findViewById(R.id.okbutton);
-            // if button is clicked, close the custom dialog
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
+                    String[] a=new String[9];
+                    a=sub;
+                    int pos=rg.getCheckedRadioButtonId();
+                    RadioButton rd= (RadioButton)rg.findViewById(pos);
+                    String su=rd.getText().toString();
+                    t.setText(su);
+                    a[n]=su;
+                    handler.delete_day(a[0]);
+                    handler.add_day(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
+                    EditWeeklyTT.ischanged=true;
+                    dialog.cancel();
                 }
             });
 

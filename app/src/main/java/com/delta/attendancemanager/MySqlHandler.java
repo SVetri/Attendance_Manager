@@ -111,7 +111,7 @@ public class MySqlHandler extends SQLiteOpenHelper {
         db.insert(TABLENAME,null,v);
     }
 
-    private void delete_day(String day) {
+    public void delete_day(String day) {
         SQLiteDatabase db=getWritableDatabase();
         db.delete(TABLENAME, DAY + " = ?", new String[] { day });
     }
