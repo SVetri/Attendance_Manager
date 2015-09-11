@@ -1,10 +1,13 @@
 package com.delta.attendancemanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,21 +36,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+    Context applicationContext=getApplicationContext();
     public static final String URL="http://10.0.0.109/~rahulzoldyck/login.php";
+    public static final String GOOGLE_PROJ_ID="";
+    String regId="";
+    public static final String REG_ID="REG-ID";
+    public static final String RNO="RNO";
 
+    GoogleCloudMessaging gcmObj;
+    MySqlHandler handler;
     String usernme;
-
+    String pass;
+    boolean isfirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        handler=new MySqlHandler(this,null);
+        if(handler.get_days()==null){
+            isfirst=true;
+        }
+        else
+            isfirst=false;
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
         Button loginbutton = (Button) findViewById(R.id.login);
@@ -59,10 +80,9 @@ public class MainActivity extends ActionBarActivity {
                 } else {
                     String user=username.getText().toString();
                     usernme=username.getText().toString();
-                    String pass=password.getText().toString();
-                    Log.d("TAG",user+pass);
-                    Authenticate a=new Authenticate();
-                    a.execute(user,pass);
+                    pass=password.getText().toString();
+                    Log.d("TAG", user + pass);
+
                 }
             }
         });
@@ -70,11 +90,81 @@ public class MainActivity extends ActionBarActivity {
         crswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, CRLogin.class);
-                startActivity(i);
+                Authenticate a=new Authenticate();
+                a.execute(usernme, pass);
                 finish();
             }
         });
+
+    }
+
+    private void InitialHandShake(String user) {
+        registerInBackground(user);
+
+
+    }
+    private void registerInBackground(final String rollnumber) {
+        new AsyncTask<Void, Void, String>() {
+            JSONParser jp;
+            @Override
+            protected String doInBackground(Void... params) {
+                jp=new JSONParser();
+                String msg = "";
+                try {
+                    if (gcmObj == null) {
+                        gcmObj = GoogleCloudMessaging
+                                .getInstance(applicationContext);
+                    }
+                    regId = gcmObj
+                            .register(GOOGLE_PROJ_ID);
+                    msg = "Registration ID :" + regId;
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                List<NameValuePair> aut=new ArrayList<>();
+                aut.add(new BasicNameValuePair("rollnumber",rollnumber));
+                aut.add(new BasicNameValuePair("regno",regId));
+                JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
+                Log.i("Json",js.toString());
+                try {
+                    int success=js.getInt("success");
+                    if(success!=1){
+                        wrongpassword();
+                    }
+                } catch (JSONException e) {
+                    msg = "Error :" + e.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                if (!TextUtils.isEmpty(regId)) {
+                    // Store RegId created by GCM Server in SharedPref
+                    storeRegIdinSharedPref(applicationContext, regId, rollnumber);
+                    Toast.makeText(
+                            applicationContext,
+                            "Registered with GCM Server successfully.\n\n"
+                                    + msg, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(
+                            applicationContext,
+                            "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
+                                    + msg, Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute(null, null, null);
+    }
+    private void storeRegIdinSharedPref(Context context, String regId,
+                                        String rollnumber) {
+        SharedPreferences prefs = getSharedPreferences("UserDetails",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(REG_ID, regId);
+        editor.putString(RNO, rollnumber);
+        editor.commit();
+
 
     }
 
@@ -92,26 +182,30 @@ public class MainActivity extends ActionBarActivity {
                 aut.add(new BasicNameValuePair("username",params[0]));
                 aut.add(new BasicNameValuePair("password",params[1]));
                 JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
+                Log.i(TAG,js.toString());
                 int success=js.getInt("success");
                 jp=null;
                 js=null;
-                //return success==1;                                                //authentication
-                return true;
-            }  catch (JSONException e) {
+                return success==1;                                                //authentication
+            }  catch (Exception e) {
                 e.printStackTrace();
             }
 
-           return false;
+           return true;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean){
-                Intent i = new Intent(MainActivity.this, UserHome.class);
-               i.putExtra("rno",Integer.parseInt(usernme));
-                startActivity(i);
-                finish();
+                if(isfirst)
+                    InitialHandShake(usernme);
+                else {
+                    Intent i = new Intent(MainActivity.this, UserHome.class);
+                    i.putExtra("rno", Integer.parseInt(usernme));
+                    startActivity(i);
+                    finish();
+                }
             }
             else{
                 wrongpassword();

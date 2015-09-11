@@ -3,6 +3,15 @@
     package="com.delta.attendancemanager" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="ANDROID.PERMISSION.GET_ACCOUNTS" />
+    <uses-permission android:name="ANDROID.PERMISSION.WAKE_LOCK" />
+
+    <permission
+        android:name="com.delta.attendancemanager.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.delta.attendancemanager.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -125,6 +134,23 @@
             android:name=".TomorrowUpdateService"
             android:exported="false" >
         </service>
+
+        <receiver
+            android:name=".GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.delta.attendancemanager" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMMessagerHandler" />
+
+        <activity
+            android:name=".CourseInfo"
+            android:label="@string/title_activity_course_info" >
+        </activity>
     </application>
 
 </manifest>
