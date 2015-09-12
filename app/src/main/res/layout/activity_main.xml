@@ -8,24 +8,45 @@
     tools:context=".MainActivity"
     android:padding="@dimen/activity_horizontal_margin">
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="match_parent"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/fNameLayout2"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Roll No"
-        android:layout_above="@+id/passwordm"
+        android:layout_above="@+id/fNameLayout10"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true" >
 
-    <EditText
-        android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Roll No"
+            android:layout_above="@+id/passwordm"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/fNameLayout10"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:id="@+id/passwordm"
-        android:hint="Password"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/passwordm"
+            android:hint="Password"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
 
     <Button
         android:id="@+id/login"
@@ -34,9 +55,9 @@
         android:text="Login"
         android:background="#3f85f4"
         android:textColor="#ffffff"
-        android:layout_below="@+id/passwordm"
-        android:layout_alignLeft="@+id/passwordm"
-        android:layout_alignStart="@+id/passwordm"
+        android:layout_below="@+id/fNameLayout10"
+        android:layout_alignLeft="@+id/fNameLayout10"
+        android:layout_alignStart="@+id/fNameLayout10"
         android:layout_marginTop="34dp" />
 
     <Button

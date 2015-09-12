@@ -64,6 +64,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         Bundle b=getIntent().getExtras();
         if(b!=null){
+            boolean g=b.getBoolean("wrong");
+            if(g)
             wrong=true;
 
         }
