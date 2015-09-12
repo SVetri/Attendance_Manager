@@ -1,43 +1,62 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:weightSum="5"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:padding="@dimen/activity_horizontal_margin">
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        android:layout_weight="1"
-        android:hint="Roll No"/>
+        android:layout_height="wrap_content"
+        android:hint="Roll No"
+        android:layout_above="@+id/passwordm"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:layout_margin="20dp"
         android:id="@+id/passwordm"
-        android:layout_weight="1"
-        android:hint="Password" />
+        android:hint="Password"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="20dp"
-        android:text="Login"/>
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/passwordm"
+        android:layout_alignLeft="@+id/passwordm"
+        android:layout_alignStart="@+id/passwordm"
+        android:layout_marginTop="34dp" />
 
     <Button
         android:id="@+id/crmodeswitch"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="20dp"
-        android:text="Switch to CR mode"/>
+        android:layout_height="wrap_content"
+        android:text="Switch to CR mode"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/login"
+        android:layout_alignLeft="@+id/login"
+        android:layout_alignStart="@+id/login"
+        android:layout_marginTop="29dp" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Made With \u2665 by DeltaForce"
+        android:id="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -42,12 +44,13 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
-    Context applicationContext=getApplicationContext();
+    Context applicationContext=MainActivity.this;
     public static final String URL="http://10.0.0.109/~rahulzoldyck/login.php";
     public static final String GOOGLE_PROJ_ID="";
     String regId="";
     public static final String REG_ID="REG-ID";
     public static final String RNO="RNO";
+    boolean wrong=false;
 
     GoogleCloudMessaging gcmObj;
     MySqlHandler handler;
@@ -59,6 +62,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle b=getIntent().getExtras();
+        if(b!=null){
+            wrong=true;
+
+        }
         handler=new MySqlHandler(this,null);
         if(handler.get_days()==null){
             isfirst=true;
@@ -67,12 +75,17 @@ public class MainActivity extends ActionBarActivity {
             isfirst=false;
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
+        if(wrong){
+            YoYo.with(Techniques.Tada).duration(700).playOn(username);
+            YoYo.with(Techniques.Tada).duration(700).playOn(password);
+        }
         Button loginbutton = (Button) findViewById(R.id.login);
         Button crswitch = (Button) findViewById(R.id.crmodeswitch);
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a Roll.No", Toast.LENGTH_SHORT).show();
                 } else if (password.getText().length() == 0) {
@@ -82,6 +95,9 @@ public class MainActivity extends ActionBarActivity {
                     usernme=username.getText().toString();
                     pass=password.getText().toString();
                     Log.d("TAG", user + pass);
+                    Authenticate a = new Authenticate();
+                    a.execute(usernme, pass);
+                    finish();
 
                 }
             }
@@ -90,9 +106,7 @@ public class MainActivity extends ActionBarActivity {
         crswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Authenticate a=new Authenticate();
-                a.execute(usernme, pass);
-                finish();
+              startActivity(new Intent(applicationContext,CRLogin.class));
             }
         });
 
@@ -216,7 +230,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void wrongpassword() {
-        startActivity(new Intent(MainActivity.this,MainActivity.class));  //TODO: enhance with textview "Wrong password"
+        Intent i =new Intent(MainActivity.this,MainActivity.class);
+        i.putExtra("wrong",true);
+        startActivity(i);  //TODO: enhance with textview "Wrong password"
 
     }
 
