@@ -177,6 +177,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             JSONParser jp=new JSONParser();
+            /*
             try {
                 List<NameValuePair> aut=new ArrayList<>();
                 aut.add(new BasicNameValuePair("username",params[0]));
@@ -190,6 +191,7 @@ public class MainActivity extends ActionBarActivity {
             }  catch (Exception e) {
                 e.printStackTrace();
             }
+            */
 
            return true;
         }
