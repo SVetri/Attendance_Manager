@@ -220,8 +220,12 @@ public class MainActivity extends ActionBarActivity {
                 if(isfirst)
                     InitialHandShake(usernme);
                 else {
+                    SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=share.edit();
+                    editor.putString("rno", usernme);
+                    editor.apply();
                     Intent i = new Intent(MainActivity.this, Userhome.class);
-                    i.putExtra("rno", Integer.parseInt(usernme));
+                    i.putExtra("rno", usernme);
                     startActivity(i);
                     finish();
                 }

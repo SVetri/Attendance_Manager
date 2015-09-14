@@ -2,6 +2,7 @@ package com.delta.attendancemanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -106,6 +107,7 @@ public class UserHomeSliderFragment extends Fragment {
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_upcoming_tt,
                             container, false);
                     handler=new MySqlAdapter(getActivity(),null);
+
                     //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
                     String[] al=new String[9];
                     sub1=(TextView)view.findViewById(R.id.sub1);
