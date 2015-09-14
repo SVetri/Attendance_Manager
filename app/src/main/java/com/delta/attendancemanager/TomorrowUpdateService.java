@@ -7,7 +7,7 @@ import java.util.Calendar;
 
 
 public class TomorrowUpdateService extends IntentService {
-    MySqlHandler handler;
+    MySqlAdapter handler;
     String[] all;
     public TomorrowUpdateService() {
         super("TomorrowUpdateService");
@@ -15,7 +15,7 @@ public class TomorrowUpdateService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        handler=new MySqlHandler(getApplicationContext(),null);
+        handler=new MySqlAdapter(getApplicationContext(),null);
         Calendar c=Calendar.getInstance();
         int hour=c.get(Calendar.HOUR_OF_DAY);
         all=new String[9];

@@ -25,7 +25,7 @@ import javax.net.ssl.HandshakeCompletedListener;
 public class CRSlidingTabsFragment extends Fragment{
 
 
-    MySqlHandler handler;
+    MySqlAdapter adapter;
     List<String[]> all;
     private SlidingTabLayout mSlidingTabLayout;
 
@@ -103,7 +103,7 @@ public class CRSlidingTabsFragment extends Fragment{
          */
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            handler=new MySqlHandler(getActivity(),null);
+            adapter=new MySqlAdapter(getActivity(),null);
             all=new ArrayList<>();
 
             String[] m,t,w,th,f,x;
@@ -113,11 +113,11 @@ public class CRSlidingTabsFragment extends Fragment{
             th=new String[9];
             f=new String[9];
             x=new String[9];
-            m=handler.get_mon();
-            t=handler.get_tue();
-            w=handler.get_wed();
-            th=handler.get_thur();
-            f=handler.get_fri();
+            m=adapter.get_mon();
+            t=adapter.get_tue();
+            w=adapter.get_wed();
+            th=adapter.get_thur();
+            f=adapter.get_fri();
 
             // Inflate a new layout from our resources
             View view = getActivity().getLayoutInflater().inflate(R.layout.pager_item,
@@ -229,7 +229,7 @@ public class CRSlidingTabsFragment extends Fragment{
             dialog.setTitle("Select Subject");
             List<String> subs=new ArrayList<>();
             final RadioGroup rg= (RadioGroup)dialog.findViewById(R.id.rg);
-            subs=handler.getSubs();
+            subs=adapter.getSubs();
             String[] al=new String[subs.size()];
             al=subs.toArray(al);
 
@@ -252,8 +252,8 @@ public class CRSlidingTabsFragment extends Fragment{
                     String su=rd.getText().toString();
                     t.setText(su);
                     a[n]=su;
-                    handler.delete_day(a[0]);
-                    handler.add_day(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
+                    adapter.delete_day(a[0]);
+                    adapter.add_day(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
                     EditWeeklyTT.ischanged=true;
                     dialog.cancel();
                 }

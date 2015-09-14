@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO subjects list should come up
 
 public class ViewMyAttendance extends ActionBarActivity {
 

@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
     boolean wrong=false;
 
     GoogleCloudMessaging gcmObj;
-    MySqlHandler handler;
+    MySqlAdapter handler;
     String usernme;
     String pass;
     boolean isfirst;
@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
             wrong=true;
 
         }
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         if(handler.get_days()==null){
             isfirst=true;
         }
@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
                     Log.d("TAG", user + pass);
                     Authenticate a = new Authenticate();
                     a.execute(usernme, pass);
-                    finish();
+                    //finish();                         TODO: taking it off for checking
 
                 }
             }
@@ -193,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             JSONParser jp=new JSONParser();
-            /*
+   /*
             try {
                 List<NameValuePair> aut=new ArrayList<>();
                 aut.add(new BasicNameValuePair("username",params[0]));
@@ -206,10 +206,11 @@ public class MainActivity extends ActionBarActivity {
                 return success==1;                                                //authentication
             }  catch (Exception e) {
                 e.printStackTrace();
-            }
-            */
 
-           return true;
+            }
+*/
+
+            return true;
         }
 
         @Override

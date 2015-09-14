@@ -8,10 +8,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
+//TODO update my attendance activity - integration: 1.fetch_pending_attendance() 2.update_attendace
+
+
 public class UpdateMyAttendance extends ActionBarActivity {
+    ArrayList<String> subjects;
+    ArrayList<Date> dates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +29,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
-
+        
         AttendanceAdapter attadapter = new AttendanceAdapter(createList(30));
         reclist.setAdapter(attadapter);
     }

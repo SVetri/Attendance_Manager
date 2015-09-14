@@ -15,7 +15,7 @@ import java.util.List;
 
 public class EditWeeklyTT extends ActionBarActivity {
     public static final String[] Days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
-    MySqlHandler handler;
+    MySqlAdapter handler;
     public static boolean ischanged;
     @Override
     public void onBackPressed() {
@@ -50,7 +50,7 @@ public class EditWeeklyTT extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_weekly_tt);
         ischanged=false;
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             CRSlidingTabsFragment fragment = new CRSlidingTabsFragment();

@@ -16,13 +16,13 @@ import java.util.Calendar;
 public class UpcomingTT extends ActionBarActivity {
     TextView sub1,sub2,sub3,sub4,sub5,sub6,sub7,sub8;
     String[] all;
-    MySqlHandler handler;
+    MySqlAdapter handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming_tt);
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
         all=new String[9];
         sub1=(TextView)findViewById(R.id.sub1);

@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class APIManagerService extends IntentService {
-    MySqlHandler handler;
+    MySqlAdapter adapter;
     List<String[]> all,subs;
 
 
@@ -29,13 +30,14 @@ public class APIManagerService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         subs=new ArrayList<>();
         String user="";
+        Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();                //todo: api manager services not being called
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
         String URL = "http://10.0.0.109/~rahulzoldyck/timetable";
 
         all=new ArrayList<>();
-        handler=new MySqlHandler(this,null);
+        adapter=new MySqlAdapter(this,null);
 //        Bundle b=intent.getExtras();
 //        if(b!=null){
 //            user=b.getString("rno");
@@ -63,10 +65,10 @@ public class APIManagerService extends IntentService {
                         times[7]=day.getString("310");
                         times[8]=day.getString("400");
                         for(int k=1;k<9;k++)
-                            handler.add_sub(times[k]);
+                            adapter.add_sub(times[k]);
                         Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
                         Log.d("hel","api manager: "+times[0]+" "+times[5]);
-                        handler.add_day(times[0],times[1],times[2],times[3],times[4],times[5],times[6],times[7],times[8]);
+                        adapter.add_day(times[0],times[1],times[2],times[3],times[4],times[5],times[6],times[7],times[8]);
                     }
 
                     Log.d("TAG", js.toString());

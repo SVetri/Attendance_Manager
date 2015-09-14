@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class CRhomesliderfragment extends Fragment {
 
-    MySqlHandler handler;
+    MySqlAdapter handler;
     List<String[]> all;
 
     private SlidingTabLayout mSlidingTabLayout;
@@ -169,10 +169,10 @@ public class CRhomesliderfragment extends Fragment {
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_edit_upcoming_tt,
                             container, false);
                     String[] all;
-                     handler=new MySqlHandler(getActivity(),null);
+                     handler=new MySqlAdapter(getActivity(),null);
                     final String[] slots={"830","920","1030","1120","130","220","310","400"};
                     
-                    handler=new MySqlHandler(getActivity(),null);
+                    handler=new MySqlAdapter(getActivity(),null);
                     //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
                     all=new String[9];
                      sub1 = (TextView)view. findViewById(R.id.sub1);

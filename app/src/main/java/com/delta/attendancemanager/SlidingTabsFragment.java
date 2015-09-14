@@ -18,12 +18,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO made a small change - find whether its working
+
 /**
  * Created by S on 12/20/2014.
  */
 public class SlidingTabsFragment extends Fragment {
 
-    MySqlHandler handler;
+    MySqlAdapter handler;
     List<String[]> all;
 
     private SlidingTabLayout mSlidingTabLayout;
@@ -102,7 +104,7 @@ public class SlidingTabsFragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            handler=new MySqlHandler(getActivity(),null);
+            handler=new MySqlAdapter(getActivity().getApplicationContext(),null);
             all=new ArrayList<>();
 
             String[] m,t,w,th,f,x;

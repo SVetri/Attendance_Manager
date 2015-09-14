@@ -27,7 +27,7 @@ public class GCMMessageHandler extends IntentService {
     int notifyID=1154;
 
     String mes;
-    private MySqlHandler handler;
+    private MySqlAdapter handler;
 
     public GCMMessageHandler() {
         super("GCMMessageHandler");
@@ -37,7 +37,7 @@ public class GCMMessageHandler extends IntentService {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-        handler = new MySqlHandler(this,null);
+        handler = new MySqlAdapter(this,null);
     }
 
     @Override

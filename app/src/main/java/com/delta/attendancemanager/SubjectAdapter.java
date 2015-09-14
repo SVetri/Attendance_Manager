@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
+//TODO subject adapter gets subject list and inflates the view
+
 /**
  * Created by S on 12/24/2014.
  */

@@ -19,17 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageCourse extends ActionBarActivity {
-    MySqlHandler handler;
+    MySqlAdapter handler;
     boolean ischanged;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {                                                //TODO delete_subs created, use it to delete a subject
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_course);
         ischanged=false;
         Button add=(Button)findViewById(R.id.addbutton);
         Button del=(Button)findViewById(R.id.deletebutton);
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         add.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

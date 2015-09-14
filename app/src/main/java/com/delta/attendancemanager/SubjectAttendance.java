@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+//TODO accessing the subject attendance and also changing the classes attended and other stuff
 
 public class SubjectAttendance extends ActionBarActivity {
 

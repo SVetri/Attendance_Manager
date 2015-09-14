@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserHome extends ActionBarActivity {
     public String username;
-    MySqlHandler handler;
+    MySqlAdapter handler;
     List<String[]> alls;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class UserHome extends ActionBarActivity {
         if(b!=null){
             username=String.valueOf(b.getString("rno"));
         }
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         alls=new ArrayList<>();
         alls=handler.get_days();
         if(alls.size()==0){

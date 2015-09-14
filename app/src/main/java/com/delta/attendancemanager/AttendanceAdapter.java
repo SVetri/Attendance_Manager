@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
 
     private List<CardInfo> attendanceList;

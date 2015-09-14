@@ -24,13 +24,13 @@ import java.util.TooManyListenersException;
 
 public class EditUpcomingTT extends ActionBarActivity {
     String[] all;
-    MySqlHandler handler;
+    MySqlAdapter handler;
     public static final String[] slots={"830","920","1030","1120","130","220","310","400"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_upcoming_tt);
-        handler=new MySqlHandler(this,null);
+        handler=new MySqlAdapter(this,null);
         //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
         all=new String[9];
         TextView sub1 = (TextView) findViewById(R.id.sub1);
