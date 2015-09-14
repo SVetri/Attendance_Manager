@@ -1,10 +1,12 @@
 package com.delta.attendancemanager;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,10 @@ public class UpcomingTT extends ActionBarActivity {
         sub8.setText(all[8]);
     }
 
-
+    public void floatingclicked(View v){
+        Intent i=new Intent(this,WeeklyTimetable.class);
+        startActivity(i);
+    }
 
 
     @Override

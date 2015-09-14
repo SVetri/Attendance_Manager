@@ -34,8 +34,6 @@ public class UserHome extends ActionBarActivity {
             i.putExtra("mode",0);
             startService(i);
         }
-
-        Button weeklytt = (Button) findViewById(R.id.weeklytt);
         Button tomtt = (Button) findViewById(R.id.tomtt);
         Button manageatt = (Button) findViewById(R.id.manage);
         Button logout = (Button) findViewById(R.id.logoutuserhome);
@@ -47,14 +45,6 @@ public class UserHome extends ActionBarActivity {
                     }
                 }
         );
-
-        weeklytt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(UserHome.this, WeeklyTimetable.class);
-                startActivity(i);
-            }
-        });
 
         manageatt.setOnClickListener(new View.OnClickListener() {
             @Override

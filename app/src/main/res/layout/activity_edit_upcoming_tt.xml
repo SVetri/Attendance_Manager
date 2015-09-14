@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:onClick="floatingclicked"
+        app:elevation="10dp"
+        app:borderWidth="0dp"
+        app:backgroundTint="#3f85f4"
+
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="*"
-            android:background="#000000">
+            android:background="#ffffff">
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -241,4 +258,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

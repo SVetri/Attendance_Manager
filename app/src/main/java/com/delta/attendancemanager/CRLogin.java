@@ -20,7 +20,7 @@ public class CRLogin extends ActionBarActivity {
         crlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CRLogin.this, CRHome.class);
+                Intent i = new Intent(CRLogin.this, CRhome.class);
                 startActivity(i);
             }
         });

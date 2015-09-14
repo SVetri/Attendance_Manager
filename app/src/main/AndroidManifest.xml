@@ -145,11 +145,19 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMMessagerHandler" />
+        <service android:name=".GCMMessageHandler" />
 
         <activity
             android:name=".CourseInfo"
             android:label="@string/title_activity_course_info" >
+        </activity>
+        <activity
+            android:name=".Userhome"
+            android:label="@string/title_activity_userhome" >
+        </activity>
+        <activity
+            android:name=".CRhome"
+            android:label="@string/title_activity_crhome" >
         </activity>
     </application>
 

@@ -18,5 +18,9 @@
     <string name="title_activity_edit_upcoming_tt">Edit Upcoming TT</string>
     <string name="title_activity_manage_course">ManageCourse</string>
     <string name="title_activity_course_info">CourseInfo</string>
+    <string name="title_activity_userhome">Userhome</string>
+
+    <string name="title_section1">Timetable</string>
+    <string name="title_section2">Attendance</string>
 
 </resources>

@@ -219,7 +219,7 @@ public class MainActivity extends ActionBarActivity {
                 if(isfirst)
                     InitialHandShake(usernme);
                 else {
-                    Intent i = new Intent(MainActivity.this, UserHome.class);
+                    Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", Integer.parseInt(usernme));
                     startActivity(i);
                     finish();
