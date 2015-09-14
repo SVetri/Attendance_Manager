@@ -104,16 +104,12 @@ public class SlidingTabsFragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            handler=new MySqlAdapter(getActivity().getApplicationContext(),null);
+            handler=new MySqlAdapter(getActivity(),null);
             all=new ArrayList<>();
 
             String[] m,t,w,th,f,x;
-            m=new String[9];
-            t=new String[9];
-            w=new String[9];
-            th=new String[9];
-            f=new String[9];
             x=new String[9];
+
             m=handler.get_mon();
             t=handler.get_tue();
             w=handler.get_wed();

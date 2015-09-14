@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +139,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("MonMysqlhelper.DAY")){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Monday")){
                 all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
                 all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
                 all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
@@ -176,7 +177,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("TuesMysqlhelper.DAY")){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Tuesday")){
                 all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
                 all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
                 all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
@@ -213,7 +214,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("WednesMysqlhelper.DAY")){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Wednesday")){
                 all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
                 all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
                 all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
@@ -251,7 +252,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("ThursMysqlhelper.DAY")){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Thursday")){
                 all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
                 all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
                 all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
@@ -289,7 +290,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("FriMysqlhelper.DAY")){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Friday")){
                 all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
                 all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
                 all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));

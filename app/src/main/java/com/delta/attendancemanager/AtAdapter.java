@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.IntegerRes;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import javax.security.auth.Subject;
 
 /**
  * Created by lakshmanaram on 17/8/15.
@@ -18,7 +21,8 @@ public class AtAdapter {
     Context context;
     Athelper athelper;
     int totalclasses,classes_attended,percentage,projected_percentage,pending_classes;
-    ArrayList<String> subj,dt;
+    ArrayList<String> subj = new ArrayList<>();
+    ArrayList<String> dt = new ArrayList<>();
     ArrayList<Integer> presint;
     public AtAdapter(Context contex)
     {
@@ -69,11 +73,13 @@ public class AtAdapter {
     public ArrayList<String> getSubj() {
         return subj;
     }
+
     public void delete_data(String subject,String datet){                                                   //as of now no use
         SQLiteDatabase db = athelper.getWritableDatabase();
         //DELETE * FROM attendance WHERE subject = subject AND datetime = datet;
         db.delete(athelper.TABLE_NAME,athelper.SUBJECT+ " =? AND "+athelper.DATETIME+" =? ",new String[]{subject,datet});
     }
+
     public void subject_info(String subject){                                                               //TODO for individual subject information
         SQLiteDatabase db = athelper.getWritableDatabase();
         String[] columns = {athelper.DATETIME};
@@ -125,12 +131,26 @@ public class AtAdapter {
             dt.add(tempdt);
         }
     }
-    public void update_attendance(String subject, String datetime, String present){                     //updating an already existing attendance ----- TODO:for both update my attendance and view my attendance's subject
+    public void update_attendance(String subject, String datetime, int present){                     //updating an already existing attendance ----- TODO:for both update my attendance and view my attendance's subject
         SQLiteDatabase db = athelper.getWritableDatabase();
         //UPDATE attendance SET present  = present WHERE present = 0;
         ContentValues cv = new ContentValues();
-        cv.put(athelper.PRESENT, present);
-        db.update(athelper.TABLE_NAME,cv,athelper.SUBJECT+" =? AND "+athelper.DATETIME + " =? ",new String[]{subject,datetime});
+        //cv.put(athelper.SUBJECT, subject);
+        //cv.put(Athelper.DATETIME,datetime);
+        cv.put(Athelper.PRESENT, present);
+        //int a = db.delete(Athelper.TABLE_NAME, Athelper.SUBJECT + " = ? AND " + Athelper.DATETIME + " = ? ", new String[]{subject, datetime});
+        //db.insert(Athelper.TABLE_NAME,null,cv);
+        int a = db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
+        /*
+        int a=0;
+        try{
+            a = 6;
+            db.execSQL("UPDATE "+Athelper.TABLE_NAME+" SET "+Athelper.PRESENT+" = "+ Integer.toString(present)+" WHERE "+Athelper.SUBJECT+"='"+subject+"' AND "+Athelper.DATETIME+"='"+datetime+"';");
+        }
+        catch (Exception e){
+            a = 5;
+        }
+        */
         return;
     }
     static class Athelper extends SQLiteOpenHelper{
