@@ -75,7 +75,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
             catch(Exception e){
                 Log.d("hel",e.toString());
             }
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yy");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
             SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
             ci.classdate = sdf1.format(date);
             ci.classtime = sdf2.format(date);
