@@ -33,12 +33,14 @@ public class Userhome extends ActionBarActivity {
         MySqlAdapter handler=new MySqlAdapter(this,null);
         alls=handler.get_days();
         if(alls.size()==0){
+            Intent i=new Intent(this,AlarmSetterService.class);
+            startService(i);
             SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
             String username = share.getString("rno","");
-            Intent i=new Intent(this,APIManagerService.class);
-            i.putExtra("rno",username);
-            i.putExtra("mode",0);
-            startService(i);
+            Intent j=new Intent(this,APIManagerService.class);
+            j.putExtra("rno",username);
+            j.putExtra("mode",0);
+            startService(j);
         }
 
         if (savedInstanceState == null) {

@@ -30,12 +30,12 @@ public class APIManagerService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         subs=new ArrayList<>();
         String user="";
-        Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();                //todo: api manager services not being called
+        Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
         String URL = "http://10.0.0.109/~rahulzoldyck/timetable";
-
+//TODO:send username using SharedPref
         all=new ArrayList<>();
         adapter=new MySqlAdapter(this,null);
 //        Bundle b=intent.getExtras();

@@ -6,6 +6,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="ANDROID.PERMISSION.GET_ACCOUNTS" />
     <uses-permission android:name="ANDROID.PERMISSION.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <permission
         android:name="com.delta.attendancemanager.permission.C2D_MESSAGE"
@@ -155,10 +156,27 @@
             android:name=".Userhome"
             android:label="@string/title_activity_userhome" >
         </activity>
+
+        <receiver
+            android:name=".ALarm"
+            android:process=":remote" />
+
         <activity
             android:name=".CRhome"
             android:label="@string/title_activity_crhome" >
         </activity>
+
+        <receiver android:name=".AutoStart">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".AlarmSetterService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
