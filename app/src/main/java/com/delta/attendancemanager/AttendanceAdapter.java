@@ -18,7 +18,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     private List<CardInfo> attendanceList;
     AtAdapter atAdapter;
     Context context;
-    Date date = null,date2,date1;
+    Date date = null;
     String format = "yyyy-MM-dd HH:mm";
     SimpleDateFormat sdf = new SimpleDateFormat(format),sdf1;
 
@@ -41,25 +41,19 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         attendanceviewholder.date.setText(ci.classdate);
         attendanceviewholder.time.setText(ci.classtime);
 
-        sdf1 = new SimpleDateFormat("d/M/yy H:m");
+        sdf1 = new SimpleDateFormat("d/M/yyyy H:m");
 
-        date1 = null;
-        date2 = null;
-        //date = new Date(date1.getYear(),date1.getMonth(),date1.getDate(),date2.getHours(),date2.getMinutes());
         attendanceviewholder.present.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             try{
-                date1 = sdf1.parse(ci.classdate+" "+ci.classtime);
+                date = sdf1.parse(ci.classdate+" "+ci.classtime);
             }
             catch(Exception e){
                 Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(context,date1.toString(),Toast.LENGTH_LONG).show();
             int position = attendanceList.indexOf(ci);
-            Toast.makeText(context,sdf.format(date1),Toast.LENGTH_LONG).show();
-            atAdapter.update_attendance(ci.coursename, sdf.format(date1), 1);
-            atAdapter.fetch_pending_data();
+            atAdapter.update_attendance(ci.coursename, sdf.format(date), 1);
             attendanceList.remove(position);
             notifyItemRemoved(position);
         }
@@ -67,6 +61,12 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         attendanceviewholder.absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
+                    date = sdf1.parse(ci.classdate+" "+ci.classtime);
+                }
+                catch(Exception e){
+                    Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
+                }
 
                 int position = attendanceList.indexOf(ci);
                 atAdapter.update_attendance(ci.coursename, sdf.format(date), -1);

@@ -157,7 +157,7 @@ public class AtAdapter {
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
         private static final String ID = "_id";
         private static final String DATETIME = "datetime";
         private static final String SUBJECT = "subject";
