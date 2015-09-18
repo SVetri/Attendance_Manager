@@ -9,14 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * Created by S on 1/20/2015.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.net.ssl.HandshakeCompletedListener;
+
 public class CRSlidingTabsFragment extends Fragment{
 
 
+    MySqlAdapter adapter;
+    List<String[]> all;
     private SlidingTabLayout mSlidingTabLayout;
 
     private ViewPager mViewPager;
@@ -92,7 +102,23 @@ public class CRSlidingTabsFragment extends Fragment{
          * inflate a layout from the apps resources and then change the text view to signify the position.
          */
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
+            adapter=new MySqlAdapter(getActivity(),null);
+            all=new ArrayList<>();
+
+            String[] m,t,w,th,f,x;
+            m=new String[9];
+            t=new String[9];
+            w=new String[9];
+            th=new String[9];
+            f=new String[9];
+            x=new String[9];
+            m=adapter.get_mon();
+            t=adapter.get_tue();
+            w=adapter.get_wed();
+            th=adapter.get_thur();
+            f=adapter.get_fri();
+
             // Inflate a new layout from our resources
             View view = getActivity().getLayoutInflater().inflate(R.layout.pager_item,
                     container, false);
@@ -108,99 +134,128 @@ public class CRSlidingTabsFragment extends Fragment{
             TextView sub7 = (TextView) view.findViewById(R.id.sub7);
             TextView sub8 = (TextView) view.findViewById(R.id.sub8);
 
+            switch (position){
+                case 0:
+                    x=m;
+                    break;
+                case 1:
+                    x=t;
+                    break;
+                case 2:
+                    x=w;
+                    break;
+                case 3:
+                    x=th;
+                    break;
+                case 4:
+                    x=f;
+                    break;
+            }
+            sub1.setText(x[1]);
+            sub2.setText(x[2]);
+            sub3.setText(x[3]);
+            sub4.setText(x[4]);
+            sub5.setText(x[5]);
+            sub6.setText(x[6]);
+            sub7.setText(x[7]);
+            sub8.setText(x[8]);
+            final String[] x1=x;
+
             sub1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+
+                    selectsubdialog(position,x1,v,1);
                 }
             });
 
             sub2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,2);
                 }
             });
 
             sub3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,3);
                 }
             });
 
             sub4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,4);
                 }
             });
 
             sub5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,5);
                 }
             });
 
             sub6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,6);
                 }
             });
 
             sub7.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,7);
                 }
             });
 
             sub8.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-                    //return true;
-                    selectsubdialog();
+                    selectsubdialog(position,x1,v,8);
                 }
             });
-
-            // Retrieve a TextView from the inflated View, and update it's text
-            //TextView title = (TextView) view.findViewById(R.id.item_title);
-            //title.setText(String.valueOf(position + 1));
-
-            // Return the View
             return view;
         }
 
-        public void selectsubdialog()
-        {
-            /* When getting the number of subjects from the api, if no ofsubjects <11, set the appropriate number of radiobutton's visibility to gone */
+        public void selectsubdialog(int position,String[] s,View v,int no)
+        {   final String[] sub=s;
+            final int n=no;
+            final TextView t = (TextView) v;
             final Dialog dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.edit_tt_dialog);
             dialog.setTitle("Select Subject");
+            List<String> subs=new ArrayList<>();
+            final RadioGroup rg= (RadioGroup)dialog.findViewById(R.id.rg);
+            subs=adapter.getSubs();
+            String[] al=new String[subs.size()];
+            al=subs.toArray(al);
+
+            for (String i : al){
+                if(i.equals(" "))
+                    continue;
+                RadioButton rb=new RadioButton(getActivity());
+                rb.setText(i);
+                rg.addView(rb);
+            }
 
             Button dialogButton = (Button) dialog.findViewById(R.id.okbutton);
-            // if button is clicked, close the custom dialog
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
+                    String[] a=new String[9];
+                    a=sub;
+                    int pos=rg.getCheckedRadioButtonId();
+                    RadioButton rd= (RadioButton)rg.findViewById(pos);
+                    String su=rd.getText().toString();
+                    t.setText(su);
+                    a[n]=su;
+                    adapter.delete_day(a[0]);
+                    adapter.add_day(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]);
+                    EditWeeklyTT.ischanged=true;
+                    dialog.cancel();
                 }
             });
 

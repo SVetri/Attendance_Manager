@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO edit history class to edit the already marked history - local attendance database should be used.
 
 public class EditHistory extends ActionBarActivity {
 

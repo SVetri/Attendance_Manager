@@ -1,3 +1,4 @@
+//view my attendance option.
 package com.delta.attendancemanager;
 
 import android.support.v7.app.ActionBarActivity;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO subjects list should come up
 
 public class ViewMyAttendance extends ActionBarActivity {
 

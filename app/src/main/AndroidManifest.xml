@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.delta.attendancemanager" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="ANDROID.PERMISSION.GET_ACCOUNTS" />
+    <uses-permission android:name="ANDROID.PERMISSION.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <permission
+        android:name="com.delta.attendancemanager.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.delta.attendancemanager.permission.C2D_MESSAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -104,6 +117,67 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.CRHome" />
         </activity>
+
+        <service
+            android:name=".APIManagerService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".ManageCourse"
+            android:label="@string/title_activity_manage_course" >
+        </activity>
+
+        <service
+            android:name=".UpdateTTService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".TomorrowUpdateService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.delta.attendancemanager" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMMessageHandler" />
+
+        <activity
+            android:name=".CourseInfo"
+            android:label="@string/title_activity_course_info" >
+        </activity>
+        <activity
+            android:name=".Userhome"
+            android:label="@string/title_activity_userhome" >
+        </activity>
+
+        <receiver
+            android:name=".ALarm"
+            android:process=":remote" />
+
+        <activity
+            android:name=".CRhome"
+            android:label="@string/title_activity_crhome" >
+        </activity>
+
+        <receiver android:name=".AutoStart">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".AlarmSetterService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

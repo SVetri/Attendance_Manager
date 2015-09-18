@@ -1,46 +1,72 @@
 package com.delta.attendancemanager;
 
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EditWeeklyTT extends ActionBarActivity {
+    public static final String[] Days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
+    MySqlAdapter handler;
+    public static boolean ischanged;
+    @Override
+    public void onBackPressed() {
+        if(ischanged){
+            List<String[]> all=new ArrayList<>();
+            all.add(handler.get_mon());
+            all.add(handler.get_tue());
+            all.add(handler.get_wed());
+            all.add(handler.get_thur());
+            all.add(handler.get_fri());
+
+            JSONObject j=new JSONObject();
+
+            for(String[] k : all){
+                JSONObject js=new JSONObject();
+                for (int i=1;i<=8;i++){
+                    try {
+                        js.accumulate(EditUpcomingTT.slots[i-1],k[i]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    j.put(k[0],js);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            UpdateTTService.startActionTT(this,j);
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_weekly_tt);
-
+        ischanged=false;
+        handler=new MySqlAdapter(this,null);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             CRSlidingTabsFragment fragment = new CRSlidingTabsFragment();
             transaction.replace(R.id.edit_fragment_content, fragment);
             transaction.commit();
         }
-
-    /*    FrameLayout weeklytt = (FrameLayout) findViewById(R.id.edit_fragment_content);
-        weeklytt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(EditWeeklyTT.this, "Clicked", Toast.LENGTH_SHORT).show();
-            }
-        }); */
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_edit_weekly_tt, menu);
         return true;
     }

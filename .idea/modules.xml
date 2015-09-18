@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AttendanceManager.iml" filepath="$PROJECT_DIR$/AttendanceManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Attendance_Manager.iml" filepath="$PROJECT_DIR$/Attendance_Manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

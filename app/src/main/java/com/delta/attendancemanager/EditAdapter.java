@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by S on 12/28/2014.
- */
+// TODO: editing the absent and present accordingly and updating the attendance database.
+
 public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder> {
 
     private List<EditCardInfo> attendanceList;
