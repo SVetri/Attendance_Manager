@@ -45,8 +45,8 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="http://10.0.0.109/~rahulzoldyck/login.php";
-    public static final String GOOGLE_PROJ_ID="";
+    public static final String URL="http://1032dd71.ngrok.com/updateTT";
+    public static final String GOOGLE_PROJ_ID="624474961071";
     String regId="";
     public static final String REG_ID="REG-ID";
     public static final String RNO="RNO";
@@ -62,6 +62,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        InitialHandShake("110114070");
+//        regId = gcmObj
+//                .register(GOOGLE_PROJ_ID);
         Bundle b=getIntent().getExtras();
         if(b!=null){
             boolean g=b.getBoolean("wrong");
@@ -130,10 +133,12 @@ public class MainActivity extends ActionBarActivity {
                     if (gcmObj == null) {
                         gcmObj = GoogleCloudMessaging
                                 .getInstance(applicationContext);
+                        Log.i("came here","dgyc");
                     }
                     regId = gcmObj
                             .register(GOOGLE_PROJ_ID);
                     msg = "Registration ID :" + regId;
+                    Log.d("fbj",regId);
 
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
@@ -142,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
                 aut.add(new BasicNameValuePair("rollnumber",rollnumber));
                 aut.add(new BasicNameValuePair("regno",regId));
                 JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
-                Log.i("Json",js.toString());
+//                Log.i("Json",js.toString());
                 try {
                     int success=js.getInt("success");
                     if(success!=1){

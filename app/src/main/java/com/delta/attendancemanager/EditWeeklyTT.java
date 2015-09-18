@@ -21,14 +21,19 @@ public class EditWeeklyTT extends ActionBarActivity {
     public void onBackPressed() {
         if(ischanged){
             List<String[]> all=new ArrayList<>();
-            all=handler.get_days();
+            all.add(handler.get_mon());
+            all.add(handler.get_tue());
+            all.add(handler.get_wed());
+            all.add(handler.get_thur());
+            all.add(handler.get_fri());
+
             JSONObject j=new JSONObject();
 
             for(String[] k : all){
                 JSONObject js=new JSONObject();
                 for (int i=1;i<=8;i++){
                     try {
-                        js.put(EditUpcomingTT.slots[i-1],k[i]);
+                        js.accumulate(EditUpcomingTT.slots[i-1],k[i]);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

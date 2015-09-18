@@ -20,8 +20,8 @@ import org.json.JSONObject;
 
 public class GCMMessageHandler extends IntentService {
 
-    static final String MSG_TT="";
-    static final String MSG_UT="";
+    static final String MSG_TT="pt";
+    static final String MSG_UT="ut";
     static String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
     String[] times;
     int notifyID=1154;
