@@ -4,40 +4,58 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //TODO edit history class to edit the already marked history - local attendance database should be used.
 
 public class EditHistory extends ActionBarActivity {
-
+    AtAdapter atAdapter;
+    Date date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_history);
+        atAdapter = new AtAdapter(getApplicationContext());
+        final String subname = getIntent().getStringExtra("sname");
 
         RecyclerView reclist = (RecyclerView) findViewById(R.id.editcardList);
         reclist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
-
-        EditAdapter edadapter = new EditAdapter(createList(30));
+        atAdapter.fetch_subject_data(subname);
+        EditAdapter edadapter = new EditAdapter(createList(subname,atAdapter.getDt(),atAdapter.getPresint()));
         reclist.setAdapter(edadapter);
     }
 
-    private List<EditCardInfo> createList(int size) {
+    private List<EditCardInfo> createList(String sname, ArrayList<String> datetime, ArrayList<Integer> present) {
 
         List<EditCardInfo> result = new ArrayList<EditCardInfo>();
-        for (int i=1; i <= size; i++) {
+        for (int i=0; i < datetime.size(); i++) {
             EditCardInfo eci = new EditCardInfo();
-            eci.coursename="Subject " + i;
-            eci.classdate="Date" + i;
-            eci.classtime="Time" + i;
+            eci.coursename=sname;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            try{
+                date = sdf.parse(datetime.get(i));
+            }
+            catch(Exception e){
+                Log.d("hel", e.toString());
+            }
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
+            SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
+            eci.classdate = sdf1.format(date);
+            eci.classtime = sdf2.format(date);
+            if (present.get(i) == 1)
             eci.attendance=Boolean.TRUE;
+            else
+            eci.attendance=Boolean.FALSE;
             result.add(eci);
 
         }

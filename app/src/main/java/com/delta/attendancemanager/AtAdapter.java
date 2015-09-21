@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.IntegerRes;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import javax.security.auth.Subject;
 
 /**
  * Created by lakshmanaram on 17/8/15.
@@ -23,7 +20,7 @@ public class AtAdapter {
     int totalclasses,classes_attended,percentage,projected_percentage,pending_classes;
     ArrayList<String> subj = new ArrayList<>();
     ArrayList<String> dt = new ArrayList<>();
-    ArrayList<Integer> presint;
+    ArrayList<Integer> presint = new ArrayList<>();
     public AtAdapter(Context contex)
     {
         this.context = contex;
@@ -55,10 +52,10 @@ public class AtAdapter {
     public void add_attendance(String subject, String datetime, int present){               //to add attendance
         SQLiteDatabase sqLiteDatabase = athelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(athelper.SUBJECT,subject);
-        cv.put(athelper.DATETIME,datetime);
-        cv.put(athelper.PRESENT,present);
-        sqLiteDatabase.insert(athelper.TABLE_NAME,null,cv);
+        cv.put(Athelper.SUBJECT,subject);
+        cv.put(Athelper.DATETIME,datetime);
+        cv.put(Athelper.PRESENT,present);
+        sqLiteDatabase.insert(Athelper.TABLE_NAME,null,cv);
         return;
     }
 
@@ -77,51 +74,62 @@ public class AtAdapter {
     public void delete_data(String subject,String datet){                                                   //as of now no use
         SQLiteDatabase db = athelper.getWritableDatabase();
         //DELETE * FROM attendance WHERE subject = subject AND datetime = datet;
-        db.delete(athelper.TABLE_NAME,athelper.SUBJECT+ " =? AND "+athelper.DATETIME+" =? ",new String[]{subject,datet});
+        db.delete(Athelper.TABLE_NAME,Athelper.SUBJECT+ " =? AND "+Athelper.DATETIME+" =? ",new String[]{subject,datet});
     }
 
-    public void subject_info(String subject){                                                               //TODO for individual subject information
+    public void subject_info(String subject){
         SQLiteDatabase db = athelper.getWritableDatabase();
-        String[] columns = {athelper.DATETIME};
-        Cursor cursor1 = db.query(athelper.TABLE_NAME,columns,athelper.SUBJECT + " =? AND "+athelper.PRESENT+ " =1 ",new String[]{subject},null,null,null);   //classes attended
+        String[] columns = {Athelper.DATETIME};
+        Cursor cursor1 = db.query(Athelper.TABLE_NAME,columns,Athelper.SUBJECT + " =? AND "+Athelper.PRESENT+ " =1 ",new String[]{subject},null,null,null);   //pending classes
         cursor1.moveToNext();
         classes_attended = cursor1.getCount();
-        Cursor cursor2 = db.query(athelper.TABLE_NAME, columns, athelper.SUBJECT + " =? ", new String[]{subject}, null, null, null);   //total classes
+        cursor1.close();
+        Cursor cursor2 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? ", new String[]{subject}, null, null, null);   //total classes
         cursor2.moveToNext();
         totalclasses = cursor2.getCount();
-        Cursor cursor3 = db.query(athelper.TABLE_NAME,columns,athelper.SUBJECT + " =? AND "+athelper.PRESENT+ " =0 ",new String[]{subject},null,null,null);   //pending classes
+        cursor2.close();
+        Cursor cursor3 = db.query(Athelper.TABLE_NAME,columns,Athelper.SUBJECT + " =? AND "+Athelper.PRESENT+ " =0 ",new String[]{subject},null,null,null);   //pending classes
         cursor3.moveToNext();
         pending_classes = cursor3.getCount();
-
-
+        cursor3.close();
+//        fetch_subject_data(subject);
+//        classes_attended = 0;
+//        pending_classes = 0;
+//        totalclasses = presint.size();
+//        for(int i=0;i<totalclasses;i++){
+//            if(presint.get(i)==0)
+//                pending_classes++;
+//            else if(presint.get(i)==1)
+//                classes_attended++;
+//        }
     }
-    public void fetch_subject_data(String sub){                                                         //TODO for individual subject history
-        SQLiteDatabase db = athelper.getWritableDatabase();
+    public void fetch_subject_data(String sub){
+        SQLiteDatabase db = athelper.getReadableDatabase();
         //SELECT subject,datetime,present FROM attendance WHERE subject = sub;
-        String[] columns = {athelper.DATETIME,athelper.PRESENT};
-        Cursor cursor = db.query(athelper.TABLE_NAME, columns, athelper.SUBJECT + " =? ", new String[]{sub}, null, null, null);
-        int index1 = cursor.getColumnIndex(athelper.DATETIME);
-        int index2 = cursor.getColumnIndex(athelper.PRESENT);
+        String[] columns = {Athelper.DATETIME,Athelper.PRESENT};
+        Cursor cursor = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =?",new String[]{sub}, null, null, null);
+        int index1 = cursor.getColumnIndex(Athelper.DATETIME);
+        int index2 = cursor.getColumnIndex(Athelper.PRESENT);
         subj.clear();
         dt.clear();
         presint.clear();
         while(cursor.moveToNext()) {
             String tempdt = cursor.getString(index1);     //datetime
             int temppr = cursor.getInt(index2);
-            if(temppr!=0)                                                                                               //only updated classes
-            {
+            if(temppr!=0){
                 dt.add(tempdt);
                 presint.add(temppr);
             }
         }
+        cursor.close();
     }
-    public void fetch_pending_data(){                                                                //TODO: for update my attendance activity
+    public void fetch_pending_data(){
         SQLiteDatabase db = athelper.getWritableDatabase();
         //SELECT subject,datetime FROM attendance WHERE present = 0;
-        String[] columns = {athelper.SUBJECT,athelper.DATETIME};
-        Cursor cursor = db.query(athelper.TABLE_NAME,columns,athelper.PRESENT + " =0",null,null,null,null);
-        int index0 = cursor.getColumnIndex(athelper.SUBJECT);
-        int index1 = cursor.getColumnIndex(athelper.DATETIME);
+        String[] columns = {Athelper.SUBJECT,Athelper.DATETIME};
+        Cursor cursor = db.query(Athelper.TABLE_NAME,columns,Athelper.PRESENT + " =0",null,null,null,null);
+        int index0 = cursor.getColumnIndex(Athelper.SUBJECT);
+        int index1 = cursor.getColumnIndex(Athelper.DATETIME);
         subj.clear();
         dt.clear();
         while(cursor.moveToNext()){
@@ -130,17 +138,18 @@ public class AtAdapter {
             subj.add(tempst);
             dt.add(tempdt);
         }
+        cursor.close();
     }
-    public void update_attendance(String subject, String datetime, int present){                     //updating an already existing attendance ----- TODO:for both update my attendance and view my attendance's subject
+    public void update_attendance(String subject, String datetime, int present){                     //updating an already existing attendance -----
         SQLiteDatabase db = athelper.getWritableDatabase();
         //UPDATE attendance SET present  = present WHERE present = 0;
         ContentValues cv = new ContentValues();
-        //cv.put(athelper.SUBJECT, subject);
+        //cv.put(Athelper.SUBJECT, subject);
         //cv.put(Athelper.DATETIME,datetime);
         cv.put(Athelper.PRESENT, present);
         //int a = db.delete(Athelper.TABLE_NAME, Athelper.SUBJECT + " = ? AND " + Athelper.DATETIME + " = ? ", new String[]{subject, datetime});
         //db.insert(Athelper.TABLE_NAME,null,cv);
-        int a = db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
+        db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
         /*
         int a=0;
         try{
@@ -151,7 +160,6 @@ public class AtAdapter {
             a = 5;
         }
         */
-        return;
     }
     static class Athelper extends SQLiteOpenHelper{
         private static final String DATABASE_NAME = "semester.db";

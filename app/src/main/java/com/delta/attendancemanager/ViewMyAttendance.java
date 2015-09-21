@@ -20,25 +20,27 @@ public class ViewMyAttendance extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_my_attendance);
 
+        MySqlAdapter mySqlAdapter = new MySqlAdapter(getApplicationContext(),null);
+        ArrayList<String> subjects = mySqlAdapter.getSubs();
+
         RecyclerView reclist = (RecyclerView) findViewById(R.id.usersubjectList);
         reclist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
 
-        SubjectAdapter subadapter = new SubjectAdapter(createList(9), ViewMyAttendance.this);
+        SubjectAdapter subadapter = new SubjectAdapter(createList(subjects), ViewMyAttendance.this);
         reclist.setAdapter(subadapter);
     }
 
-    private List<SubjectInfo> createList(int size) {
+    private List<SubjectInfo> createList(ArrayList<String> subjects) {
 
         List<SubjectInfo> result = new ArrayList<SubjectInfo>();
-        for (int i=1; i <= size; i++) {
+
+        for (int i=0; i < subjects.size(); i++) {
             SubjectInfo si = new SubjectInfo();
-            si.subjectname="Subject " + i;
-
+            si.subjectname=subjects.get(i);
             result.add(si);
-
         }
 
         return result;

@@ -26,16 +26,16 @@ public class UpdateMyAttendance extends ActionBarActivity {
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
 
         atAdapter.fetch_pending_data();
-        //**************************************************************************************************
+        //********************************************************************************************************************************************************
         if(atAdapter.getSubj().isEmpty()) {
             String format = "yyyy-MM-dd HH:mm";
             SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date d1 = new Date(2015, 9, 14, 8, 30);
-            Date d2 = new Date(2015, 9, 14, 9, 20);
-            Date d3 = new Date(2015, 9, 14, 10, 30);
-            Date d4 = new Date(2015, 9, 14, 11, 20);
-            Date d5 = new Date(2015, 9, 14, 1, 30);
-            Date d6 = new Date(2015, 9, 14, 2, 20);
+            Date d1 = new Date(115, 9, 14, 8, 30);                                                                  //1900+yyyy;
+            Date d2 = new Date(115, 9, 14, 9, 20);
+            Date d3 = new Date(115, 9, 14, 10, 30);
+            Date d4 = new Date(115, 9, 14, 11, 20);
+            Date d5 = new Date(115, 9, 14, 1, 30);
+            Date d6 = new Date(115, 9, 14, 2, 20);
 
             atAdapter.add_attendance("Circuit Theory", sdf.format(d1), 0);                                               //date format: yyyy-MM-dd HH:mm
             atAdapter.add_attendance("Digital Electronics", sdf.format(d2), 0);
@@ -45,7 +45,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
             atAdapter.add_attendance("Maths", sdf.format(d6), 0);
             atAdapter.fetch_pending_data();
         }
-        //**************************************************************************************************
+        //********************************************************************************************************************************************************
 
         ArrayList<String> subjects, datetime;
         subjects = atAdapter.getSubj();

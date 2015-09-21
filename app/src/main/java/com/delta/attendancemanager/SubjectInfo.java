@@ -5,5 +5,5 @@ package com.delta.attendancemanager;
  */
 public class SubjectInfo {
 
-    protected String subjectname;
+    protected String subjectname;               //subject code could be added at a later point of time if required, first occurance in viewmyattendance activity
 }
