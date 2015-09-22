@@ -31,7 +31,7 @@ public class EditHistory extends ActionBarActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
         atAdapter.fetch_subject_data(subname);
-        EditAdapter edadapter = new EditAdapter(createList(subname,atAdapter.getDt(),atAdapter.getPresint()));
+        EditAdapter edadapter = new EditAdapter(getApplicationContext(),createList(subname,atAdapter.getDt(),atAdapter.getPresint()));
         reclist.setAdapter(edadapter);
     }
 

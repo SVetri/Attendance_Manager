@@ -1,21 +1,32 @@
 package com.delta.attendancemanager;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 // TODO: editing the absent and present accordingly and updating the attendance database.
 
 public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder> {
 
+    SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy H:m");
     private List<EditCardInfo> attendanceList;
+    private Context context;
+    Date date = null;
+    String format = "yyyy-MM-dd HH:mm";
+    SimpleDateFormat sdf = new SimpleDateFormat(format);
+    AtAdapter atAdapter;
 
-    public EditAdapter(List<EditCardInfo> contactList) {
+    public EditAdapter(Context context,List<EditCardInfo> contactList) {
+        this.context = context;
         this.attendanceList = contactList;
     }
 
@@ -44,15 +55,24 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         attendanceviewholder.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(eci.attendance.equals(true))
+                atAdapter = new AtAdapter(context);
+                try{
+                    date = sdf1.parse(eci.classdate+" "+eci.classtime);
+                }
+                catch(Exception e){
+                    Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
+                }
+                if(eci.attendance.equals(true))
                     {
                         eci.attendance = false;
+                        atAdapter.update_attendance(eci.coursename,sdf.format(date),-1);
                         attendanceviewholder.mark.setText("ABSENT");
                         attendanceviewholder.change.setText("Mark as Present");
                     }
                     else
                     {
                         eci.attendance = true;
+                        atAdapter.update_attendance(eci.coursename,sdf.format(date),1);
                         attendanceviewholder.mark.setText("PRESENT");
                         attendanceviewholder.change.setText("Mark as Absent");
                     }
