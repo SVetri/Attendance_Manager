@@ -259,7 +259,9 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(aBoolean){
-                if(isfirst)
+                SharedPreferences share1=getSharedPreferences("user",Context.MODE_PRIVATE);
+                String rno=share1.getString(RNO,":)");
+                if(rno.equals(":)"))
                     InitialHandShake(usernme);
                 else {
                     SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);

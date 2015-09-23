@@ -19,12 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // an Intent broadcast.
-//        throw new UnsupportedOperationException("Not yet implemented");
-        Log.d("hell", "Alarm receiver works perfectly");
-        Intent in = new Intent(context,Userhome.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(in);
+
 
     }
 }
