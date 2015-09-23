@@ -134,13 +134,13 @@ public class UpdateTTService extends IntentService {
         HttpClient httpclient = new DefaultHttpClient();
 
         // 2. make POST request to the given URL
-        HttpPost httpPost = new HttpPost("");
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
 
 
 
         Log.i("ulala", json.toString());
         JSONObject js=new JSONObject();
-        js.put("batch", "110114070");
+        js.put("batch", "110114");
         js.put("data", json);
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
