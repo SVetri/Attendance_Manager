@@ -7,6 +7,7 @@
     <uses-permission android:name="ANDROID.PERMISSION.GET_ACCOUNTS" />
     <uses-permission android:name="ANDROID.PERMISSION.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <permission
@@ -157,11 +158,6 @@
             android:name=".Userhome"
             android:label="@string/title_activity_userhome" >
         </activity>
-
-        <receiver
-            android:name=".ALarm"
-            android:process=":remote" />
-
         <activity
             android:name=".CRhome"
             android:label="@string/title_activity_crhome" >
@@ -172,12 +168,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".AlarmSetterService"
+        <receiver
+            android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true" />
 
     </application>
 

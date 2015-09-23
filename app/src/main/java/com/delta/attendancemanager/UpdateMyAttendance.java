@@ -1,5 +1,9 @@
 package com.delta.attendancemanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -26,6 +33,24 @@ public class UpdateMyAttendance extends ActionBarActivity {
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
 
         atAdapter.fetch_pending_data();
+
+        //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        Long min = Long.valueOf(18 * 60 * 1000);
+        Long hour = Long.valueOf(19 * 60 * 60 *1000);
+
+        Long time  = new GregorianCalendar().getTimeInMillis()+ 5*1000;
+        Long time_delay = Long.valueOf(1000*30);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, min+hour, time_delay , PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        Toast.makeText(this,"check log",Toast.LENGTH_LONG).show();
+
+
+
+        //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
         //********************************************************************************************************************************************************
         if(atAdapter.getSubj().isEmpty()) {
             String format = "yyyy-MM-dd HH:mm";
