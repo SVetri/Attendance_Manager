@@ -11,7 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class UserHomeSliderFragment extends Fragment {
          */
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         /**
@@ -84,6 +86,8 @@ public class UserHomeSliderFragment extends Fragment {
                     return "Timetable";
                 case 1:
                     return "Attendance";
+                case 2:
+                    return "Announcements";
 
             }
 
@@ -139,6 +143,17 @@ public class UserHomeSliderFragment extends Fragment {
                             }
                     );
                     break;
+
+                case 2:
+                    view = getActivity().getLayoutInflater().inflate(R.layout.layout_announcement,
+                            container, false);
+                    handler=new MySqlAdapter(getActivity(),null);
+                    ListView l=(ListView)view.findViewById(R.id.chat);
+                    String[] a=handler.getmsgs();
+                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,a);
+                    l.setAdapter(adapter);
+                    break;
+
                 default:
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_manage_attendance,
                             container, false);
@@ -167,6 +182,7 @@ public class UserHomeSliderFragment extends Fragment {
                     });
 
                     break;
+
             }
             container.addView(view);
             return  view;

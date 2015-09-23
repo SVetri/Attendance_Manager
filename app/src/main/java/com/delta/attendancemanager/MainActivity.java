@@ -1,9 +1,11 @@
 package com.delta.attendancemanager;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -45,33 +47,50 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="http://1032dd71.ngrok.com/updateTT";
-    public static final String GOOGLE_PROJ_ID="624474961071";
+    public static final String URL="https://61d8e2a4.ngrok.com";
+    public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
-    public static final String RNO="RNO";
-    boolean wrong=false;
+    public static final String RNO="rno";
+    static boolean wrong=false;
 
     GoogleCloudMessaging gcmObj;
     MySqlAdapter handler;
     String usernme;
     String pass;
-    boolean isfirst;
+    static boolean isfirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        InitialHandShake("110114070");
-//        regId = gcmObj
-//                .register(GOOGLE_PROJ_ID);
-        Bundle b=getIntent().getExtras();
-        if(b!=null){
-            boolean g=b.getBoolean("wrong");
-            if(g)
-            wrong=true;
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            boolean g = b.getBoolean("wrong");
+            if (g)
+                wrong = true;
 
         }
+        SharedPreferences prefs = getSharedPreferences("user",
+                Context.MODE_PRIVATE);
+        String rollno = prefs.getString(RNO, "default");
+
+        if (!rollno.equals("default") && b==null) {                               // to ensure its not activated when logging out
+            Intent i = new Intent(MainActivity.this, Userhome.class);
+            i.putExtra("rno", rollno);
+            startActivity(i);
+            finish();
+
+    }
+//       InitialHandShake("110114070");
+//        try {
+//            regId = gcmObj
+//                    .register(GOOGLE_PROJ_ID);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         handler=new MySqlAdapter(this,null);
         if(handler.get_days()==null){
             isfirst=true;
@@ -102,7 +121,6 @@ public class MainActivity extends ActionBarActivity {
                     Log.d("TAG", user + pass);
                     Authenticate a = new Authenticate();
                     a.execute(usernme, pass);
-                    //finish();                         TODO: taking it off for checking
 
                 }
             }
@@ -143,13 +161,20 @@ public class MainActivity extends ActionBarActivity {
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                 }
-                List<NameValuePair> aut=new ArrayList<>();
-                aut.add(new BasicNameValuePair("rollnumber",rollnumber));
-                aut.add(new BasicNameValuePair("regno",regId));
-                JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
+//                List<NameValuePair> aut=new ArrayList<>();
+                JSONObject js=new JSONObject();
+
+
+                try {
+                    js.put("rollnumber",rollnumber);
+                    js.put("regno", regId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JSONObject jd=jp.makeHttpRequest(URL+"/register","POST",js);
 //                Log.i("Json",js.toString());
                 try {
-                    int success=js.getInt("success");
+                    int success=jd.getInt("Signed Up");
                     if(success!=1){
                         wrongpassword();
                     }
@@ -159,6 +184,7 @@ public class MainActivity extends ActionBarActivity {
                 return msg;
             }
 
+          //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
             @Override
             protected void onPostExecute(String msg) {
                 if (!TextUtils.isEmpty(regId)) {
@@ -168,18 +194,27 @@ public class MainActivity extends ActionBarActivity {
                             applicationContext,
                             "Registered with GCM Server successfully.\n\n"
                                     + msg, Toast.LENGTH_SHORT).show();
+                    SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=share.edit();
+                    editor.putString("rno", usernme);
+                    editor.commit();
+                    Intent i = new Intent(MainActivity.this, Userhome.class);
+                    i.putExtra("rno", usernme);
+                    startActivity(i);
+                    finish();
                 } else {
                     Toast.makeText(
                             applicationContext,
                             "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
                                     + msg, Toast.LENGTH_LONG).show();
                 }
+
             }
         }.execute(null, null, null);
     }
     private void storeRegIdinSharedPref(Context context, String regId,
                                         String rollnumber) {
-        SharedPreferences prefs = getSharedPreferences("UserDetails",
+        SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(REG_ID, regId);
@@ -198,14 +233,15 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             JSONParser jp=new JSONParser();
-   /*
+
             try {
-                List<NameValuePair> aut=new ArrayList<>();
-                aut.add(new BasicNameValuePair("username",params[0]));
-                aut.add(new BasicNameValuePair("password",params[1]));
-                JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
+               JSONObject js=new JSONObject();
+
+                js.put("username",params[0]);
+                js.put("password", params[1]);
+                JSONObject jd=jp.makeHttpRequest(URL+"/login","POST",js);
                 Log.i(TAG,js.toString());
-                int success=js.getInt("success");
+                int success=jd.getInt("logged_in");
                 jp=null;
                 js=null;
                 return success==1;                                                //authentication
@@ -213,11 +249,12 @@ public class MainActivity extends ActionBarActivity {
                 e.printStackTrace();
 
             }
-*/
 
-            return true;
+
+            return false;
         }
 
+      //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
@@ -227,12 +264,13 @@ public class MainActivity extends ActionBarActivity {
                 else {
                     SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=share.edit();
-                    editor.putString("rno", usernme);
-                    editor.apply();
+                    editor.putString(RNO, usernme);
+                    editor.commit();
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
-                    startActivity(i);
-                    finish();
+
+                   // startActivity(i);
+//                    finish();
                 }
             }
             else{

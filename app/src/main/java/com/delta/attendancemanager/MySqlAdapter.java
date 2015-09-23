@@ -362,6 +362,39 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
+    public void addmsg(String msg){
+        ContentValues v=new ContentValues();
+        v.put(Mysqlhelper.ACNAME,msg);
+        SQLiteDatabase db=mysqlhelper.getWritableDatabase();
+        db.insert(Mysqlhelper.TABLENAME, null, v);
+    }
+
+    public String[] getmsgs(){
+        List<String> msg=new ArrayList<>();
+
+        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+                        Mysqlhelper.ACNAME},
+                null,
+                null,
+                null, null, null , null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME))!=null){
+                msg.add(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME)));
+
+            }
+            c.moveToNext();
+
+        }
+        c.close();
+
+        String[] msgs=new String[msg.size()];
+        msgs=msg.toArray(msgs);
+
+        return msgs;
+    }
+
     public void update_tomo(String[] subs){
         delete_day(Mysqlhelper.TOMO);
         add_day(Mysqlhelper.TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
@@ -383,6 +416,8 @@ public class MySqlAdapter {
         private static final String t400="t400";
         private static final String TNAME = "subjects";
         private static final String CNAME = "subject";
+        private static final String ATNAME="Announcements";
+        private static final String ACNAME="announcements";
 
         Context context = null;
 
@@ -406,14 +441,17 @@ public class MySqlAdapter {
                     t400+" TEXT" +
                     ");";
             db.execSQL(query);
-            String Create_subs  = "CREATE tABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
+            String Create_subs  = "CREATE TABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
             db.execSQL(Create_subs);
+            String chats  = "CREATE TABLE "+ATNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+ACNAME+" TEXT);";
+            db.execSQL(chats);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLENAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TNAME);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ATNAME);
             onCreate(sqLiteDatabase);
         }
     }

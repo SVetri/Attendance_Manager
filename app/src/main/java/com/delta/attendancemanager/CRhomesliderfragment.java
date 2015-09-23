@@ -261,6 +261,29 @@ public class CRhomesliderfragment extends Fragment {
 
 
                     break;
+
+                case 2:
+                    view = getActivity().getLayoutInflater().inflate(R.layout.layout_cr_announcement,
+                            container, false);
+                    handler=new MySqlAdapter(getActivity(),null);
+                    ListView l=(ListView)view.findViewById(R.id.crchat);
+                    String[] a=handler.getmsgs();
+                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,a);
+                    l.setAdapter(adapter);
+                    Button bt= (Button) view.findViewById(R.id.chatbutton);
+                    final View v=view;
+                    bt.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    EditText et= (EditText)v.findViewById(R.id.textmsg);
+                                    String msg=et.getText().toString();
+                                    UpdateTTService.startActionChat(getActivity(),msg);
+                                }
+                            }
+                    );
+                    break;
+
                 default:
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_manage_course,
                             container, false);
@@ -292,16 +315,16 @@ public class CRhomesliderfragment extends Fragment {
                                 }
                             }
                     );
-                    ListView l=(ListView)view.findViewById(R.id.courses);
+                    ListView li=(ListView)view.findViewById(R.id.courses);
                     ArrayList<String> s =new ArrayList();
 
                     s=handler.getSubs();
 
-                    String[] a =new String[s.size()];
-                    a=s.toArray(a);
-                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,a);
-                    l.setAdapter(adapter);
-                    l.setOnItemLongClickListener(
+                    String[] al =new String[s.size()];
+                    al=s.toArray(al);
+                    ArrayAdapter<String> adapter1=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,al);
+                    li.setAdapter(adapter1);
+                    li.setOnItemLongClickListener(
                             new AdapterView.OnItemLongClickListener() {
                                 @Override
                                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

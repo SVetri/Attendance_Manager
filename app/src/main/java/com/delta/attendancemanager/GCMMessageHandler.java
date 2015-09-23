@@ -17,11 +17,15 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Set;
+
 
 public class GCMMessageHandler extends IntentService {
 
     static final String MSG_TT="pt";
     static final String MSG_UT="ut";
+    static final String MSG_CHAT="chat";
+    static final String COLLAPSE_KEY="collapse_key";
     static String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
     String[] times;
     int notifyID=1154;
@@ -43,6 +47,8 @@ public class GCMMessageHandler extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
+        Set<String> getinfo = extras.keySet();
+        sendNotification(0,extras.getString("collapse_key"));
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         times=new String[9];
 
@@ -58,23 +64,37 @@ public class GCMMessageHandler extends IntentService {
                         + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE
                     .equals(messageType)) {
-
-                if(extras.get(MSG_TT)!=null){
-                    try {
-                        JSONObject js=new JSONObject((String) extras.get(MSG_TT));
-                        updateTT(js);
-                        sendNotification(0,"Timetable Updated");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                if(extras.getString(COLLAPSE_KEY)!=null) {
+                    if (extras.getString(COLLAPSE_KEY).equals(MSG_TT)) {
+                        try {
+                            JSONObject js = new JSONObject((String) extras.get("data"));
+                            updateTT(js);
+                            sendNotification(0, "Timetable Updated");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                if(extras.get(MSG_UT)!=null){
-                    try {
-                        JSONObject js=new JSONObject((String) extras.get(MSG_UT));
-                        updateUT(js);
-                        sendNotification(1,"Upcoming Timetable Updated");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (extras.getString(COLLAPSE_KEY).equals(MSG_UT)) {
+                        sendNotification(0, "success");
+                        try {
+
+                            JSONObject js = new JSONObject((String) extras.get("data"));
+                            updateUT(js);
+
+                            sendNotification(1, "Upcoming Timetable Updated");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (extras.getString(COLLAPSE_KEY).equals(MSG_CHAT)) {
+//                    sendNotification(0,"success");
+
+
+                        String js = extras.getString("data");
+                        announcements(js);
+
+//                        sendNotification(1,"Upcoming Timetable Updated");
+
                     }
                 }
             }
@@ -115,7 +135,13 @@ public class GCMMessageHandler extends IntentService {
             Log.d("hel", "api manager: " + times[0] + " " + times[5]);
             handler.add_day(times[0], times[1], times[2], times[3], times[4], times[5], times[6], times[7], times[8]);
         }
-        startService(new Intent(getApplicationContext(),TomorrowUpdateService.class));
+        startService(new Intent(getApplicationContext(), TomorrowUpdateService.class));
+    }
+
+    private void announcements(String msg)  {
+        handler.addmsg(msg);
+        sendNotification(2,"Received Announcement From CR");
+
     }
 
     private void sendNotification(int type,String msg) {
@@ -132,8 +158,8 @@ public class GCMMessageHandler extends IntentService {
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
-                        .setContentTitle("Alert")
-                        .setContentText("You've received new message.")
+                        .setContentTitle(msg)
+                        .setContentText(msg)
                         .setSmallIcon(R.drawable.ic_launcher);
                 // Set pending intent
                 mNotifyBuilder.setContentIntent(resultPendingIntent);
@@ -153,7 +179,7 @@ public class GCMMessageHandler extends IntentService {
                 mNotificationManager.notify(notifyID, mNotifyBuilder.build());
                 break;
             case 1:
-                 resultIntent = new Intent(this, UpcomingTT.class);
+                 resultIntent = new Intent(this, Userhome.class);
                 resultIntent.putExtra("msg", msg);
                  resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -162,7 +188,7 @@ public class GCMMessageHandler extends IntentService {
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("Alert")
-                        .setContentText("You've received new message.")
+                        .setContentText(msg)
                         .setSmallIcon(R.drawable.ic_launcher);
                 // Set pending intent
                 mNotifyBuilder.setContentIntent(resultPendingIntent);
@@ -181,6 +207,36 @@ public class GCMMessageHandler extends IntentService {
                 // Post a notification
                 mNotificationManager.notify(notifyID, mNotifyBuilder.build());
                 break;
+            case 2:
+                resultIntent = new Intent(this, Userhome.class);
+                resultIntent.putExtra("msg", msg);
+                resultPendingIntent = PendingIntent.getActivity(this, 0,
+                        resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                mNotifyBuilder = new NotificationCompat.Builder(this)
+                        .setContentTitle("CR App")//TODO: name it
+                        .setContentText(msg)
+                        .setSmallIcon(R.drawable.ic_launcher);
+                // Set pending intent
+                mNotifyBuilder.setContentIntent(resultPendingIntent);
+
+                // Set Vibrate, Sound and Light
+                defaults = 0;
+                defaults = defaults | Notification.DEFAULT_LIGHTS;
+                defaults = defaults | Notification.DEFAULT_VIBRATE;
+                defaults = defaults | Notification.DEFAULT_SOUND;
+
+                mNotifyBuilder.setDefaults(defaults);
+                // Set the content for Notification
+                mNotifyBuilder.setContentText(msg);
+                // Set autocancel
+                mNotifyBuilder.setAutoCancel(true);
+                // Post a notification
+                mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+                break;
+
 
         }
 

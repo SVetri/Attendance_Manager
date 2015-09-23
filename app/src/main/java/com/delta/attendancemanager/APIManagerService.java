@@ -34,7 +34,7 @@ public class APIManagerService extends IntentService {
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
-        String URL = "http://10.0.0.109/~rahulzoldyck/timetable";
+        String URL = "http://dalalstreet.pragyan.org/~rahulzoldyck/timetable";
 //TODO:send username using SharedPref
         all=new ArrayList<>();
         adapter=new MySqlAdapter(this,null);
@@ -50,9 +50,10 @@ public class APIManagerService extends IntentService {
                     times=new String[9];
                     JSONParser jp = new JSONParser();
                     List<NameValuePair> tt = new ArrayList<>();
+                    JSONObject jd=new JSONObject();
 //                    tt.add(new BasicNameValuePair("username", user));
                     // aut.add(new BasicNameValuePair("password",params[1]));
-                    JSONObject js = jp.makeHttpRequest(URL, "POST", tt);
+                    JSONObject js = jp.makeHttpRequest(URL, "POST", jd);
                     for(String i : days) {
                         JSONObject day = js.getJSONObject(i);
                         times[0]=i;

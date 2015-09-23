@@ -26,9 +26,17 @@ import java.util.List;
 
 public class UpdateTTService extends IntentService {
     private static final String ACTION_UPCOMING = "com.delta.attendancemanager.action.UPCOMING";
+    private static final String ACTION_CHAT = "com.delta.attendancemanager.action.CHAT";
     private static final String ACTION_TT = "com.delta.attendancemanager.action.TT";
-    private static final String TIME = "com.delta.attendancemanager.extra.TIME";
+    private static final String MSG = "com.delta.attendancemanager.extra.MSG";
     private static final String JSON = "com.delta.attendancemanager.extra.JSON";
+
+    public static void startActionChat(Context context, String msg){
+        Intent intent = new Intent(context, UpdateTTService.class);
+        intent.setAction(ACTION_CHAT);
+        intent.putExtra(MSG, msg);
+        context.startService(intent);
+    }
 
 
     public static void startActionUpcoming(Context context, JSONObject json) {
@@ -70,11 +78,56 @@ public class UpdateTTService extends IntentService {
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
+            }else if (ACTION_CHAT.equals(action)){
+                try {
+                    handlechat(intent.getStringExtra(MSG));
+                } catch (JSONException  | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
- //TODO: API console
+    private void handlechat(String msg) throws JSONException ,IOException {
+        JSONObject js =new JSONObject();
+        js.put("data",msg);
+        js.put("batch","110114");
+        JSONObject result;
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/chat");
+        StringEntity s=new StringEntity(js.toString());
+        httpPost.setEntity(s);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-type", "application/json");
+        HttpResponse httpResponse = httpclient.execute(httpPost);
+        String jsons="";
+        // 9. receive response as inputStream
+        InputStream is = httpResponse.getEntity().getContent();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    is, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            is.close();
+
+            jsons = sb.toString();
+        } catch (Exception e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }
+
+        // try parse the string to a JSON object
+        try {
+            result = new JSONObject(jsons);
+            Log.i("connectionscheck",result.toString());
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+    }
+
+    //TODO: API console
     private void handleUpcoming(JSONObject json)  throws JSONException, IOException{
         JSONObject result=new JSONObject();
         // 1. create HttpClient
@@ -128,7 +181,7 @@ public class UpdateTTService extends IntentService {
         HttpClient httpclient = new DefaultHttpClient();
 
         // 2. make POST request to the given URL
-        HttpPost httpPost = new HttpPost("");
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
 
 
 
