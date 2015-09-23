@@ -373,7 +373,7 @@ public class MySqlAdapter {
         List<String> msg=new ArrayList<>();
 
         SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+        Cursor c=db.query(true, Mysqlhelper.ATNAME, new String[] {
                         Mysqlhelper.ACNAME},
                 null,
                 null,
@@ -401,7 +401,7 @@ public class MySqlAdapter {
     }
 
     static class Mysqlhelper extends SQLiteOpenHelper{
-        private static final int VERSION =4;
+        private static final int VERSION =5;
         public static final  String TOMO="tomorrow";
         private static final String DATABASE_NAME="class.db";
         private static final String TABLENAME="timetable";
