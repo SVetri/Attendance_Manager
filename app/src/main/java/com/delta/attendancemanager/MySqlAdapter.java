@@ -362,34 +362,43 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
-    public void addmsg(String msg){
+    public void addmsg(String msg,String time,String date){
         ContentValues v=new ContentValues();
         v.put(Mysqlhelper.ACNAME,msg);
+        v.put(Mysqlhelper.ATIMES,time);
+        v.put(Mysqlhelper.ADATES,date);
         SQLiteDatabase db=mysqlhelper.getWritableDatabase();
-        db.insert(Mysqlhelper.TABLENAME, null, v);
+        db.insert(Mysqlhelper.ATNAME, null, v);
     }
 
-    public String[] getmsgs(){
-        List<String> msg=new ArrayList<>();
+    public Chat[] getmsgs(){
+        List<Chat> msg=new ArrayList<>();
+        Chat chat;
 
         SQLiteDatabase db=mysqlhelper.getReadableDatabase();
         Cursor c=db.query(true, Mysqlhelper.ATNAME, new String[] {
-                        Mysqlhelper.ACNAME},
+                        Mysqlhelper.ACNAME,Mysqlhelper.ATIMES,Mysqlhelper.ADATES},
                 null,
                 null,
-                null, null, null , null);
+                null, null, "_id DESC" ,null);
         c.moveToFirst();
         while(!c.isAfterLast()){
+            chat=new Chat();
             if(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME))!=null){
-                msg.add(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME)));
-
+                chat.setMsg(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME)));
+            }
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ATIMES))!=null){
+                chat.setTime(c.getString(c.getColumnIndex(Mysqlhelper.ATIMES)));
+            }
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ADATES))!=null){
+                chat.setDate(c.getString(c.getColumnIndex(Mysqlhelper.ADATES)));
             }
             c.moveToNext();
-
+            msg.add(chat);
         }
         c.close();
 
-        String[] msgs=new String[msg.size()];
+        Chat[] msgs=new Chat[msg.size()];
         msgs=msg.toArray(msgs);
 
         return msgs;
@@ -401,7 +410,7 @@ public class MySqlAdapter {
     }
 
     static class Mysqlhelper extends SQLiteOpenHelper{
-        private static final int VERSION =5;
+        private static final int VERSION =6;
         public static final  String TOMO="tomorrow";
         private static final String DATABASE_NAME="class.db";
         private static final String TABLENAME="timetable";
@@ -418,7 +427,8 @@ public class MySqlAdapter {
         private static final String CNAME = "subject";
         private static final String ATNAME="Announcements";
         private static final String ACNAME="announcements";
-
+        private static final String ATIMES="time";
+        private static final String ADATES="date";
         Context context = null;
 
         public Mysqlhelper(Context context,SQLiteDatabase.CursorFactory factory){
@@ -443,7 +453,10 @@ public class MySqlAdapter {
             db.execSQL(query);
             String Create_subs  = "CREATE TABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
             db.execSQL(Create_subs);
-            String chats  = "CREATE TABLE "+ATNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+ACNAME+" TEXT);";
+            String chats  = "CREATE TABLE "+ATNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ACNAME+" TEXT, " +
+                    ADATES+" TEXT, " +
+                    ATIMES+" TEXT );";
             db.execSQL(chats);
         }
 

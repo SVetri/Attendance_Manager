@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -89,8 +90,22 @@ public class UpdateTTService extends IntentService {
     }
 
     private void handlechat(String msg) throws JSONException ,IOException {
+        JSONObject data=new JSONObject();
+        Calendar cal=Calendar.getInstance();
+        int h=cal.get(Calendar.HOUR_OF_DAY);
+        int min=cal.get(Calendar.MINUTE);
+        int day=cal.get(Calendar.DAY_OF_MONTH);
+        int mon=cal.get(Calendar.MONTH);
+        int yy=cal.get(Calendar.YEAR);
+        String time= String.valueOf(h)+":"+String.valueOf(min);
+        String date=String.valueOf(day)+"/"+String.valueOf(mon)+"/"+String.valueOf(yy);
+        data.put("msg",msg);
+        data.put("date",date);
+        data.put("time",time);
+        JSONObject jb=new JSONObject();
+        jb.put("an",data);
         JSONObject js =new JSONObject();
-        js.put("data",msg);
+        js.put("msg",jb);
         js.put("batch","110114");
         JSONObject result;
         HttpClient httpclient = new DefaultHttpClient();
@@ -141,7 +156,10 @@ public class UpdateTTService extends IntentService {
         Log.i("ulala", json.toString());
         JSONObject js=new JSONObject();
         js.put("batch", "110114");
-        js.put("data", json);
+        JSONObject ex=new JSONObject();
+        ex.put("data", json);
+        js.put("data",ex);
+        js.put("type","ut");
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");
@@ -188,7 +206,10 @@ public class UpdateTTService extends IntentService {
         Log.i("ulala", json.toString());
        JSONObject js=new JSONObject();
         js.put("batch", "110114070");
-        js.put("data", json);
+        JSONObject ex=new JSONObject();
+        ex.put("data", json);
+        js.put("data",ex);
+        js.put("type","ut");
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");

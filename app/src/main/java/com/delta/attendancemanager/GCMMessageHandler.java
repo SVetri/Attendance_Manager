@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,7 +21,7 @@ import java.util.Set;
 
 public class GCMMessageHandler extends IntentService {
 
-    static final String MSG_TT="pt";
+    static final String MSG_TT="tt";
     static final String MSG_UT="ut";
     static final String MSG_CHAT="chat";
     static final String COLLAPSE_KEY="collapse_key";
@@ -48,7 +47,7 @@ public class GCMMessageHandler extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         Set<String> getinfo = extras.keySet();
-        sendNotification(0,extras.getString("collapse_key"));
+        //sendNotification(0,extras.getString("collapse_key"));
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         times=new String[9];
 
@@ -75,10 +74,10 @@ public class GCMMessageHandler extends IntentService {
                         }
                     }
                     if (extras.getString(COLLAPSE_KEY).equals(MSG_UT)) {
-                        sendNotification(0, "success");
+                       // sendNotification(0, "success");
                         try {
-
-                            JSONObject js = new JSONObject((String) extras.get("data"));
+                            String ex=(String) extras.get("data");
+                            JSONObject js = new JSONObject(ex);
                             updateUT(js);
 
                             sendNotification(1, "Upcoming Timetable Updated");
@@ -90,8 +89,17 @@ public class GCMMessageHandler extends IntentService {
 //                    sendNotification(0,"success");
 
 
-                        String js = extras.getString("data");
-                        announcements(js);
+                        String js = extras.getString("an");
+                        try {
+                            JSONObject data=new JSONObject(js);
+                            String date=data.getString("date");
+                            String time=data.getString("time");
+                            String msg=data.getString("msg");
+                            announcements(msg,date,time);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
 //                        sendNotification(1,"Upcoming Timetable Updated");
 
@@ -138,8 +146,8 @@ public class GCMMessageHandler extends IntentService {
         startService(new Intent(getApplicationContext(), TomorrowUpdateService.class));
     }
 
-    private void announcements(String msg)  {
-        handler.addmsg(msg);
+    private void announcements(String msg,String date,String time)  {
+        handler.addmsg(msg,time,date);
         sendNotification(2,"Received Announcement From CR");
 
     }
@@ -201,7 +209,7 @@ public class GCMMessageHandler extends IntentService {
 
                 mNotifyBuilder.setDefaults(defaults);
                 // Set the content for Notification
-                mNotifyBuilder.setContentText("New message from Server");
+                mNotifyBuilder.setContentText(msg);
                 // Set autocancel
                 mNotifyBuilder.setAutoCancel(true);
                 // Post a notification

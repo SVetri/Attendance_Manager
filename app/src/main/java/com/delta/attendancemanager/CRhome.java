@@ -28,10 +28,10 @@ public class CRhome extends ActionBarActivity {
 //            startService(i);
             SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
             String username = share.getString("rno","");
-            Intent j=new Intent(this,APIManagerService.class);
-            j.putExtra("rno",username);
-            j.putExtra("mode",0);
-            startService(j);
+//            Intent j=new Intent(this,APIManagerService.class);
+//            j.putExtra("rno",username);
+//            j.putExtra("mode",0);
+//            startService(j);
         }
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -19,9 +19,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rahul on 9/14/15.
- */
 public class UserHomeSliderFragment extends Fragment {
 
     MySqlAdapter handler;
@@ -149,8 +146,8 @@ public class UserHomeSliderFragment extends Fragment {
                             container, false);
                     handler=new MySqlAdapter(getActivity(),null);
                     ListView l=(ListView)view.findViewById(R.id.chat);
-                    String[] a=handler.getmsgs();
-                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,a);
+                    Chat[] a=handler.getmsgs();
+                    ChatAdapter adapter=new ChatAdapter(getActivity(),a);
                     l.setAdapter(adapter);
                     break;
 

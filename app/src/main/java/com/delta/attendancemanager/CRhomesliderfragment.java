@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -67,7 +68,7 @@ public class CRhomesliderfragment extends Fragment {
          */
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         /**
@@ -97,6 +98,8 @@ public class CRhomesliderfragment extends Fragment {
                     return "Timetable";
                 case 1:
                     return "Manage Courses  ";
+                case 2:
+                    return " Announcements ";
 
             }
 
@@ -267,16 +270,17 @@ public class CRhomesliderfragment extends Fragment {
                             container, false);
                     handler=new MySqlAdapter(getActivity(),null);
                     ListView l=(ListView)view.findViewById(R.id.crchat);
-                    String[] a=handler.getmsgs();
-                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,a);
+                    Chat[] a=handler.getmsgs();
+                    ChatAdapter adapter=new ChatAdapter(getActivity(),a);
                     l.setAdapter(adapter);
                     Button bt= (Button) view.findViewById(R.id.chatbutton);
                     final View v=view;
+                    final LinearLayout ll=(LinearLayout)view.findViewById(R.id.ll1);
                     bt.setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    EditText et= (EditText)v.findViewById(R.id.textmsg);
+                                    EditText et= (EditText)ll.findViewById(R.id.textmsg);
                                     String msg=et.getText().toString();
                                     UpdateTTService.startActionChat(getActivity(),msg);
                                 }

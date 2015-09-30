@@ -1,12 +1,9 @@
 package com.delta.attendancemanager;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,38 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="https://61d8e2a4.ngrok.com";
+    public static final String URL="https://33106d88.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -83,13 +61,6 @@ public class MainActivity extends ActionBarActivity {
             finish();
 
     }
-//       InitialHandShake("110114070");
-//        try {
-//            regId = gcmObj
-//                    .register(GOOGLE_PROJ_ID);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         handler=new MySqlAdapter(this,null);
         if(handler.get_days()==null){
@@ -271,8 +242,8 @@ public class MainActivity extends ActionBarActivity {
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
 
-                   // startActivity(i);
-//                    finish();
+                   startActivity(i);
+                  finish();
                 }
             }
             else{
