@@ -180,6 +180,10 @@
             android:name=".AlarmService"
             android:exported="false" >
         </service>
+        <service
+            android:name=".AttendanceBackup"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

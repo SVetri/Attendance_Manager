@@ -49,14 +49,56 @@ public class AtAdapter {
         return pending_classes;
     }
 
+    public void to_update_data(){
+        SQLiteDatabase db = athelper.getWritableDatabase();
+        //SELECT subject,datetime FROM attendance WHERE update = 1;
+        String[] columns = {Athelper.SUBJECT,Athelper.DATETIME};
+        Cursor cursor = db.query(Athelper.TABLE_NAME,columns,Athelper.UPDATE + " =1",null,null,null,null);
+        int index0 = cursor.getColumnIndex(Athelper.SUBJECT);
+        int index1 = cursor.getColumnIndex(Athelper.DATETIME);
+        int index2 = cursor.getColumnIndex(Athelper.PRESENT);
+        subj.clear();
+        dt.clear();
+        presint.clear();
+        while(cursor.moveToNext()){
+            String tempst = cursor.getString(index0);  //subject string
+            String tempdt = cursor.getString(index1);     //datetime
+            int temppresentint = cursor.getInt(index2);
+            subj.add(tempst);
+            dt.add(tempdt);
+            presint.add(temppresentint);
+            update_up(tempst,tempdt,temppresentint);
+        }
+        cursor.close();
+    }
+
+    public void update_up(String subject, String datetime, int present){                     //updating an already existing attendance -----
+        SQLiteDatabase db = athelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Athelper.UPDATE, 0);
+        db.update(Athelper.TABLE_NAME, cv, "(" + Athelper.SUBJECT + "=?) AND (" + Athelper.DATETIME + "=?) AND (" + Athelper.PRESENT + "=?)", new String[]{subject, datetime, String.valueOf(present)});
+    }
+
     public void add_attendance(String subject, String datetime, int present){               //to add attendance
         SQLiteDatabase sqLiteDatabase = athelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Athelper.SUBJECT,subject);
-        cv.put(Athelper.DATETIME,datetime);
-        cv.put(Athelper.PRESENT,present);
-        sqLiteDatabase.insert(Athelper.TABLE_NAME,null,cv);
-        return;
+        if(find_existing(subject,datetime,present)){
+            ContentValues cv = new ContentValues();
+            cv.put(Athelper.SUBJECT,subject);
+            cv.put(Athelper.DATETIME,datetime);
+            cv.put(Athelper.PRESENT,present);
+            cv.put(Athelper.UPDATE,1);
+            sqLiteDatabase.insert(Athelper.TABLE_NAME, null, cv);
+        }
+    }
+
+    public boolean find_existing(String subject, String datetime, int present){
+        SQLiteDatabase db = athelper.getWritableDatabase();
+        String[] columns = {Athelper.DATETIME};
+        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME + " =? AND " + Athelper.PRESENT + " =? ", new String[]{subject, datetime, String.valueOf(present)}, null, null, null);   //pending classes
+        cursor1.moveToNext();
+        int no_of_existing_records = cursor1.getCount();
+        cursor1.close();
+        return (no_of_existing_records==0);
     }
 
     public ArrayList<String> getDt() {
@@ -147,6 +189,7 @@ public class AtAdapter {
         //cv.put(Athelper.SUBJECT, subject);
         //cv.put(Athelper.DATETIME,datetime);
         cv.put(Athelper.PRESENT, present);
+        cv.put(Athelper.UPDATE,1);
         //int a = db.delete(Athelper.TABLE_NAME, Athelper.SUBJECT + " = ? AND " + Athelper.DATETIME + " = ? ", new String[]{subject, datetime});
         //db.insert(Athelper.TABLE_NAME,null,cv);
         db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
@@ -165,12 +208,13 @@ public class AtAdapter {
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 1;
         private static final String ID = "_id";
         private static final String DATETIME = "datetime";
         private static final String SUBJECT = "subject";
         private static final String PRESENT = "present";
-        private static final String create = "CREATE TABLE "+TABLE_NAME+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+SUBJECT+" TEXT, "+DATETIME+" TEXT, "+PRESENT+" INTEGER);";
+        private static final String UPDATE = "update";
+        private static final String create = "CREATE TABLE "+TABLE_NAME+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+SUBJECT+" TEXT, "+DATETIME+" TEXT, "+PRESENT+" INTEGER, "+UPDATE+" INTEGER);";
         private static final String drop = "DROP TABLE IF EXISTS "+TABLE_NAME;
         public Athelper(Context context)
         {

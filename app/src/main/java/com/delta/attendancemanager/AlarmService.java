@@ -1,33 +1,36 @@
 package com.delta.attendancemanager;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class AlarmService extends IntentService {
     private static final String ACTION_SET_CUSTOM_ALARM = "com.delta.attendancemanager.action.SET_CUSTOM_ALARM";
-    private static final String ACTION_SET_DEFAULT_ALARM = "com.delta.attendancemanager.action.SET_DEFAULT_ALARM";
     private static final String CANCEL_ALARM = "com.delta.attendancemanager.action.CANCEL_ALARM";
-    private static final String HOUR_PARAM = "com.delta.attendancemanager.extra.hour";
-    private static final String MIN_PARAM = "com.delta.attendancemanager.extra.min";
-
+    private static final String HOUR = "com.delta.attendancemanager.hour";
+    private static final String MIN = "com.delta.attendancemanager.min";
     public static void startActionSetCustomAlarm(Context context, int hour, int min) {
         Intent intent = new Intent(context, AlarmService.class);
         intent.setAction(ACTION_SET_CUSTOM_ALARM);
-        intent.putExtra(HOUR_PARAM, hour);
-        intent.putExtra(MIN_PARAM, min);
+        intent.putExtra(HOUR,hour);
+        intent.putExtra(MIN,min);
         context.startService(intent);
     }
-
-    public static void startActionSetDefaultAlarm(Context context) {
-        Intent intent = new Intent(context, AlarmService.class);
-        intent.setAction(ACTION_SET_DEFAULT_ALARM);
+    public static void startActionSetDefaultAlarm(Context context){
+        Intent intent = new Intent(context,AlarmService.class);
+        intent.setAction(ACTION_SET_CUSTOM_ALARM);
+        intent.putExtra(HOUR,16);
+        intent.putExtra(MIN,0);
         context.startService(intent);
     }
-
     public static void cancelAlarm(Context context){
         Intent intent = new Intent(context,AlarmService.class);
         intent.setAction(CANCEL_ALARM);
@@ -43,11 +46,9 @@ public class AlarmService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_SET_CUSTOM_ALARM.equals(action)) {
-                final int hour = intent.getIntExtra(HOUR_PARAM,16);
-                final int min = intent.getIntExtra(MIN_PARAM,0);
+                final int hour = intent.getIntExtra(HOUR,16);
+                final int min = intent.getIntExtra(MIN,0);
                 handleActionSetcustomalarm(hour, min);
-            } else if (ACTION_SET_DEFAULT_ALARM.equals(action)) {
-                handleActionSetdefaultalarm();
             }
             else if (CANCEL_ALARM.equals(action)){
                 handleCancelAlarm();
@@ -55,22 +56,18 @@ public class AlarmService extends IntentService {
         }
     }
     private void handleActionSetcustomalarm(int lhour, int lmin) {
-        Intent inten = new Intent(this, AlarmReceiver.class);                                                    //TODO: randomize it depending upon the roll number later.
-        Long min = Long.valueOf(lmin * 60 * 1000);
-        Long hour = Long.valueOf(lhour * 60 * 60 *1000);
+        Intent inten = new Intent(this, AlarmReceiver.class);
+        Calendar cal = Calendar.getInstance();
+        Calendar calComparison = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY,lhour);
+        cal.set(Calendar.MINUTE, lmin);
+        if(cal.after(calComparison))
+            cal.set(Calendar.DAY_OF_MONTH,cal.get(Calendar.DAY_OF_MONTH)+1);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, min+hour, AlarmManager.INTERVAL_DAY , PendingIntent.getBroadcast(this, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , AlarmManager.INTERVAL_DAY , PendingIntent.getBroadcast(this, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
         Toast.makeText(this, "Custom alarm set", Toast.LENGTH_LONG).show();
     }
 
-    private void handleActionSetdefaultalarm(){
-        Intent inten = new Intent(this, AlarmReceiver.class);
-        Long min = Long.valueOf(0 * 60 * 1000);
-        Long hour = Long.valueOf(16 * 60 * 60 *1000);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, min+hour, AlarmManager.INTERVAL_DAY , PendingIntent.getBroadcast(this, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
-        Toast.makeText(this, "Default alarm set", Toast.LENGTH_LONG).show();
-    }
 
     private void handleCancelAlarm(){
         Intent inten = new Intent(this, AlarmReceiver.class);

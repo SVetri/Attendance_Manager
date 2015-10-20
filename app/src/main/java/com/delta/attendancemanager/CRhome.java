@@ -18,7 +18,7 @@ public class CRhome extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crhome2);
-
+        AlarmService.startActionSetDefaultAlarm(getApplicationContext());
         List<String[]> alls;
         alls=new ArrayList<>();
         MySqlAdapter handler=new MySqlAdapter(this,null);
