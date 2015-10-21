@@ -184,6 +184,10 @@
             android:name=".AttendanceBackup"
             android:exported="false" >
         </service>
+        <service
+            android:name=".AttendanceServerService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

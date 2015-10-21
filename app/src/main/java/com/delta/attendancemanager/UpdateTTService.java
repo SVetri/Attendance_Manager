@@ -143,8 +143,8 @@ public class UpdateTTService extends IntentService {
     }
 
     //TODO: API console
-    private void handleUpcoming(JSONObject json)  throws JSONException, IOException{
-        JSONObject result=new JSONObject();
+    private void handleUpcoming(JSONObject json)  throws JSONException, IOException{                //TODO: add the line AttendanceServerService.deleteAttendance(getApplicationContext()); before changing upcoming timetable.
+        JSONObject result=new JSONObject();                                                         //TODO: add the line AttendanceServerService.addAttendance(getApplicationContext()); after changing upcoming timetable.
         // 1. create HttpClient
         HttpClient httpclient = new DefaultHttpClient();
 
