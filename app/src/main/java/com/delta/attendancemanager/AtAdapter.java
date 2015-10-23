@@ -94,7 +94,7 @@ public class AtAdapter {
     public boolean find_existing(String subject, String datetime, int present){
         SQLiteDatabase db = athelper.getWritableDatabase();
         String[] columns = {Athelper.DATETIME};
-        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME + " =? AND " + Athelper.PRESENT + " =? ", new String[]{subject, datetime, String.valueOf(present)}, null, null, null);   //pending classes
+        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime, String.valueOf(present)}, null, null, null);   //pending classes
         cursor1.moveToNext();
         int no_of_existing_records = cursor1.getCount();
         cursor1.close();
@@ -208,12 +208,12 @@ public class AtAdapter {
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 4;
         private static final String ID = "_id";
         private static final String DATETIME = "datetime";
         private static final String SUBJECT = "subject";
         private static final String PRESENT = "present";
-        private static final String UPDATE = "update";
+        private static final String UPDATE = "toupdate";
         private static final String create = "CREATE TABLE "+TABLE_NAME+" ("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+SUBJECT+" TEXT, "+DATETIME+" TEXT, "+PRESENT+" INTEGER, "+UPDATE+" INTEGER);";
         private static final String drop = "DROP TABLE IF EXISTS "+TABLE_NAME;
         public Athelper(Context context)

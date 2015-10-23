@@ -19,5 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent tomointent = new Intent(context,TomorrowUpdateService.class);
         context.startService(tomointent);
+
+        AttendanceServerService.addAttendance(context);
     }
 }
