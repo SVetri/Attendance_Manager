@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="https://33106d88.ngrok.com";
+    public static final String URL="https://7acca60e.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -80,6 +80,8 @@ public class MainActivity extends ActionBarActivity {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this,Userhome.class));
+//                finish();
 
                 if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a Roll.No", Toast.LENGTH_SHORT).show();
