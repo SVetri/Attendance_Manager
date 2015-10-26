@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class EditHistory extends ActionBarActivity {
         }
 
         return result;
+    }
+    public void addclass(View v){
+
     }
 
 

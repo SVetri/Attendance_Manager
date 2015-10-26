@@ -95,7 +95,7 @@ public class UpdateTTService extends IntentService {
         int h=cal.get(Calendar.HOUR_OF_DAY);
         int min=cal.get(Calendar.MINUTE);
         int day=cal.get(Calendar.DAY_OF_MONTH);
-        int mon=cal.get(Calendar.MONTH);
+        int mon=cal.get(Calendar.MONTH)+1;
         int yy=cal.get(Calendar.YEAR);
         String time= String.valueOf(h)+":"+String.valueOf(min);
         String date=String.valueOf(day)+"/"+String.valueOf(mon)+"/"+String.valueOf(yy);
@@ -105,11 +105,12 @@ public class UpdateTTService extends IntentService {
         JSONObject jb=new JSONObject();
         jb.put("an",data);
         JSONObject js =new JSONObject();
-        js.put("msg",jb);
+        js.put("data",jb);
+        js.put("type","chat");
         js.put("batch","110114");
         JSONObject result;
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(MainActivity.URL+"/chat");
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");

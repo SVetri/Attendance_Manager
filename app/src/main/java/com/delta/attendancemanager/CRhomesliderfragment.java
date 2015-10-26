@@ -282,6 +282,7 @@ public class CRhomesliderfragment extends Fragment {
                                 public void onClick(View v) {
                                     EditText et= (EditText)ll.findViewById(R.id.textmsg);
                                     String msg=et.getText().toString();
+                                    et.setText("");
                                     UpdateTTService.startActionChat(getActivity(),msg);
                                 }
                             }

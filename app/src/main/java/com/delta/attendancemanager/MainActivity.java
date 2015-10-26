@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="https://7acca60e.ngrok.com";
+    public static final String URL="http://sprocky.ddns.net:1501";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -54,14 +54,6 @@ public class MainActivity extends ActionBarActivity {
                 Context.MODE_PRIVATE);
         String rollno = prefs.getString(RNO, "default");
 
-        if (!rollno.equals("default") && b==null) {                               // to ensure its not activated when logging out
-            Intent i = new Intent(MainActivity.this, Userhome.class);
-            i.putExtra("rno", rollno);
-            startActivity(i);
-            finish();
-
-    }
-
         handler=new MySqlAdapter(this,null);
         if(handler.get_days()==null){
             isfirst=true;
@@ -70,6 +62,10 @@ public class MainActivity extends ActionBarActivity {
             isfirst=false;
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
+        if(!rollno.equals("default")){
+            username.setText(rollno);
+            password.setText("password");
+        }
         if(wrong){
             YoYo.with(Techniques.Tada).duration(700).playOn(username);
             YoYo.with(Techniques.Tada).duration(700).playOn(password);
@@ -80,8 +76,7 @@ public class MainActivity extends ActionBarActivity {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this,Userhome.class));
-//                finish();
+
 
                 if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a Roll.No", Toast.LENGTH_SHORT).show();
@@ -89,11 +84,20 @@ public class MainActivity extends ActionBarActivity {
                     Toast.makeText(MainActivity.this, "Enter a password", Toast.LENGTH_SHORT).show();
                 } else {
                     String user=username.getText().toString();
-                    usernme=username.getText().toString();
-                    pass=password.getText().toString();
-                    Log.d("TAG", user + pass);
-                    Authenticate a = new Authenticate();
-                    a.execute(usernme, pass);
+                    if(checkpref(user)){
+                        startActivity(new Intent(MainActivity.this,Userhome.class));
+                        finish();
+                    }
+                    else{
+                        usernme=username.getText().toString();
+                        pass=password.getText().toString();
+                        Log.d("TAG", user + pass);
+                        Authenticate a = new Authenticate();
+                        a.execute(usernme, pass);
+                    }
+
+
+
 
                 }
             }
@@ -108,7 +112,21 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private boolean checkpref(String user) {
+        SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
+        String rno=share.getString("rno","-1");
+        if(rno.equals("-1"))
+            return false;
+        else if(user.equals(rno))
+            return true;
+        else
+            return false;
+
+
+    }
+
     private void InitialHandShake(String user) {
+        startService(new Intent(this,APIManagerService.class));
         registerInBackground(user);
 
 
@@ -240,6 +258,7 @@ public class MainActivity extends ActionBarActivity {
                     SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=share.edit();
                     editor.putString(RNO, usernme);
+                    editor.putString("pass",pass);
                     editor.commit();
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);

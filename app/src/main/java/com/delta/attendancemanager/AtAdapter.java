@@ -81,7 +81,7 @@ public class AtAdapter {
 
     public void add_attendance(String subject, String datetime, int present){               //to add attendance
         SQLiteDatabase sqLiteDatabase = athelper.getWritableDatabase();
-        if(find_existing(subject,datetime,present)){
+        if(find_existing(subject,datetime)){
             ContentValues cv = new ContentValues();
             cv.put(Athelper.SUBJECT,subject);
             cv.put(Athelper.DATETIME,datetime);
@@ -91,10 +91,10 @@ public class AtAdapter {
         }
     }
 
-    public boolean find_existing(String subject, String datetime, int present){
+    public boolean find_existing(String subject, String datetime){
         SQLiteDatabase db = athelper.getWritableDatabase();
         String[] columns = {Athelper.DATETIME};
-        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime, String.valueOf(present)}, null, null, null);   //pending classes
+        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime}, null, null, null);   //pending classes
         cursor1.moveToNext();
         int no_of_existing_records = cursor1.getCount();
         cursor1.close();
@@ -208,7 +208,7 @@ public class AtAdapter {
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
-        private static final int DATABASE_VERSION = 4;
+        private static final int DATABASE_VERSION = 5;
         private static final String ID = "_id";
         private static final String DATETIME = "datetime";
         private static final String SUBJECT = "subject";
