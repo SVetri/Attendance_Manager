@@ -78,7 +78,20 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
                     }
             }
         });
+        attendanceviewholder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                atAdapter = new AtAdapter(context);
+                try{
+                    date = sdf1.parse(eci.classdate+" "+eci.classtime);
+                }
+                catch(Exception e){
+                    Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
+                }
+                atAdapter.delete_data(eci.coursename,sdf.format(date));                                                         //TODO: Refreshing the screen should be added if required
 
+            }
+        });
     }
 
     @Override
@@ -97,6 +110,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         protected TextView time;
         protected TextView mark;
         protected Button change;
+        protected Button remove;
 
         public EditViewHolder(View v)
         {
@@ -106,6 +120,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
             time = (TextView) v.findViewById(R.id.timecard);
             mark = (TextView) v.findViewById(R.id.mark);
             change = (Button) v.findViewById(R.id.changebutton);
+            remove = (Button) v.findViewById(R.id.removebutton);
         }
 
     }

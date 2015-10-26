@@ -78,8 +78,9 @@ public class GCMMessageHandler extends IntentService {
                         try {
                             String ex=(String) extras.get("data");
                             JSONObject js = new JSONObject(ex);
+                            AttendanceServerService.deleteAttendance(getApplicationContext());
                             updateUT(js);
-
+                            AttendanceServerService.addAttendance(getApplicationContext());
                             sendNotification(1, "Upcoming Timetable Updated");
                         } catch (JSONException e) {
                             e.printStackTrace();

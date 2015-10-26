@@ -186,23 +186,9 @@ public class AtAdapter {
         SQLiteDatabase db = athelper.getWritableDatabase();
         //UPDATE attendance SET present  = present WHERE present = 0;
         ContentValues cv = new ContentValues();
-        //cv.put(Athelper.SUBJECT, subject);
-        //cv.put(Athelper.DATETIME,datetime);
         cv.put(Athelper.PRESENT, present);
         cv.put(Athelper.UPDATE,1);
-        //int a = db.delete(Athelper.TABLE_NAME, Athelper.SUBJECT + " = ? AND " + Athelper.DATETIME + " = ? ", new String[]{subject, datetime});
-        //db.insert(Athelper.TABLE_NAME,null,cv);
         db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
-        /*
-        int a=0;
-        try{
-            a = 6;
-            db.execSQL("UPDATE "+Athelper.TABLE_NAME+" SET "+Athelper.PRESENT+" = "+ Integer.toString(present)+" WHERE "+Athelper.SUBJECT+"='"+subject+"' AND "+Athelper.DATETIME+"='"+datetime+"';");
-        }
-        catch (Exception e){
-            a = 5;
-        }
-        */
     }
     static class Athelper extends SQLiteOpenHelper{
         private static final String DATABASE_NAME = "semester.db";

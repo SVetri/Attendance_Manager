@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+startActivity(new Intent(MainActivity.this, Userhome.class));
 
                 if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a Roll.No", Toast.LENGTH_SHORT).show();
