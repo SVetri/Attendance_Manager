@@ -34,7 +34,7 @@ public class AlarmService extends IntentService {
     public static void cancelAlarm(Context context){
         Intent intent = new Intent(context,AlarmService.class);
         intent.setAction(CANCEL_ALARM);
-        context.startActivity(intent);
+        context.startService(intent);
     }
 
     public AlarmService() {

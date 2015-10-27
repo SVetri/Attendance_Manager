@@ -15,7 +15,6 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.delta.attendancemanager.permission.C2D_MESSAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -169,7 +168,7 @@
             android:exported="true" />
         <receiver
             android:name=".BootReceiver"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

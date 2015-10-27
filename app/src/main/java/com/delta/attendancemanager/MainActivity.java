@@ -1,8 +1,10 @@
 package com.delta.attendancemanager;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -76,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-startActivity(new Intent(MainActivity.this, Userhome.class));
 
                 if (username.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a Roll.No", Toast.LENGTH_SHORT).show();
@@ -95,10 +96,6 @@ startActivity(new Intent(MainActivity.this, Userhome.class));
                         Authenticate a = new Authenticate();
                         a.execute(usernme, pass);
                     }
-
-
-
-
                 }
             }
         });
@@ -233,8 +230,6 @@ startActivity(new Intent(MainActivity.this, Userhome.class));
                 JSONObject jd=jp.makeHttpRequest(URL+"/login","POST",js);
                 Log.i(TAG,js.toString());
                 int success=jd.getInt("logged_in");
-                jp=null;
-                js=null;
                 return success==1;                                                //authentication
             }  catch (Exception e) {
                 e.printStackTrace();
@@ -266,6 +261,16 @@ startActivity(new Intent(MainActivity.this, Userhome.class));
                    startActivity(i);
                   finish();
                 }
+
+                AttendanceServerService.retrieveAttendance(getApplicationContext());
+                AlarmService.cancelAlarm(getApplicationContext());
+                AlarmService.startActionSetDefaultAlarm(getApplicationContext());
+                ComponentName receiver = new ComponentName(getApplicationContext(), BootReceiver.class);
+                PackageManager pm = getApplicationContext().getPackageManager();
+
+                pm.setComponentEnabledSetting(receiver,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
             }
             else{
                 wrongpassword();
