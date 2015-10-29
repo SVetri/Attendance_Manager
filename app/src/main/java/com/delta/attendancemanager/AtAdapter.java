@@ -52,7 +52,7 @@ public class AtAdapter {
     public void to_update_data(){
         SQLiteDatabase db = athelper.getWritableDatabase();
         //SELECT subject,datetime FROM attendance WHERE update = 1;
-        String[] columns = {Athelper.SUBJECT,Athelper.DATETIME};
+        String[] columns = {Athelper.SUBJECT,Athelper.DATETIME,Athelper.PRESENT};
         Cursor cursor = db.query(Athelper.TABLE_NAME,columns,Athelper.UPDATE + " =1",null,null,null,null);
         int index0 = cursor.getColumnIndex(Athelper.SUBJECT);
         int index1 = cursor.getColumnIndex(Athelper.DATETIME);

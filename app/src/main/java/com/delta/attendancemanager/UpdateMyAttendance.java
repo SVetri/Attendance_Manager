@@ -37,28 +37,6 @@ public class UpdateMyAttendance extends ActionBarActivity {
 
         atAdapter.fetch_pending_data();
 
-
-        //********************************************************************************************************************************************************
-        if(atAdapter.getSubj().isEmpty()) {
-            String format = "yyyy-MM-dd HH:mm";
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date d1 = new Date(115, 9, 14, 8, 30);                                                                  //1900+yyyy;
-            Date d2 = new Date(115, 9, 14, 9, 20);
-            Date d3 = new Date(115, 9, 14, 10, 30);
-            Date d4 = new Date(115, 9, 14, 11, 20);
-            Date d5 = new Date(115, 9, 14, 1, 30);
-            Date d6 = new Date(115, 9, 14, 2, 20);
-
-            atAdapter.add_attendance("Circuit Theory", sdf.format(d1), 0);                                               //date format: yyyy-MM-dd HH:mm
-            atAdapter.add_attendance("Digital Electronics", sdf.format(d2), 0);
-            atAdapter.add_attendance("Thermodynamics", sdf.format(d3), 0);
-            atAdapter.add_attendance("Material Science", sdf.format(d4), 0);
-            atAdapter.add_attendance("Circuit lab", sdf.format(d5), 0);
-            atAdapter.add_attendance("Maths", sdf.format(d6), 0);
-            atAdapter.fetch_pending_data();
-        }
-        //********************************************************************************************************************************************************
-
         ArrayList<String> subjects, datetime;
         subjects = atAdapter.getSubj();
         datetime = atAdapter.getDt();

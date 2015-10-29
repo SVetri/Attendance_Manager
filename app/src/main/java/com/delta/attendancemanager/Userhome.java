@@ -27,6 +27,8 @@ public class Userhome extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(Userhome.this,AlarmReceiver.class);
+        startService(intent);
         setContentView(R.layout.activity_userhome);
         List<String[]> alls;
         alls=new ArrayList<>();

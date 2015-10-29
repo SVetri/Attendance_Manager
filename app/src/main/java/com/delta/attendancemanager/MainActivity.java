@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="http://sprocky.ddns.net:1501";
+    public static final String URL="https://3882fcf6.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";

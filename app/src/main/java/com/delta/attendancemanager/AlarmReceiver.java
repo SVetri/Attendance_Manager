@@ -3,6 +3,7 @@ package com.delta.attendancemanager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -14,7 +15,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context,"inside receiver",Toast.LENGTH_LONG).show();
 
         AttendanceServerService.syncAttendance(context);
-
         Intent tomointent = new Intent(context,TomorrowUpdateService.class);
         context.startService(tomointent);
 
