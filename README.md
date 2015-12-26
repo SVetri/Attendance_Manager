@@ -8,4 +8,4 @@ And change in daily timetable can also be reflected in the app if CR updates it.
 ##Contributors
 - [Sujay Vetrivelan](https://github.com/SVetri)
 - [Rahul Zoldyck](https://github.com/RahulZoldyck)
-- [Lakshmanaram](https://github.com/lakshmanaram)
+- [Lakshmana Ram](https://github.com/lakshmanaram)
