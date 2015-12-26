@@ -1,4 +1,4 @@
-# Attendance_Manager
+# Attendance  Manager
 ##What is it?
 An Android application that can be used to track the user's attendance in a representative-based system. Unlike other bunk 
 manager app it will work under responsiblity of each class's Representatives(CR). This app is exclusively for NITT students as
