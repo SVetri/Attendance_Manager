@@ -20,14 +20,19 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="https://3882fcf6.ngrok.com";
+    public static final String URL="https://58606ac4.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -44,7 +49,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Bundle b = getIntent().getExtras();
         if (b != null) {
             boolean g = b.getBoolean("wrong");
@@ -144,7 +148,10 @@ public class MainActivity extends ActionBarActivity {
                     regId = gcmObj
                             .register(GOOGLE_PROJ_ID);
                     msg = "Registration ID :" + regId;
-                    Log.d("fbj",regId);
+                    ParsePush.subscribeInBackground("nlr" + rollnumber.substring(0, Math.min(6, rollnumber.length())));
+//                    ParsePush.unsubscribeInBackground("nlr" + rollnumber.substring(0, Math.min(6, rollnumber.length())));         TODO add this to the log out option to stop receiving push notifications.
+
+                    Log.d("fbj", regId);
 
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
@@ -196,7 +203,10 @@ public class MainActivity extends ActionBarActivity {
                             "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
                                     + msg, Toast.LENGTH_LONG).show();
                 }
-
+                List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                for(int i=0;i<subscribedchannels.size();i++){
+                    Log.d("Parse channel",subscribedchannels.get(i));
+                }   //TODO just to check delete this
             }
         }.execute(null, null, null);
     }
