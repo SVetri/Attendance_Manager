@@ -32,7 +32,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="https://58606ac4.ngrok.com";
+    public static final String URL="https://31f8df57.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -92,6 +92,8 @@ public class MainActivity extends ActionBarActivity {
                 } else {
                     String user=username.getText().toString();
                     if(checkpref(user)){
+                        ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                        Log.i("parse init","nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                         startActivity(new Intent(MainActivity.this,Userhome.class));
                         finish();
                     }
@@ -150,9 +152,6 @@ public class MainActivity extends ActionBarActivity {
                     regId = gcmObj
                             .register(GOOGLE_PROJ_ID);
                     msg = "Registration ID :" + regId;
-                    ParsePush.subscribeInBackground("nlr" + rollnumber.substring(0, Math.min(6, rollnumber.length())));
-//                    ParsePush.unsubscribeInBackground("nlr" + rollnumber.substring(0, Math.min(6, rollnumber.length())));         TODO add this to the log out option to stop receiving push notifications.
-
                     Log.d("fbj", regId);
 
                 } catch (IOException ex) {
@@ -195,6 +194,9 @@ public class MainActivity extends ActionBarActivity {
                     SharedPreferences.Editor editor=share.edit();
                     editor.putString("rno", usernme);
                     editor.commit();
+                    ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                    Log.i("parse init","nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+//                    ParsePush.unsubscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));         TODO add this to the log out option to stop receiving push notifications.
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
                     startActivity(i);
@@ -267,6 +269,8 @@ public class MainActivity extends ActionBarActivity {
                     editor.putString(RNO, usernme);
                     editor.putString("pass",pass);
                     editor.commit();
+                    ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                    Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
 

@@ -116,7 +116,7 @@ public class AttendanceServerService extends IntentService {
             js.put("present",present.get(i));
             jsarray.put(js);
         }
-        Log.i("hel",jsarray.toString());
+        Log.i("sending something?",jsarray.toString());
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(MainActivity.URL+"/backup");
         StringEntity s=new StringEntity(jsarray.toString());

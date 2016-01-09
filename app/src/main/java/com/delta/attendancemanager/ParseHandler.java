@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,9 +29,8 @@ public class ParseHandler extends IntentService {
     String mes;
     private MySqlAdapter handler;
 
-    public ParseHandler(JSONObject jsonObject) {
+    public ParseHandler() {
         super("ParseHandler");
-        myjsonObject = jsonObject;
     }
 
 
@@ -43,10 +43,15 @@ public class ParseHandler extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Bundle b = intent.getExtras();
+        String a = b.getString("jsonData");
+
+        times = new String[9];
             try {
+                myjsonObject = new JSONObject(a);
+                Log.d("happens", myjsonObject.toString());
                 data = myjsonObject.getJSONObject("data");
-                 title = data.getString("title");
-                 message = data.getString("message");
+                 message = myjsonObject.getString("type");
 
                 //   String messageType = gcm.getMessageType(intent);        TODO message type
 
@@ -95,7 +100,6 @@ public class ParseHandler extends IntentService {
             } catch (JSONException e) {
                 Log.e("hi helloo", "Push message json exception: " + e.getMessage());
             }
-        times = new String[9];
 
     }
 

@@ -93,11 +93,23 @@ public class AtAdapter {
 
     public boolean find_existing(String subject, String datetime){
         SQLiteDatabase db = athelper.getWritableDatabase();
-        String[] columns = {Athelper.DATETIME};
-        Cursor cursor1 = db.query(Athelper.TABLE_NAME, columns, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime}, null, null, null);   //pending classes
-        cursor1.moveToNext();
-        int no_of_existing_records = cursor1.getCount();
-        cursor1.close();
+        Cursor cursor1 = null;
+        int no_of_existing_records = 0;
+        try {
+            cursor1 = db.query(Athelper.TABLE_NAME, new String[] {Athelper.DATETIME}, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime}, null, null, null);   //pending classes
+            while (cursor1.moveToNext()) {
+                no_of_existing_records = cursor1.getCount();
+                break;
+            }
+            if (cursor1 != null && !cursor1.isClosed())
+                cursor1.close();
+        } catch (Exception e){
+            no_of_existing_records = 0;
+            e.printStackTrace();
+            if (cursor1 != null && !cursor1.isClosed())
+                cursor1.close();
+        }
+
         return (no_of_existing_records==0);
     }
 

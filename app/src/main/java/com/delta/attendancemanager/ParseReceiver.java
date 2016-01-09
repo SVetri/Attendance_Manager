@@ -27,7 +27,9 @@ public class ParseReceiver extends ParsePushBroadcastReceiver {
         try {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
             Log.e("yes hellooooo", "Push received: " + json);
-            new ParseHandler(json);
+            Intent i = new Intent(context,ParseHandler.class);
+            i.putExtra("jsonData",json.toString());
+            context.startService(i);
 
         } catch (JSONException e) {
             Log.e("yes hellooooo", "Push message json exception: " + e.getMessage());
