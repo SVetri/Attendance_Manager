@@ -69,8 +69,10 @@ public class MainActivity extends ActionBarActivity {
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
         if(!rollno.equals("default")){
-            username.setText(rollno);
-            password.setText("password");
+            Intent i = new Intent(MainActivity.this, Userhome.class);
+            i.putExtra("rno", rollno);
+            startActivity(i);
+            finish();
         }
         if(wrong){
             YoYo.with(Techniques.Tada).duration(700).playOn(username);

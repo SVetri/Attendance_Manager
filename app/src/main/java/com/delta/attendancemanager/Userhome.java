@@ -70,7 +70,11 @@ public class Userhome extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             Intent i =new Intent(Userhome.this,MainActivity.class);
-            i.putExtra("logout","yes");
+            SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=share.edit();
+            editor.putString(MainActivity.RNO, "default");
+            editor.putString("pass","");
+            editor.commit();
             startActivity(i);
             finish();
             return true;
