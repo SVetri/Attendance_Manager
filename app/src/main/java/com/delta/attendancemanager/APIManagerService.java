@@ -14,11 +14,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 
 public class APIManagerService extends IntentService {
+    MySqlAdapter handler;
+    String[] allString;
     MySqlAdapter adapter;
     List<String[]> all,subs;
 
@@ -35,7 +38,7 @@ public class APIManagerService extends IntentService {
         int mode=0;
         String[] times;
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno=share1.getString(MainActivity.RNO,":)");
+        String rno=share1.getString(MainActivity.RNO, ":)");
         String batch = rno.substring(0,rno.length()-3);
         String URL = MainActivity.URL+"/getTimetable/"+batch;
 //TODO:send username using SharedPref
@@ -88,6 +91,53 @@ public class APIManagerService extends IntentService {
 
 
         }
+        handler=new MySqlAdapter(getApplicationContext(),null);
+        Calendar c=Calendar.getInstance();
+        int hour=c.get(Calendar.HOUR_OF_DAY);
+        allString=new String[9];
+        boolean today;
+        if(hour<16)
+            today=true;
+        else
+            today=false;
+
+        int dayw=c.get(Calendar.DAY_OF_WEEK);
+        switch (dayw) {
+            case Calendar.MONDAY:
+                if(today)
+                    allString = handler.get_mon();
+                else
+                    allString=handler.get_tue();
+                break;
+            case Calendar.TUESDAY:
+                if(today)
+                    allString = handler.get_tue();
+                else
+                    allString=handler.get_wed();
+                break;
+            case Calendar.WEDNESDAY:
+                if(today)
+                    allString = handler.get_wed();
+                else
+                    allString=handler.get_thur();
+                break;
+            case Calendar.THURSDAY:
+                if(today)
+                    allString = handler.get_thur();
+                else
+                    allString=handler.get_fri();
+                break;
+            case Calendar.FRIDAY:
+                if(today)
+                    allString = handler.get_fri();
+                else
+                    allString=handler.get_mon();
+                break;
+            default:
+                allString=handler.get_mon();
+
+        }
+        handler.update_tomo(allString);
     }
 
 }

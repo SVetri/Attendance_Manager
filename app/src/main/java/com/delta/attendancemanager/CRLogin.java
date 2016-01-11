@@ -1,12 +1,15 @@
 package com.delta.attendancemanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 public class CRLogin extends ActionBarActivity {
@@ -20,6 +23,13 @@ public class CRLogin extends ActionBarActivity {
         crlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText username = (EditText) findViewById(R.id.crbranch);
+                EditText password = (EditText) findViewById(R.id.crpass);
+                String rno = username.getText().toString();
+                SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=share.edit();
+                editor.putString("crrno", rno);
+                editor.commit();
                 Intent i = new Intent(CRLogin.this, CRhome.class);
                 startActivity(i);
             }

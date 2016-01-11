@@ -92,7 +92,7 @@ public class UpdateTTService extends IntentService {
 
     private void handlechat(String msg) throws JSONException ,IOException {
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno=share1.getString(MainActivity.RNO,":)");
+        String rno=share1.getString("crrno",":)");
         String batch = rno.substring(0,rno.length()-3);
         JSONObject data=new JSONObject();
         Calendar cal=Calendar.getInstance();
@@ -150,7 +150,7 @@ public class UpdateTTService extends IntentService {
     //TODO: API console
     private void handleUpcoming(JSONObject json)  throws JSONException, IOException{
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno=share1.getString(MainActivity.RNO,":)");
+        String rno=share1.getString("crrno",":)");
         String batch = rno.substring(0,rno.length()-3);
         JSONObject result=new JSONObject();
         // 1. create HttpClient
@@ -203,7 +203,7 @@ public class UpdateTTService extends IntentService {
 
     private void handleTT(JSONObject json) throws JSONException, IOException {
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno=share1.getString(MainActivity.RNO,":)");
+        String rno=share1.getString("crrno",":)");
         String batch = rno.substring(0,rno.length()-3);
         JSONObject result=new JSONObject();
         // 1. create HttpClient
