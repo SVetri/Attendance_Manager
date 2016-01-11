@@ -3,6 +3,7 @@ package com.delta.attendancemanager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -90,6 +91,9 @@ public class UpdateTTService extends IntentService {
     }
 
     private void handlechat(String msg) throws JSONException ,IOException {
+        SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno=share1.getString(MainActivity.RNO,":)");
+        String batch = rno.substring(0,rno.length()-3);
         JSONObject data=new JSONObject();
         Calendar cal=Calendar.getInstance();
         int h=cal.get(Calendar.HOUR_OF_DAY);
@@ -107,7 +111,7 @@ public class UpdateTTService extends IntentService {
         JSONObject js =new JSONObject();
         js.put("data",jb);
         js.put("type","chat");
-        js.put("batch","110114");
+        js.put("batch",batch);
         JSONObject result;
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
@@ -145,6 +149,9 @@ public class UpdateTTService extends IntentService {
 
     //TODO: API console
     private void handleUpcoming(JSONObject json)  throws JSONException, IOException{
+        SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno=share1.getString(MainActivity.RNO,":)");
+        String batch = rno.substring(0,rno.length()-3);
         JSONObject result=new JSONObject();
         // 1. create HttpClient
         HttpClient httpclient = new DefaultHttpClient();
@@ -156,7 +163,7 @@ public class UpdateTTService extends IntentService {
 
         Log.i("ulala", json.toString());
         JSONObject js=new JSONObject();
-        js.put("batch", "110114");
+        js.put("batch", batch);
         JSONObject ex=new JSONObject();
         ex.put("data", json);
         js.put("data",ex);
@@ -195,22 +202,23 @@ public class UpdateTTService extends IntentService {
     }
 
     private void handleTT(JSONObject json) throws JSONException, IOException {
+        SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno=share1.getString(MainActivity.RNO,":)");
+        String batch = rno.substring(0,rno.length()-3);
         JSONObject result=new JSONObject();
         // 1. create HttpClient
         HttpClient httpclient = new DefaultHttpClient();
 
         // 2. make POST request to the given URL
-        HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/setTimeTable");
 
 
 
         Log.i("ulala", json.toString());
        JSONObject js=new JSONObject();
-        js.put("batch", "110114070");
-        JSONObject ex=new JSONObject();
-        ex.put("data", json);
-        js.put("data",ex);
-        js.put("type","ut");
+        js.put("batch", batch);
+        js.put("data", json);
+
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");

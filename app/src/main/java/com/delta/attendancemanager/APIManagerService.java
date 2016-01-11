@@ -3,6 +3,7 @@ package com.delta.attendancemanager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,12 +30,14 @@ public class APIManagerService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         subs=new ArrayList<>();
-        String user="";
         Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
-        String URL = "http://dalalstreet.pragyan.org/~rahulzoldyck/timetable";
+        SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno=share1.getString(MainActivity.RNO,":)");
+        String batch = rno.substring(0,rno.length()-3);
+        String URL = MainActivity.URL+"/getTimetable/"+batch;
 //TODO:send username using SharedPref
         all=new ArrayList<>();
         adapter=new MySqlAdapter(this,null);
