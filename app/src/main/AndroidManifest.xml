@@ -34,24 +34,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserHome"
-            android:label="@string/title_activity_user_home" >
-        </activity>
-        <activity
             android:name=".WeeklyTimetable"
             android:label="@string/title_activity_weekly_timetable"
-            android:parentActivityName=".UserHome" >
+            android:parentActivityName=".Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.UserHome" />
+                android:value="com.delta.attendancemanager.Userhome" />
         </activity>
         <activity
             android:name=".ManageAttendance"
             android:label="@string/title_activity_manage_attendance"
-            android:parentActivityName=".UserHome" >
+            android:parentActivityName=".Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.UserHome" />
+                android:value="com.delta.attendancemanager.Userhome" />
         </activity>
         <activity
             android:name=".UpdateMyAttendance"
@@ -94,32 +90,28 @@
                 android:value="com.delta.attendancemanager.MainActivity" />
         </activity>
         <activity
-            android:name=".CRHome"
-            android:label="@string/title_activity_crhome" >
-        </activity>
-        <activity
             android:name=".EditWeeklyTT"
             android:label="@string/title_activity_edit_weekly_tt"
-            android:parentActivityName=".CRHome" >
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
         <activity
             android:name=".UpcomingTT"
             android:label="@string/title_activity_upcoming_tt"
-            android:parentActivityName=".CRHome" >
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
         <activity
             android:name=".EditUpcomingTT"
             android:label="@string/title_activity_edit_upcoming_tt"
-            android:parentActivityName=".CRHome" >
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
 
         <service
@@ -169,10 +161,6 @@
 
         <service
             android:name=".AlarmService"
-            android:exported="false" >
-        </service>
-        <service
-            android:name=".AttendanceBackup"
             android:exported="false" >
         </service>
         <service
