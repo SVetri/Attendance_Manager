@@ -105,7 +105,7 @@ public class AttendanceServerService extends IntentService {
         atAdapter.to_update_data();
         SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
-        String rollno = prefs.getString(RNO, "default");
+        String rollno = prefs.getString(RNO,"default");
         ArrayList<String> subjects = atAdapter.getSubj(), datetime = atAdapter.getDt();
         ArrayList<Integer> present = atAdapter.getPresint();
         for(int i=0;i<subjects.size();i++){
@@ -205,7 +205,7 @@ Log.i("hel",jsons);
 //        );
         Log.i("hel",js.toString());
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(MainActivity.URL+"/backup");
+        HttpPost httpPost = new HttpPost(MainActivity.URL+"/attendance");
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");

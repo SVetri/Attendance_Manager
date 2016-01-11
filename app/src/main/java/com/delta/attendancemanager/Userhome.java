@@ -56,8 +56,14 @@ public class Userhome extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id == R.id.action_crlogin){
+            Intent i = new Intent(Userhome.this,CRLogin.class);
+            startActivity(i);
+            finish();
+            return true;
+        }
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        else if (id == R.id.action_logout) {
             Intent i =new Intent(Userhome.this,MainActivity.class);
             SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor=share.edit();
@@ -68,7 +74,6 @@ public class Userhome extends ActionBarActivity {
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
