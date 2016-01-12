@@ -3,14 +3,10 @@ package com.delta.attendancemanager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 
 public class UpcomingTT extends ActionBarActivity {
@@ -63,7 +59,7 @@ public class UpcomingTT extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_POST) {
             return true;
         }
 

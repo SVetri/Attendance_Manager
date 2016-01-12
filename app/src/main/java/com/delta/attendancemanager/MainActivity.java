@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
@@ -313,7 +312,7 @@ public class MainActivity extends ActionBarActivity {
 
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_POST) {
             return true;
         }
 

@@ -1,9 +1,6 @@
 package com.delta.attendancemanager;
 
-import android.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,7 +39,7 @@ public class WeeklyTimetable extends ActionBarActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_POST) {
             return true;
         }
 

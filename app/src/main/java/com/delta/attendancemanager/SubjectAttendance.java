@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class SubjectAttendance extends ActionBarActivity {
 
     AtAdapter atAdapter;
@@ -78,7 +76,7 @@ public class SubjectAttendance extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_POST) {
             return true;
         }
 
