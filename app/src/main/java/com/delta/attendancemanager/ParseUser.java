@@ -16,7 +16,8 @@ public class ParseUser extends Application {
         try {
             Parse.initialize(this, "TrAIQXwU3FAEWHGeR4QAQETp9M8FXRHlUM9FtddN", "FHpgYG3H5n3YEvI5bzwGaUF5j4SLxGaj8c2hXjkL");
             ParseInstallation.getCurrentInstallation().saveInBackground();
-//            Log.d("hello", "Parse got initialized");
+            Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
+            Log.d("Parse initialized", "Parse got initialized");
     }catch (Exception e){
             e.printStackTrace();
         }

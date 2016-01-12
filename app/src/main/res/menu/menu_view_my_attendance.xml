@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.delta.attendancemanager.ViewMyAttendance">
-    <item android:id="@+id/action_POST" android:title="@string/action_settings"
+    <item android:id="@+id/action_retrieve" android:title="Retrieve my attendance"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_backup" android:title="Backup my attendance"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

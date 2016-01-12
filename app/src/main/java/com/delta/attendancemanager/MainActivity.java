@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="http://31f8df57.ngrok.com";
+    public static final String URL="https://64a40776.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";
@@ -198,9 +198,9 @@ public class MainActivity extends ActionBarActivity {
                     SharedPreferences.Editor editor=share.edit();
                     editor.putString("rno", usernme);
                     editor.commit();
+
                     ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                    Log.i("parse init","nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-//                    ParsePush.unsubscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));         TODO add this to the log out option to stop receiving push notifications.
+                    Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
                     startActivity(i);
@@ -212,6 +212,7 @@ public class MainActivity extends ActionBarActivity {
                                     + msg, Toast.LENGTH_LONG).show();
                 }
                 List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                if(subscribedchannels!=null)
                 for(int i=0;i<subscribedchannels.size();i++){
                     Log.d("Parse channel",subscribedchannels.get(i));
                 }   //TODO just to check delete this

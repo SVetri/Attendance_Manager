@@ -6,12 +6,8 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
+import android.widget.Toast;
+import android.os.Handler;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -40,6 +36,7 @@ public class AttendanceServerService extends IntentService {
     private static final String ADD = "com.delta.attendancemanager.action.add.local.attendance";
     private static final String DELETE = "com.delta.attendancemanager.action.delete.local.attendance";
     public static final String RNO="rno";
+    Handler toasthandler;
 
     public static void syncAttendance(Context context) {
         Intent intent = new Intent(context, AttendanceServerService.class);
@@ -67,6 +64,7 @@ public class AttendanceServerService extends IntentService {
 
     public AttendanceServerService() {
         super("AttendanceServerService");
+        toasthandler = new Handler();
     }
 
     @Override
@@ -142,11 +140,12 @@ public class AttendanceServerService extends IntentService {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
 Log.i("hel",jsons);
-        // try parse the string to a JSON object
         try {
             result = new JSONObject(jsons);
-            if(result.getInt("BackedUp")==1)
-                Log.d("hel","success");
+            if(result.getInt("BackedUp")==1) {
+                Log.d("hel", "success");
+                toasthandler.post(new DisplayToast(this, "Attendance successfully backed up"));
+            }
             else{
                 Log.d("hel", "failed");
             }
@@ -240,7 +239,8 @@ Log.i("hel",jsons);
                 String subject = temp.getString("subject");
                 String dt = temp.getString("date-time");
                 int pres = temp.getInt("present");
-                atAdapter.add_attendance(subject,dt,pres);
+                atAdapter.add_attendance(subject, dt, pres);
+                toasthandler.post(new DisplayToast(this, "Attendance up-to-date"));
             }
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());

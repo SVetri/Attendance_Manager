@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.parse.ParsePush;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +68,11 @@ public class Userhome extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         else if (id == R.id.action_logout) {
             Intent i =new Intent(Userhome.this,MainActivity.class);
-            SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
+            SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
+            String username = share.getString("rno", "");
             SharedPreferences.Editor editor=share.edit();
+            ParsePush.unsubscribeInBackground("nlr" + username.substring(0, Math.min(6, username.length())));
+            Log.i("parse init", "nlr" + username.substring(0, Math.min(6, username.length())) + " unsubscribed");
             editor.putString(MainActivity.RNO, "default");
             editor.putString("pass","");
             editor.commit();

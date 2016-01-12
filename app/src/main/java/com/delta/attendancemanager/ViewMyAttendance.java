@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -59,11 +60,16 @@ public class ViewMyAttendance extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_POST) {
+
+        if (id == R.id.action_retrieve) {
+            AttendanceServerService.retrieveAttendance(getApplicationContext());
             return true;
         }
+        if(id == R.id.action_backup){
+            AttendanceServerService.syncAttendance(getApplicationContext());
+            return true;
 
+        }
         return super.onOptionsItemSelected(item);
     }
 }
