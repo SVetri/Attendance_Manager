@@ -68,4 +68,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/wrongPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_below="@+id/fNameLayout1"
+        android:layout_centerHorizontal="true"
+        android:textColor="#f80707" />
+
 </RelativeLayout>
