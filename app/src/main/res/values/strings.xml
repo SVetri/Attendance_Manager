@@ -23,5 +23,6 @@
     <string name="title_section1">Timetable</string>
     <string name="title_section2">Attendance</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
+    <string name="post_online">POST Online</string>
 
 </resources>

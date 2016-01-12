@@ -50,23 +50,20 @@ public class ParseHandler extends IntentService {
             try {
                 myjsonObject = new JSONObject(a);
                 Log.d("happens", myjsonObject.toString());
-                data = myjsonObject.getJSONObject("data");
                  message = myjsonObject.getString("type");
 
                 //   String messageType = gcm.getMessageType(intent);        TODO message type
 
                 if (message.equals(MSG_TT)) {
-                    try {
-                        JSONObject js = new JSONObject(data.getString("data"));
-                        updateTT(js);
-                        sendNotification(0, "Timetable Updated");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    startService(new Intent(getApplicationContext(),APIManagerService.class));
+                    sendNotification(0, "Timetable Updated");
+
+
                 }
                 if (message.equals(MSG_UT)) {
                     // sendNotification(0, "success");
                     try {
+                        data = myjsonObject.getJSONObject("data");
                         String ex = data.getString("data");
                         JSONObject js = new JSONObject(ex);
                         AttendanceServerService.deleteAttendance(getApplicationContext());
@@ -82,6 +79,7 @@ public class ParseHandler extends IntentService {
 
 
                     try {
+                        data = myjsonObject.getJSONObject("data");
                         String js = data.getString("an");
                         JSONObject data = new JSONObject(js);
                         String date = data.getString("date");

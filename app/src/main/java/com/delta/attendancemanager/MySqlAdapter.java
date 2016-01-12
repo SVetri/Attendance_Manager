@@ -346,6 +346,11 @@ public class MySqlAdapter {
     }
 
     public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
+        try{
+            delete_day(day);
+        }catch(Exception e){
+
+        }
         if(ispresent(day))
             delete_day(day);
         ContentValues v=new ContentValues();

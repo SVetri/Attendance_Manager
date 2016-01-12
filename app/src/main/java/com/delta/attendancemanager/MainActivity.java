@@ -130,12 +130,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void InitialHandShake(String user) {
-        startService(new Intent(this,APIManagerService.class));
         registerInBackground(user);
 
 
     }
     private void registerInBackground(final String rollnumber) {
+        handler.add_day("Monday","","","","","","","","");
+        handler.add_day("Tuesday","","","","","","","","");
+        handler.add_day("Wednesday","","","","","","","","");
+        handler.add_day("Thursday","","","","","","","","");
+        handler.add_day("Friday","","","","","","","","");
+
         new AsyncTask<Void, Void, String>() {
             JSONParser jp;
             @Override
@@ -221,7 +226,7 @@ public class MainActivity extends ActionBarActivity {
         editor.putString(REG_ID, regId);
         editor.putString(RNO, rollnumber);
         editor.commit();
-
+        startService(new Intent(this, APIManagerService.class));
 
     }
 

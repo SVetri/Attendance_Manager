@@ -293,11 +293,12 @@ public class CRhomesliderfragment extends Fragment {
                     Button add = (Button) view.findViewById(R.id.addbutton);
                     Button del = (Button) view.findViewById(R.id.deletebutton);
 //                    MySqlHandler handler=new MySqlHandler(getActivity(),null);
+                    final ListView li = (ListView) view.findViewById(R.id.courses);
                     add.setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                     final EditText t = new EditText(getActivity());
                                     t.setInputType(InputType.TYPE_CLASS_TEXT);
                                     builder.setView(t);
@@ -305,19 +306,28 @@ public class CRhomesliderfragment extends Fragment {
                                             .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     handler.add_sub(t.getText().toString());
+                                                    ArrayList<String> s = new ArrayList();
+
+                                                    s = handler.getSubs();
+
+                                                    String[] al = new String[s.size()];
+                                                    al = s.toArray(al);
+                                                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
+                                                    li.setAdapter(adapter1);
+
 //                                                    ischanged=true;
                                                 }
                                             })
                                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
-                                                    // User cancelled the dialog
+
                                                 }
                                             });
                                     builder.show();
                                 }
                             }
                     );
-                    ListView li = (ListView) view.findViewById(R.id.courses);
+
                     ArrayList<String> s = new ArrayList();
 
                     s = handler.getSubs();
