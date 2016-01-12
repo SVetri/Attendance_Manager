@@ -111,6 +111,12 @@ public class UpdateTTService extends IntentService {
         JSONObject js =new JSONObject();
         js.put("data",jb);
         js.put("type","chat");
+        SharedPreferences prefs = getSharedPreferences("user",
+                Context.MODE_PRIVATE);
+        String rollno = prefs.getString(MainActivity.RNO, "default");
+        String secret = prefs.getString("secret", "default");
+        js.put("secret",secret);
+        js.put("username",rollno);
         js.put("batch",batch);
         JSONObject result;
         HttpClient httpclient = new DefaultHttpClient();
@@ -167,7 +173,13 @@ public class UpdateTTService extends IntentService {
         JSONObject ex=new JSONObject();
         ex.put("data", json);
         js.put("data",ex);
-        js.put("type","ut");
+        js.put("type", "ut");
+        SharedPreferences prefs = getSharedPreferences("user",
+                Context.MODE_PRIVATE);
+        String rollno = prefs.getString(MainActivity.RNO, "default");
+        String secret = prefs.getString("secret", "default");
+        js.put("secret",secret);
+        js.put("username",rollno);
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");
@@ -218,7 +230,12 @@ public class UpdateTTService extends IntentService {
        JSONObject js=new JSONObject();
         js.put("batch", batch);
         js.put("data", json);
-
+        SharedPreferences prefs = getSharedPreferences("user",
+                Context.MODE_PRIVATE);
+        String rollno = prefs.getString(MainActivity.RNO, "default");
+        String secret = prefs.getString("secret", "default");
+        js.put("secret",secret);
+        js.put("username",rollno);
         StringEntity s=new StringEntity(js.toString());
         httpPost.setEntity(s);
         httpPost.setHeader("Accept", "application/json");

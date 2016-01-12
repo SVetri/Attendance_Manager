@@ -70,6 +70,12 @@ public class CRLogin extends ActionBarActivity {
                 JSONObject jd=jp.makeHttpRequest(MainActivity.URL+"/crlogin","POST",js);
                 Log.i("ls", js.toString());
                 int success=jd.getInt("Signed Up");
+                String secret = jd.getString("secret");
+                SharedPreferences prefs = getSharedPreferences("user",
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("secret", secret);
+                editor.apply();
                 return success==1;                                                //authentication
             }  catch (Exception e) {
                 e.printStackTrace();
