@@ -18,16 +18,21 @@
         android:id="@+id/updatemyatt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
         android:text="Update my Attendance"
         android:textSize="20sp"
         android:layout_weight="3"/>
 
     <Button
         android:id="@+id/viewmyatt"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="View my Attendance"
         android:textSize="20sp"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
         android:layout_weight="3"/>
 
 </LinearLayout>
