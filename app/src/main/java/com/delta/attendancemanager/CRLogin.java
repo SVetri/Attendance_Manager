@@ -16,20 +16,40 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CRLogin extends ActionBarActivity {
+    MySqlAdapter handler;
     EditText username,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        handler = new MySqlAdapter(this,null);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crlogin);
         Button crlogin = (Button) findViewById(R.id.crlogin);
+        List<String[]> all =new ArrayList<>();
+        all = handler.get_days();
+        final boolean isEmpty = handler.get_days().size() == 0;
+
 
         crlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  username = (EditText) findViewById(R.id.crbranch);
                  password = (EditText) findViewById(R.id.crpass);
+                SharedPreferences share1=getSharedPreferences("user",Context.MODE_PRIVATE);
+                String rno=share1.getString("crrno",":)");
+                if(rno.equals(":)")){
+                    if(isEmpty){
+                        handler.add_day("Monday","","","","","","","","");
+                        handler.add_day("Tuesday","","","","","","","","");
+                        handler.add_day("Wednesday","","","","","","","","");
+                        handler.add_day("Thursday","","","","","","","","");
+                        handler.add_day("Friday","","","","","","","","");
+                    }
+                }
                 CrAuth auth = new CrAuth();
                 auth.execute(username.getText().toString(),password.getText().toString());
 

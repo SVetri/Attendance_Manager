@@ -138,6 +138,7 @@ public class APIManagerService extends IntentService {
 
         }
         handler.update_tomo(allString);
+        startActivity(new Intent(getApplicationContext(),Userhome.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
 }
