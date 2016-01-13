@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,7 +32,6 @@ public class APIManagerService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         subs=new ArrayList<>();
-        Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
@@ -73,7 +71,6 @@ public class APIManagerService extends IntentService {
                         times[8]=day.getString("400");
                         for(int k=1;k<9;k++)
                             adapter.add_sub(times[k]);
-                        Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
                         Log.d("hel","api manager: "+times[0]+" "+times[5]);
                         adapter.add_day(times[0],times[1],times[2],times[3],times[4],times[5],times[6],times[7],times[8]);
                     }

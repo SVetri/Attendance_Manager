@@ -62,7 +62,6 @@ public class Userhome extends ActionBarActivity {
         if(id == R.id.action_crlogin){
             Intent i = new Intent(Userhome.this,CRLogin.class);
             startActivity(i);
-            finish();
             return true;
         }
         //noinspection SimplifiableIfStatement

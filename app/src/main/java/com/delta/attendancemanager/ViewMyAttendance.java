@@ -1,6 +1,11 @@
 //view my attendance option.
 package com.delta.attendancemanager;
 
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,11 +67,11 @@ public class ViewMyAttendance extends ActionBarActivity {
 
 
         if (id == R.id.action_retrieve) {
-            AttendanceServerService.retrieveAttendance(getApplicationContext());
+            new retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
         }
         if(id == R.id.action_backup){
-            AttendanceServerService.syncAttendance(getApplicationContext());
+            new backup(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
 
         }

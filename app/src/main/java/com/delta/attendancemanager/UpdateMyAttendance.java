@@ -88,14 +88,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_dummy) {
-            AtAdapter atAdapter = new AtAdapter(getApplicationContext());
-            MySqlAdapter helper = new MySqlAdapter(getApplicationContext(),null);
-            String format = "yyyy-MM-dd HH:mm";
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Calendar now = Calendar.getInstance();
-                Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),10, now.get(Calendar.MINUTE));                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
-            atAdapter.add_attendance("probability", sdf.format(date), 0);
-            atAdapter.add_attendance("combinatorics", sdf.format(date), 0);
+            AttendanceServerService.addAttendance(this);
             return true;
         }
 

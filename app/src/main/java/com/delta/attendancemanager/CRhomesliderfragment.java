@@ -22,8 +22,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -132,7 +130,6 @@ public class CRhomesliderfragment extends Fragment {
                     int pos = rg.getCheckedRadioButtonId();
                     RadioButton rd = (RadioButton) rg.findViewById(pos);
                     String su = rd.getText().toString();
-                    Toast.makeText(getActivity(), su, Toast.LENGTH_SHORT).show();
                     t.setText(su);
                     a[n] = su;
                     handler.update_tomo(a);

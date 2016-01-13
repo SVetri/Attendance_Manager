@@ -7,8 +7,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -65,7 +63,6 @@ public class AlarmService extends IntentService {
             cal.set(Calendar.DAY_OF_MONTH,cal.get(Calendar.DAY_OF_MONTH)+1);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , AlarmManager.INTERVAL_DAY , PendingIntent.getBroadcast(this, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
-        Toast.makeText(this, "Custom alarm set", Toast.LENGTH_LONG).show();
     }
 
 
@@ -74,6 +71,5 @@ public class AlarmService extends IntentService {
         PendingIntent pi = PendingIntent.getBroadcast(this,0,inten,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pi);
-        Toast.makeText(this, "Alarm cancelled", Toast.LENGTH_LONG).show();
     }
 }

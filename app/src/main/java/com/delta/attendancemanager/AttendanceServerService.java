@@ -2,6 +2,7 @@ package com.delta.attendancemanager;
 
 import android.app.DownloadManager;
 import android.app.IntentService;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -56,7 +57,7 @@ public class AttendanceServerService extends IntentService {
         context.startService(intent);
     }
 
-    public static void retrieveAttendance(Context context) {                                                //TODO: use it to retrieve attendnace whenever we start
+    public static void retrieveAttendance(Context context) {
         Intent intent = new Intent(context, AttendanceServerService.class);
         intent.setAction(RETRIEVE);
         context.startService(intent);
@@ -96,6 +97,7 @@ public class AttendanceServerService extends IntentService {
     }
 
     private void handleSync() throws IOException, JSONException {
+
         Log.i("in AttendanceServer","handleSync() called");
         JSONObject result = new JSONObject();
         JSONObject js = new JSONObject();
@@ -166,6 +168,7 @@ Log.i("hel",jsons);
             Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),TTimings.hour[i], TTimings.min[i]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
             atAdapter.add_attendance(subjects[i], sdf.format(date), 0);
         }
+        toasthandler.post(new DisplayToast(getApplicationContext(),"Today's attendance added"));
     }
 
     private void handledelete(){
@@ -178,12 +181,12 @@ Log.i("hel",jsons);
         Calendar now = Calendar.getInstance();
         for(int i=1;i<=8;i++){
             Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),TTimings.hour[i], TTimings.min[i]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
-            atAdapter.delete_data(subjects[i],sdf.format(date));
+            atAdapter.delete_data(subjects[i], sdf.format(date));
         }
     }
 
     private void handleRetrieve() throws JSONException, IOException {
-        Log.i("in AttendanceServer","handleRetrieve() called");
+        Log.i("in AttendanceServer", "handleRetrieve() called");
         JSONArray result;
         JSONObject js = new JSONObject();
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
