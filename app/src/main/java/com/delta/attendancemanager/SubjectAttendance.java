@@ -38,6 +38,8 @@ public class SubjectAttendance extends ActionBarActivity {
         int percent = 0;
         if(tc!=0)
             percent = ca*100 / tc;
+        else
+            percent = 100;
         attendancepercent.setText(String.valueOf(percent)+"%");
 
         Boolean dispnotice = getIntent().getBooleanExtra("pendupd", false);
@@ -56,6 +58,7 @@ public class SubjectAttendance extends ActionBarActivity {
                 Intent i = new Intent(SubjectAttendance.this, EditHistory.class);
                 i.putExtra("sname",subname);
                 startActivity(i);
+                finish();
             }
         });
     }

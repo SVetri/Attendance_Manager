@@ -98,6 +98,7 @@ public class AttendanceServerService extends IntentService {
     }
 
     private void handleSync() throws IOException, JSONException {
+        Log.i("in AttendanceServer","handleSync() called");
         JSONObject result = new JSONObject();
         JSONObject js = new JSONObject();
         JSONArray jsarray = new JSONArray();
@@ -155,6 +156,7 @@ Log.i("hel",jsons);
     }
 
     private void handleAdd(){
+        Log.i("in AttendanceServer","handleAdd() called");
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
         MySqlAdapter helper = new MySqlAdapter(getApplicationContext(),null);
         String[] subjects = helper.get_tomo();
@@ -168,6 +170,7 @@ Log.i("hel",jsons);
     }
 
     private void handledelete(){
+        Log.i("in AttendanceServer","handleDelete() called");
         MySqlAdapter helper = new MySqlAdapter(getApplicationContext(),null);
         String[] subjects = helper.get_tomo();
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
@@ -181,6 +184,7 @@ Log.i("hel",jsons);
     }
 
     private void handleRetrieve() throws JSONException, IOException {
+        Log.i("in AttendanceServer","handleRetrieve() called");
         JSONArray result;
         JSONObject js = new JSONObject();
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());

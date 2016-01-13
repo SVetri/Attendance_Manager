@@ -50,6 +50,7 @@ public class AtAdapter {
     }
 
     public void to_update_data(){
+        Log.i("in AtAdapter","to update data called");
         SQLiteDatabase db = athelper.getWritableDatabase();
         //SELECT subject,datetime FROM attendance WHERE update = 1;
         String[] columns = {Athelper.SUBJECT,Athelper.DATETIME,Athelper.PRESENT};
@@ -73,6 +74,9 @@ public class AtAdapter {
     }
 
     public void update_up(String subject, String datetime, int present){                     //updating an already existing attendance -----
+        Log.i("in AtAdapter","update up called");
+        if(subject==null||subject.isEmpty())
+            return;
         SQLiteDatabase db = athelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Athelper.UPDATE, 0);
@@ -80,6 +84,9 @@ public class AtAdapter {
     }
 
     public void add_attendance(String subject, String datetime, int present){               //to add attendance
+        Log.i("in AtAdapter","add attendance called");
+        if(subject==null||subject.isEmpty()||datetime.isEmpty())
+            return;
         SQLiteDatabase sqLiteDatabase = athelper.getWritableDatabase();
         if(find_existing(subject,datetime)){
             ContentValues cv = new ContentValues();
@@ -92,24 +99,14 @@ public class AtAdapter {
     }
 
     public boolean find_existing(String subject, String datetime){
+        Log.i("in AtAdapter","find existing called");
+        if(subject.isEmpty()||datetime.isEmpty())
+            return false;
         SQLiteDatabase db = athelper.getWritableDatabase();
-        Cursor cursor1 = null;
-        int no_of_existing_records = 0;
-        try {
-            cursor1 = db.query(Athelper.TABLE_NAME, new String[] {Athelper.DATETIME}, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime}, null, null, null);   //pending classes
-            while (cursor1.moveToNext()) {
-                no_of_existing_records = cursor1.getCount();
-                break;
-            }
-            if (cursor1 != null && !cursor1.isClosed())
-                cursor1.close();
-        } catch (Exception e){
-            no_of_existing_records = 0;
-            e.printStackTrace();
-            if (cursor1 != null && !cursor1.isClosed())
-                cursor1.close();
-        }
-
+        Cursor cursor1 = db.query(Athelper.TABLE_NAME, new String[] {Athelper.DATETIME}, Athelper.SUBJECT + " =? AND " + Athelper.DATETIME +  " =? ", new String[]{subject, datetime}, null, null, null);   //pending classes
+        cursor1.moveToNext();
+        int no_of_existing_records = cursor1.getCount();
+        cursor1.close();
         return (no_of_existing_records==0);
     }
 
@@ -126,12 +123,22 @@ public class AtAdapter {
     }
 
     public void delete_data(String subject,String datet){                                                   //as of now no use
+        Log.i("in AtAdapter","delete data called");
+        if(subject==null||  subject.isEmpty()||datet.isEmpty())
+            return;
         SQLiteDatabase db = athelper.getWritableDatabase();
         //DELETE * FROM attendance WHERE subject = subject AND datetime = datet;
         db.delete(Athelper.TABLE_NAME,Athelper.SUBJECT+ " =? AND "+Athelper.DATETIME+" =? ",new String[]{subject,datet});
     }
 
     public void subject_info(String subject){
+        Log.i("in AtAdapter","subject_info called");
+        if(subject==null ||subject.isEmpty()) {
+            classes_attended = 0;
+            totalclasses = 0;
+            pending_classes = 0;
+            return;
+        }
         SQLiteDatabase db = athelper.getWritableDatabase();
         String[] columns = {Athelper.DATETIME};
         Cursor cursor1 = db.query(Athelper.TABLE_NAME,columns,Athelper.SUBJECT + " =? AND "+Athelper.PRESENT+ " =1 ",new String[]{subject},null,null,null);   //pending classes
@@ -158,6 +165,7 @@ public class AtAdapter {
 //        }
     }
     public void fetch_subject_data(String sub){
+        Log.i("in AtAdapter","fetch_subject_data called");
         SQLiteDatabase db = athelper.getReadableDatabase();
         //SELECT subject,datetime,present FROM attendance WHERE subject = sub;
         String[] columns = {Athelper.DATETIME,Athelper.PRESENT};
@@ -178,6 +186,7 @@ public class AtAdapter {
         cursor.close();
     }
     public void fetch_pending_data(){
+        Log.i("in AtAdapter","fetch_pending_data called");
         SQLiteDatabase db = athelper.getWritableDatabase();
         //SELECT subject,datetime FROM attendance WHERE present = 0;
         String[] columns = {Athelper.SUBJECT,Athelper.DATETIME};
@@ -195,6 +204,7 @@ public class AtAdapter {
         cursor.close();
     }
     public void update_attendance(String subject, String datetime, int present){                     //updating an already existing attendance -----
+        Log.i("in AtAdapter","update attendance called");
         SQLiteDatabase db = athelper.getWritableDatabase();
         //UPDATE attendance SET present  = present WHERE present = 0;
         ContentValues cv = new ContentValues();
