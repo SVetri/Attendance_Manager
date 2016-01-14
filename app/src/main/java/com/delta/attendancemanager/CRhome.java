@@ -13,11 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CRhome extends ActionBarActivity {
+    int page =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crhome2);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            page = bundle.getInt("page");
+        }else {
+           page = 1;
+        }
 //        AlarmService.startActionSetDefaultAlarm(getApplicationContext());
         List<String[]> alls;
         alls=new ArrayList<>();
@@ -36,6 +43,9 @@ public class CRhome extends ActionBarActivity {
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             CRhomesliderfragment fragment = new CRhomesliderfragment();
+            Bundle b= new Bundle();
+            b.putInt("page",page);
+            fragment.setArguments(b);
             transaction.replace(R.id.fragment_content2, fragment);
             transaction.commit();
         }

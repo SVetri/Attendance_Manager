@@ -16,9 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Userhome extends ActionBarActivity {
+    int page = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            page = bundle.getInt("page");
+        }else {
+            page = 0;
+        }
         Intent intent = new Intent(Userhome.this,AlarmReceiver.class);
         startService(intent);
         setContentView(R.layout.activity_userhome);
@@ -40,6 +47,9 @@ public class Userhome extends ActionBarActivity {
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             UserHomeSliderFragment fragment = new UserHomeSliderFragment();
+            Bundle b= new Bundle();
+            b.putInt("page",page);
+            fragment.setArguments(b);
             transaction.replace(R.id.fragment_content3, fragment);
             transaction.commit();
         }

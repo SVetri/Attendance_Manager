@@ -192,8 +192,10 @@ public class ParseHandler extends IntentService {
             case 2:
                 resultIntent = new Intent(this, Userhome.class);
                 resultIntent.putExtra("msg", msg);
+                resultIntent.putExtra("page",2);
                 resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
 
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

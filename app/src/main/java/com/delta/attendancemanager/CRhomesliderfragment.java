@@ -35,14 +35,22 @@ public class CRhomesliderfragment extends Fragment {
 
     MySqlAdapter handler;
     List<String[]> all;
+    int page;
 
     private SlidingTabLayout mSlidingTabLayout;
 
     private ViewPager mViewPager;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        page=getArguments().getInt("page");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        handler = new MySqlAdapter(getActivity(),null);
         return inflater.inflate(R.layout.fragment_crhome, container, false);
     }
 
@@ -51,6 +59,7 @@ public class CRhomesliderfragment extends Fragment {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager2);
         mViewPager.setAdapter(new SamplePagerAdapter());
+        mViewPager.setCurrentItem(page);
 
         // Give the SlidingTabLayout the ViewPager, this must be done AFTER the ViewPager has had
         // it's PagerAdapter set.
@@ -297,7 +306,6 @@ public class CRhomesliderfragment extends Fragment {
                             container, false);
 
                     Button add = (Button) view.findViewById(R.id.addbutton);
-                    Button del = (Button) view.findViewById(R.id.deletebutton);
 //                    MySqlHandler handler=new MySqlHandler(getActivity(),null);
                     final ListView li = (ListView) view.findViewById(R.id.courses);
                     add.setOnClickListener(
@@ -335,6 +343,9 @@ public class CRhomesliderfragment extends Fragment {
                     );
 
                     ArrayList<String> s = new ArrayList();
+                    if(handler.getSubs()==null){
+                        handler.add_sub("");
+                    }
 
                     s = handler.getSubs();
 

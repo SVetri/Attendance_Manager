@@ -23,10 +23,16 @@ public class UserHomeSliderFragment extends Fragment {
 
     MySqlAdapter handler;
     List<String[]> all;
+    int page;
 
     private SlidingTabLayout mSlidingTabLayout;
 
     private ViewPager mViewPager;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        page=getArguments().getInt("page");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +45,7 @@ public class UserHomeSliderFragment extends Fragment {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager3);
         mViewPager.setAdapter(new SamplePagerAdapter());
+        mViewPager.setCurrentItem(page);
 
         // Give the SlidingTabLayout the ViewPager, this must be done AFTER the ViewPager has had
         // it's PagerAdapter set.

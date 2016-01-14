@@ -28,7 +28,6 @@ public class ManageCourse extends ActionBarActivity {
         setContentView(R.layout.activity_manage_course);
         ischanged=false;
         Button add=(Button)findViewById(R.id.addbutton);
-        Button del=(Button)findViewById(R.id.deletebutton);
         handler=new MySqlAdapter(this,null);
         add.setOnClickListener(
                 new View.OnClickListener() {
