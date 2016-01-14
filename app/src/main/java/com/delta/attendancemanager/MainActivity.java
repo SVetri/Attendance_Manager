@@ -30,13 +30,13 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
-    Context applicationContext=MainActivity.this;
-    public static final String URL="http://31f8df57.ngrok.com";
-    public static final String GOOGLE_PROJ_ID="275730371821";
-    String regId="";
-    public static final String REG_ID="REG-ID";
-    public static final String RNO="rno";
-    static boolean wrong=false;
+    Context applicationContext = MainActivity.this;
+    public static final String URL = "http://31f8df57.ngrok.com";
+    public static final String GOOGLE_PROJ_ID = "275730371821";
+    String regId = "";
+    public static final String REG_ID = "REG-ID";
+    public static final String RNO = "rno";
+    static boolean wrong = false;
 
     GoogleCloudMessaging gcmObj;
     MySqlAdapter handler;
@@ -59,21 +59,20 @@ public class MainActivity extends ActionBarActivity {
                 Context.MODE_PRIVATE);
         String rollno = prefs.getString(RNO, "default");
 
-        handler=new MySqlAdapter(this,null);
-        if(handler.get_days()==null){
-            isfirst=true;
-        }
-        else
-            isfirst=false;
+        handler = new MySqlAdapter(this, null);
+        if (handler.get_days().size() == 0) {
+            isfirst = true;
+        } else
+            isfirst = false;
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
-        if(!rollno.equals("default")){
+        if (!rollno.equals("default")) {
             Intent i = new Intent(MainActivity.this, Userhome.class);
             i.putExtra("rno", rollno);
             startActivity(i);
             finish();
         }
-        if(wrong){
+        if (wrong) {
             YoYo.with(Techniques.Tada).duration(700).playOn(username);
             YoYo.with(Techniques.Tada).duration(700).playOn(password);
         }
@@ -89,16 +88,15 @@ public class MainActivity extends ActionBarActivity {
                 } else if (password.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a password", Toast.LENGTH_SHORT).show();
                 } else {
-                    String user=username.getText().toString();
-                    if(checkpref(user)){
+                    String user = username.getText().toString();
+                    if (checkpref(user)) {
                         ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                        Log.i("parse init","nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                        startActivity(new Intent(MainActivity.this,Userhome.class));
+                        Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                        startActivity(new Intent(MainActivity.this, Userhome.class));
                         finish();
-                    }
-                    else{
-                        usernme=username.getText().toString();
-                        pass=password.getText().toString();
+                    } else {
+                        usernme = username.getText().toString();
+                        pass = password.getText().toString();
                         Log.d("TAG", user + pass);
                         Authenticate a = new Authenticate();
                         a.execute(usernme, pass);
@@ -110,18 +108,18 @@ public class MainActivity extends ActionBarActivity {
         crswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              startActivity(new Intent(applicationContext,CRLogin.class));
+                startActivity(new Intent(applicationContext, CRLogin.class));
             }
         });
 
     }
 
     private boolean checkpref(String user) {
-        SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
-        String rno=share.getString("rno","-1");
-        if(rno.equals("-1"))
+        SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno = share.getString("rno", "-1");
+        if (rno.equals("-1"))
             return false;
-        else if(user.equals(rno))
+        else if (user.equals(rno))
             return true;
         else
             return false;
@@ -134,24 +132,26 @@ public class MainActivity extends ActionBarActivity {
 
 
     }
+
     private void registerInBackground(final String rollnumber) {
-        handler.add_day("Monday","","","","","","","","");
-        handler.add_day("Tuesday","","","","","","","","");
-        handler.add_day("Wednesday","","","","","","","","");
-        handler.add_day("Thursday","","","","","","","","");
-        handler.add_day("Friday","","","","","","","","");
+        handler.add_day("Monday", "", "", "", "", "", "", "", "");
+        handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
+        handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
+        handler.add_day("Thursday", "", "", "", "", "", "", "", "");
+        handler.add_day("Friday", "", "", "", "", "", "", "", "");
 
         new AsyncTask<Void, Void, String>() {
             JSONParser jp;
+
             @Override
             protected String doInBackground(Void... params) {
-                jp=new JSONParser();
+                jp = new JSONParser();
                 String msg = "";
                 try {
                     if (gcmObj == null) {
                         gcmObj = GoogleCloudMessaging
                                 .getInstance(applicationContext);
-                        Log.i("came here","dgyc");
+                        Log.i("came here", "dgyc");
                     }
                     regId = gcmObj
                             .register(GOOGLE_PROJ_ID);
@@ -162,20 +162,20 @@ public class MainActivity extends ActionBarActivity {
                     msg = "Error :" + ex.getMessage();
                 }
 //                List<NameValuePair> aut=new ArrayList<>();
-                JSONObject js=new JSONObject();
+                JSONObject js = new JSONObject();
 
 
                 try {
-                    js.put("rollnumber",rollnumber);
+                    js.put("rollnumber", rollnumber);
                     js.put("regno", regId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                JSONObject jd=jp.makeHttpRequest(URL+"/register","POST",js);
+                JSONObject jd = jp.makeHttpRequest(URL + "/register", "POST", js);
 //                Log.i("Json",js.toString());
                 try {
-                    int success=jd.getInt("Signed Up");
-                    if(success!=1){
+                    int success = jd.getInt("Signed Up");
+                    if (success != 1) {
                         wrongpassword();
                     }
                 } catch (JSONException e) {
@@ -184,7 +184,7 @@ public class MainActivity extends ActionBarActivity {
                 return msg;
             }
 
-          //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+            //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
             @Override
             protected void onPostExecute(String msg) {
                 if (!TextUtils.isEmpty(regId)) {
@@ -194,12 +194,12 @@ public class MainActivity extends ActionBarActivity {
                             applicationContext,
                             "Registered with GCM Server successfully.\n\n"
                                     + msg, Toast.LENGTH_SHORT).show();
-                    SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=share.edit();
+                    SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = share.edit();
                     editor.putString("rno", usernme);
                     editor.commit();
                     ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                    Log.i("parse init","nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                    Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
 //                    ParsePush.unsubscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));         TODO add this to the log out option to stop receiving push notifications.
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
@@ -212,12 +212,13 @@ public class MainActivity extends ActionBarActivity {
                                     + msg, Toast.LENGTH_LONG).show();
                 }
                 List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
-                for(int i=0;i<subscribedchannels.size();i++){
-                    Log.d("Parse channel",subscribedchannels.get(i));
+                for (int i = 0; i < subscribedchannels.size(); i++) {
+                    Log.d("Parse channel", subscribedchannels.get(i));
                 }   //TODO just to check delete this
             }
         }.execute(null, null, null);
     }
+
     private void storeRegIdinSharedPref(Context context, String regId,
                                         String rollnumber) {
         SharedPreferences prefs = getSharedPreferences("user",
@@ -231,25 +232,24 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    class Authenticate extends AsyncTask<String,Void,Boolean>{
+    class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
-
 
 
         @Override
         protected Boolean doInBackground(String... params) {
-            JSONParser jp=new JSONParser();
+            JSONParser jp = new JSONParser();
 
             try {
-               JSONObject js=new JSONObject();
+                JSONObject js = new JSONObject();
 
-                js.put("username",params[0]);
+                js.put("username", params[0]);
                 js.put("password", params[1]);
-                JSONObject jd=jp.makeHttpRequest(URL+"/login","POST",js);
-                Log.i(TAG,js.toString());
-                int success=jd.getInt("logged_in");
-                return success==1;                                                //authentication
-            }  catch (Exception e) {
+                JSONObject jd = jp.makeHttpRequest(URL + "/login", "POST", js);
+                Log.i(TAG, js.toString());
+                int success = jd.getInt("logged_in");
+                return success == 1;                                                //authentication
+            } catch (Exception e) {
                 e.printStackTrace();
 
             }
@@ -258,28 +258,28 @@ public class MainActivity extends ActionBarActivity {
             return false;
         }
 
-      //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+        //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if(aBoolean){
-                SharedPreferences share1=getSharedPreferences("user",Context.MODE_PRIVATE);
-                String rno=share1.getString(RNO,":)");
-                if(rno.equals(":)"))
+            if (aBoolean) {
+                SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
+                String rno = share1.getString(RNO, ":)");
+                if (rno.equals(":)"))
                     InitialHandShake(usernme);
                 else {
-                    SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=share.edit();
+                    SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = share.edit();
                     editor.putString(RNO, usernme);
-                    editor.putString("pass",pass);
+                    editor.putString("pass", pass);
                     editor.commit();
                     ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                     Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                     Intent i = new Intent(MainActivity.this, Userhome.class);
                     i.putExtra("rno", usernme);
 
-                   startActivity(i);
-                  finish();
+                    startActivity(i);
+                    finish();
                 }
 
                 AttendanceServerService.retrieveAttendance(getApplicationContext());
@@ -291,36 +291,17 @@ public class MainActivity extends ActionBarActivity {
                 pm.setComponentEnabledSetting(receiver,
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP);
-            }
-            else{
+            } else {
                 wrongpassword();
             }
         }
     }
 
     private void wrongpassword() {
-        Intent i =new Intent(MainActivity.this,MainActivity.class);
-        i.putExtra("wrong",true);
+        Intent i = new Intent(MainActivity.this, MainActivity.class);
+        i.putExtra("wrong", true);
         startActivity(i);  //TODO: enhance with textview "Wrong password"
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_POST) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
