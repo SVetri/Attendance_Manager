@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext=MainActivity.this;
-    public static final String URL="http://64a40776.ngrok.com";
+    public static final String URL="http://31f8df57.ngrok.com";
     public static final String GOOGLE_PROJ_ID="275730371821";
     String regId="";
     public static final String REG_ID="REG-ID";

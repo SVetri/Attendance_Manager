@@ -1,5 +1,6 @@
 package com.delta.attendancemanager;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

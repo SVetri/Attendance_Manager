@@ -89,7 +89,9 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
                     Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
                 }
                 atAdapter.delete_data(eci.coursename,sdf.format(date));                                                         //TODO: Refreshing the screen should be added if required
-
+                int position = attendanceList.indexOf(eci);
+                attendanceList.remove(position);
+                notifyItemRemoved(position);
             }
         });
     }

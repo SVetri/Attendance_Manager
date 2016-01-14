@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +87,8 @@ public class UpdateMyAttendance extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_POST) {
+        if (id == R.id.action_add_dummy) {
+            AttendanceServerService.addAttendance(this);
             return true;
         }
 

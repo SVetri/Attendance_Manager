@@ -204,13 +204,25 @@ public class AtAdapter {
         cursor.close();
     }
     public void update_attendance(String subject, String datetime, int present){                     //updating an already existing attendance -----
-        Log.i("in AtAdapter","update attendance called");
+        Log.i("in AtAdapter", "update attendance called " + subject + " " + datetime + " " + Integer.toString(present));
+        String[] columns = {Athelper.SUBJECT,Athelper.DATETIME,Athelper.PRESENT};
         SQLiteDatabase db = athelper.getWritableDatabase();
+        Cursor cursor = db.query(Athelper.TABLE_NAME,columns,null,null,null,null,null);
+        int index0 = cursor.getColumnIndex(Athelper.SUBJECT);
+        int index1 = cursor.getColumnIndex(Athelper.DATETIME);
+        int index2 = cursor.getColumnIndex(Athelper.PRESENT);
+        while(cursor.moveToNext()){
+            String tempst = cursor.getString(index0);  //subject string
+            String tempdt = cursor.getString(index1);     //datetime
+            Log.i("in AtAdapter",tempst+"  "+tempdt+" "+Integer.toString(cursor.getInt(index2)));
+        }
+        cursor.close();
         //UPDATE attendance SET present  = present WHERE present = 0;
         ContentValues cv = new ContentValues();
         cv.put(Athelper.PRESENT, present);
-        cv.put(Athelper.UPDATE,1);
-        db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
+        cv.put(Athelper.UPDATE, 1);
+        int result = db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
+        Log.i("in AtAdapter","updated "+ Integer.toString(result));
     }
     static class Athelper extends SQLiteOpenHelper{
         private static final String DATABASE_NAME = "semester.db";
