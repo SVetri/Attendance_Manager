@@ -145,6 +145,15 @@ public class CRhomesliderfragment extends Fragment {
                     dialog.cancel();
                 }
             });
+            Button dialogCancel = (Button)dialog.findViewById(R.id.cancelbutton);
+            dialogCancel.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }
+            );
 
             dialog.show();
         }
@@ -265,7 +274,7 @@ public class CRhomesliderfragment extends Fragment {
                     handler = new MySqlAdapter(getActivity(), null);
                     ListView l = (ListView) view.findViewById(R.id.crchat);
                     Chat[] a = handler.getmsgs();
-                    ChatAdapter adapter = new ChatAdapter(getActivity(), a);
+                    final ChatAdapter adapter = new ChatAdapter(getActivity(), a);
                     l.setAdapter(adapter);
                     Button bt = (Button) view.findViewById(R.id.chatbutton);
                     final View v = view;
@@ -331,18 +340,19 @@ public class CRhomesliderfragment extends Fragment {
 
                     String[] al = new String[s.size()];
                     al = s.toArray(al);
-                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
+                    final ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
                     li.setAdapter(adapter1);
                     li.setOnItemLongClickListener(
                             new AdapterView.OnItemLongClickListener() {
                                 @Override
                                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String subs = (String) parent.getItemAtPosition(position);
+                                    final String subs = (String) parent.getItemAtPosition(position);
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                     builder.setMessage("Do you really want to delete the Course " + subs + " ?")
                                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
-                                                    //delete Subject
+                                                    handler.delete_sub(subs);
+                                                    li.setAdapter(adapter1);
                                                 }
                                             })
                                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
