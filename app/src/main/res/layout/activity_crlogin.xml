@@ -19,7 +19,8 @@
             android:id="@+id/crbranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Roll No"
+            android:inputType="number"
+            android:hint="CR Roll No"
             android:layout_above="@+id/pass"
             android:layout_margin="5dp"
             android:layout_marginBottom="10dp" />
@@ -38,7 +39,7 @@
             android:id="@+id/crpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="CR Password"
             android:inputType="textPassword"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
@@ -77,5 +78,13 @@
         android:layout_below="@+id/fNameLayout1"
         android:layout_centerHorizontal="true"
         android:textColor="#f80707" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/delta"/>
 
 </RelativeLayout>
