@@ -1,14 +1,14 @@
-cancel in cr home   						- r
+cancel in cr home  			DONE   						- r
 messsage sending loader         			- r
-delete delete in manage courses         	- r
-refresh subject delete                  	- r
-change when deleted                     	- r
+delete delete in manage courses   DONE      	- r
+refresh subject delete           DONE      	- r
+change when deleted               DONE      	- r
 CR Announcements ListView               	- r
-CR Announcements RelativeLayout         	- r
-announcement notifi to announcement page    - r
-Internet Check  							- r
+CR Announcements RelativeLayout      DONE   	- r
+announcement notifi to announcement page   DONE  - r
+Internet Check  							- n
 space adding in subjects        			discuss
-Crlogin icon    							- n 		DONE
+Crlogin icon    				DONE			- R 		
 Loader          							- n			DONE
 orientation vertical                    	- n			DONE
 toast removal   							- n			DONE
