@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,26 +16,19 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
+
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
-    public static final String URL = "http://4e7be25c.ngrok.com";
-    public static final String GOOGLE_PROJ_ID = "275730371821";
-    String regId = "";
-    public static final String REG_ID = "REG-ID";
+    public static final String URL = "https://4049c3fb.ngrok.com";
     public static final String RNO = "rno";
     static boolean wrong = false;
-
-    GoogleCloudMessaging gcmObj;
     MySqlAdapter handler;
     String usernme;
     String pass;
@@ -94,6 +84,12 @@ public class MainActivity extends ActionBarActivity {
                         Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                         startActivity(new Intent(MainActivity.this, Userhome.class));
                         finish();
+
+                        List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                        for (int i = 0; i < subscribedchannels.size(); i++) {
+                            Log.d("Parse channel", subscribedchannels.get(i));
+                        }   //TODO just to check delete this
+
                     } else {
                         usernme = username.getText().toString();
                         pass = password.getText().toString();
@@ -126,111 +122,6 @@ public class MainActivity extends ActionBarActivity {
 
 
     }
-
-    private void InitialHandShake(String user) {
-        registerInBackground(user);
-
-
-    }
-
-    private void registerInBackground(final String rollnumber) {
-        handler.add_day("Monday", "", "", "", "", "", "", "", "");
-        handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
-        handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
-        handler.add_day("Thursday", "", "", "", "", "", "", "", "");
-        handler.add_day("Friday", "", "", "", "", "", "", "", "");
-
-        new AsyncTask<Void, Void, String>() {
-            JSONParser jp;
-
-            @Override
-            protected String doInBackground(Void... params) {
-                jp = new JSONParser();
-                String msg = "";
-                try {
-                    if (gcmObj == null) {
-                        gcmObj = GoogleCloudMessaging
-                                .getInstance(applicationContext);
-                        Log.i("came here", "dgyc");
-                    }
-                    regId = gcmObj
-                            .register(GOOGLE_PROJ_ID);
-                    msg = "Registration ID :" + regId;
-                    Log.d("fbj", regId);
-
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                }
-//                List<NameValuePair> aut=new ArrayList<>();
-                JSONObject js = new JSONObject();
-
-
-                try {
-                    js.put("rollnumber", rollnumber);
-                    js.put("regno", regId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONObject jd = jp.makeHttpRequest(URL + "/register", "POST", js);
-//                Log.i("Json",js.toString());
-                try {
-                    int success = jd.getInt("Signed Up");
-                    if (success != 1) {
-                        wrongpassword();
-                    }
-                } catch (JSONException e) {
-                    msg = "Error :" + e.getMessage();
-                }
-                return msg;
-            }
-
-            //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-            @Override
-            protected void onPostExecute(String msg) {
-                if (!TextUtils.isEmpty(regId)) {
-                    // Store RegId created by GCM Server in SharedPref
-                    storeRegIdinSharedPref(applicationContext, regId, rollnumber);
-                    Toast.makeText(
-                            applicationContext,
-                            "Registered with GCM Server successfully.\n\n"
-                                    + msg, Toast.LENGTH_SHORT).show();
-                    SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = share.edit();
-                    editor.putString("rno", usernme);
-                    editor.commit();
-                    ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                    Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-//                    ParsePush.unsubscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));         TODO add this to the log out option to stop receiving push notifications.
-                    Intent i = new Intent(MainActivity.this, Userhome.class);
-                    i.putExtra("rno", usernme);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Toast.makeText(
-                            applicationContext,
-                            "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
-                                    + msg, Toast.LENGTH_LONG).show();
-                }
-                List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
-                for (int i = 0; i < subscribedchannels.size(); i++) {
-                    Log.d("Parse channel", subscribedchannels.get(i));
-                }   //TODO just to check delete this
-            }
-        }.execute(null, null, null);
-    }
-
-    private void storeRegIdinSharedPref(Context context, String regId,
-                                        String rollnumber) {
-        SharedPreferences prefs = getSharedPreferences("user",
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(REG_ID, regId);
-        editor.putString(RNO, rollnumber);
-        editor.commit();
-        startService(new Intent(this, APIManagerService.class));
-
-    }
-
 
     class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
@@ -265,22 +156,21 @@ public class MainActivity extends ActionBarActivity {
             if (aBoolean) {
                 SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
                 String rno = share1.getString(RNO, ":)");
-                if (rno.equals(":)"))
-                    InitialHandShake(usernme);
-                else {
-                    SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = share.edit();
-                    editor.putString(RNO, usernme);
-                    editor.putString("pass", pass);
-                    editor.commit();
-                    ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                    Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
-                    Intent i = new Intent(MainActivity.this, Userhome.class);
-                    i.putExtra("rno", usernme);
+                SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = share.edit();
+                editor.putString(RNO, usernme);
+                editor.putString("pass", pass);
+                editor.commit();
+                ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                Intent i = new Intent(MainActivity.this, Userhome.class);
+                i.putExtra("rno", usernme);
 
-                    startActivity(i);
-                    finish();
-                }
+                List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                for (int j = 0; j < subscribedchannels.size(); j++) {
+                    Log.d("Parse channel", subscribedchannels.get(j));
+                }   //TODO just to check delete this
+
 
                 AttendanceServerService.retrieveAttendance(getApplicationContext());
                 AlarmService.cancelAlarm(getApplicationContext());
@@ -291,6 +181,8 @@ public class MainActivity extends ActionBarActivity {
                 pm.setComponentEnabledSetting(receiver,
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP);
+                startActivity(i);
+                finish();
             } else {
                 wrongpassword();
             }

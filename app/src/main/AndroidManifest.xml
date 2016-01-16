@@ -143,6 +143,8 @@
 
         <activity
             android:name=".ManageCourse"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_manage_course" >
         </activity>
 
@@ -157,14 +159,20 @@
 
         <activity
             android:name=".CourseInfo"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_course_info" >
         </activity>
         <activity
             android:name=".Userhome"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_userhome" >
         </activity>
         <activity
             android:name=".CRhome"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_crhome" >
         </activity>
 
@@ -189,7 +197,8 @@
             android:name=".AttendanceServerService"
             android:exported="false" >
         </service>
-        <service android:name="com.parse.PushService" />
+        <service android:name="com.parse.PushService"
+            android:exported="false"/>
 
         <receiver
             android:name=".ParseReceiver"
@@ -200,6 +209,8 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
+
+                <category android:name="com.delta.attendancemanager" />
             </intent-filter>
         </receiver>
         <receiver
