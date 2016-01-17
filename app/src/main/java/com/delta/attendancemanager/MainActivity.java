@@ -1,5 +1,6 @@
 package com.delta.attendancemanager;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
-    public static final String URL = "https://4049c3fb.ngrok.com";
+    public static final String URL = "https://19e1280a.ngrok.com";
     public static final String RNO = "rno";
     static boolean wrong = false;
     MySqlAdapter handler;
@@ -125,7 +126,17 @@ public class MainActivity extends ActionBarActivity {
 
     class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
+        ProgressDialog dialog;
+        public Authenticate(){
+            dialog = new ProgressDialog(MainActivity.this);
+         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Logging in...");
+            dialog.show();
+        }
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -153,7 +164,10 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if(dialog.isShowing())
+                dialog.dismiss();
             if (aBoolean) {
+
                 SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
                 String rno = share1.getString(RNO, ":)");
                 SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);

@@ -1,5 +1,6 @@
 package com.delta.attendancemanager;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,6 +61,18 @@ public class CRLogin extends ActionBarActivity {
     class CrAuth extends AsyncTask<String,Void,Boolean>{
         JSONParser jp=new JSONParser();
          String usernameString;
+        ProgressDialog dialog;
+        public CrAuth(){
+            dialog = new ProgressDialog(CRLogin.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Logging in ...");
+            dialog.show();
+        }
+
         @Override
         protected Boolean doInBackground(String... params) {
             try {
@@ -86,6 +99,8 @@ public class CRLogin extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+            if(dialog.isShowing())
+                dialog.dismiss();
             if(aBoolean){
                 String rno = usernameString;
                 SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
