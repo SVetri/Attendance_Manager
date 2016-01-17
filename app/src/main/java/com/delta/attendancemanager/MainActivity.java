@@ -27,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
-    public static final String URL = "https://19e1280a.ngrok.com";
+    public static final String URL = "http://33c8f2c5.ngrok.com";
     public static final String RNO = "rno";
     static boolean wrong = false;
     MySqlAdapter handler;
@@ -83,10 +83,14 @@ public class MainActivity extends ActionBarActivity {
                     if (checkpref(user)) {
                         ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                         Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                        List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                        for (int i = 0; i < subscribedchannels.size(); i++) {
+                            Log.d("Parse channel", subscribedchannels.get(i));
+                        }
                         startActivity(new Intent(MainActivity.this, Userhome.class));
                         finish();
 
-                        List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                         subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                         for (int i = 0; i < subscribedchannels.size(); i++) {
                             Log.d("Parse channel", subscribedchannels.get(i));
                         }   //TODO just to check delete this
@@ -174,7 +178,8 @@ public class MainActivity extends ActionBarActivity {
                 SharedPreferences.Editor editor = share.edit();
                 editor.putString(RNO, usernme);
                 editor.putString("pass", pass);
-                editor.commit();
+                startService(new Intent(MainActivity.this,APIManagerService.class));
+                editor.apply();
                 ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                 Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                 Intent i = new Intent(MainActivity.this, Userhome.class);

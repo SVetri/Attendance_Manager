@@ -65,6 +65,7 @@ public class MySqlAdapter {
 
     public void delete_sub(String sub){                                                         //TODO for deleting subject from the cr side
         SQLiteDatabase db = mysqlhelper.getWritableDatabase();
+        subs.remove(sub);
         db.delete(Mysqlhelper.TNAME, Mysqlhelper.CNAME + " =? ", new String[]{sub});
     }
 
@@ -83,9 +84,9 @@ public class MySqlAdapter {
         db.delete(Mysqlhelper.TABLENAME, Mysqlhelper.DAY + " = ?", new String[]{day});
     }
 
-    public List<String[]> get_days(){
+    public ArrayList<String[]> get_days(){
         String[] all=new String[9];
-        List<String[]> s=new ArrayList<>();
+        ArrayList<String[]> s=new ArrayList<>();
         SQLiteDatabase db=mysqlhelper.getReadableDatabase();
         Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
                         Mysqlhelper.DAY,

@@ -2,14 +2,19 @@ package com.delta.attendancemanager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +27,30 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by rahul on 9/14/15.
  */
 public class CRhomesliderfragment extends Fragment {
+    Context context;
 
     MySqlAdapter handler;
     List<String[]> all;
@@ -173,7 +192,7 @@ public class CRhomesliderfragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-
+            context = getActivity().getApplicationContext();
             // Inflate a new layout from our resources
             View view;
             TextView sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8;
@@ -281,10 +300,21 @@ public class CRhomesliderfragment extends Fragment {
                     view = getActivity().getLayoutInflater().inflate(R.layout.layout_cr_announcement,
                             container, false);
                     handler = new MySqlAdapter(getActivity(), null);
-                    ListView l = (ListView) view.findViewById(R.id.crchat);
+                    final ListView l = (ListView) view.findViewById(R.id.crchat);
                     Chat[] a = handler.getmsgs();
                     final ChatAdapter adapter = new ChatAdapter(getActivity(), a);
                     l.setAdapter(adapter);
+                    Button refresh = (Button) view.findViewById(R.id.refreshChat);
+                    refresh.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Chat[] a = handler.getmsgs();
+                                    ChatAdapter adapter = new ChatAdapter(getActivity(), a);
+                                    l.setAdapter(adapter);
+                                }
+                            }
+                    );
                     Button bt = (Button) view.findViewById(R.id.chatbutton);
                     final View v = view;
                     final LinearLayout ll = (LinearLayout) view.findViewById(R.id.ll1);
@@ -296,6 +326,7 @@ public class CRhomesliderfragment extends Fragment {
                                     String msg = et.getText().toString();
                                     et.setText("");
                                     UpdateTTService.startActionChat(getActivity(), msg);
+//                                    chatOut(msg);
                                 }
                             }
                     );
@@ -351,7 +382,7 @@ public class CRhomesliderfragment extends Fragment {
 
                     String[] al = new String[s.size()];
                     al = s.toArray(al);
-                    final ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
+                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
                     li.setAdapter(adapter1);
                     li.setOnItemLongClickListener(
                             new AdapterView.OnItemLongClickListener() {
@@ -363,6 +394,11 @@ public class CRhomesliderfragment extends Fragment {
                                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     handler.delete_sub(subs);
+                                                    ArrayList<String> s = handler.getSubs();
+
+                                                    String[] al = new String[s.size()];
+                                                    al = s.toArray(al);
+                                                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
                                                     li.setAdapter(adapter1);
                                                 }
                                             })
@@ -396,6 +432,96 @@ public class CRhomesliderfragment extends Fragment {
             container.removeView((View) object);
         }
 
+    }
+
+    private void chatOut(String msg) {
+        new AsyncTask<String,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(String... params) {
+                ProgressDialog dialog = new ProgressDialog(context);
+                dialog.setMessage("Sending Message....");
+                dialog.show();
+                SharedPreferences share1=getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+                String rno=share1.getString("crrno", ":)");
+                String batch = rno.substring(0, rno.length() - 3);
+                JSONObject data=new JSONObject();
+                Calendar cal=Calendar.getInstance();
+                int h=cal.get(Calendar.HOUR_OF_DAY);
+                int min=cal.get(Calendar.MINUTE);
+                int day=cal.get(Calendar.DAY_OF_MONTH);
+                int mon=cal.get(Calendar.MONTH)+1;
+                int yy=cal.get(Calendar.YEAR);
+                String time= String.valueOf(h)+":"+String.valueOf(min);
+                String date=String.valueOf(day)+"/"+String.valueOf(mon)+"/"+String.valueOf(yy);
+                JSONObject js =new JSONObject();
+                try {
+                    data.put("msg",params[0]);
+                    data.put("date",date);
+                    data.put("time",time);
+                    JSONObject jb=new JSONObject();
+                    jb.put("an",data);
+
+                    js.put("data",jb);
+                    js.put("type","chat");
+                    SharedPreferences prefs = getActivity().getSharedPreferences("user",
+                            Context.MODE_PRIVATE);
+                    String rollno = prefs.getString(MainActivity.RNO, "default");
+                    String secret = prefs.getString("secret", "default");
+                    js.put("secret",secret);
+                    js.put("username",rollno);
+                    js.put("batch",batch);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                JSONObject result;
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(MainActivity.URL+"/updateTT");
+                StringEntity s= null;
+                try {
+                    s = new StringEntity(js.toString());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                httpPost.setEntity(s);
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = null;
+
+                String jsons="";
+                // 9. receive response as inputStream
+
+                try {
+                    httpResponse = httpclient.execute(httpPost);
+                    InputStream is = httpResponse.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(
+                            is, "iso-8859-1"), 8);
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    is.close();
+
+                    jsons = sb.toString();
+                } catch (Exception e) {
+                    Log.e("Buffer Error", "Error converting result " + e.toString());
+                }
+
+                // try parse the string to a JSON object
+                try {
+                    result = new JSONObject(jsons);
+                    Log.i("connectionscheck",result.toString());
+                } catch (JSONException e) {
+                    Log.e("JSON Parser", "Error parsing data " + e.toString());
+                }
+                dialog.dismiss();
+                Toast.makeText(context, "Sent SuccessFully. Refresh To GetAnnouncement.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        }.execute(msg);
     }
 
 }
