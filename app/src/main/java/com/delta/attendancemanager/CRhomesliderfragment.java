@@ -400,6 +400,8 @@ public class CRhomesliderfragment extends Fragment {
                                                     al = s.toArray(al);
                                                     ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, al);
                                                     li.setAdapter(adapter1);
+                                                    UpdateSubs(subs);
+
                                                 }
                                             })
                                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -432,6 +434,44 @@ public class CRhomesliderfragment extends Fragment {
             container.removeView((View) object);
         }
 
+    }
+    public void UpdateSubs(String subs){
+        final String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","tomorrow"};
+        String[] dayTimetable = new String[9];
+        for (String day : days ){
+            switch(day){
+                case "Monday":
+                    dayTimetable = handler.get_mon();
+                    break;
+                case "Tuesday":
+                    dayTimetable = handler.get_tue();
+                    break;
+                case "Wednesday":
+                    dayTimetable = handler.get_wed();
+                    break;
+                case "Thursday":
+                    dayTimetable = handler.get_thur();
+                    break;
+                case "Friday":
+                    dayTimetable = handler.get_fri();
+                    break;
+                case "tomorrow":
+                    dayTimetable = handler.get_tomo();
+                    break;
+            }
+            ArrayList<String> finalTimetable=new ArrayList<>();
+            for (String sub : dayTimetable){
+                if(sub.equals(subs))
+                    finalTimetable.add("");
+                else
+                    finalTimetable.add(sub);
+            }
+            handler.delete_day(day);
+            handler.add_day(finalTimetable.get(0),finalTimetable.get(1),finalTimetable.get(2),finalTimetable.get(3),
+                    finalTimetable.get(4),finalTimetable.get(5),finalTimetable.get(6),finalTimetable.get(7),finalTimetable.get(8));
+            getActivity().startActivity(new Intent(getActivity(),CRhome.class));
+            getActivity().finish();
+        }
     }
 
     private void chatOut(String msg) {
