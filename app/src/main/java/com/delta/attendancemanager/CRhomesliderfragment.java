@@ -192,7 +192,7 @@ public class CRhomesliderfragment extends Fragment {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            context = getActivity().getApplicationContext();
+            context = getActivity();
             // Inflate a new layout from our resources
             View view;
             TextView sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8;
@@ -325,8 +325,9 @@ public class CRhomesliderfragment extends Fragment {
                                     EditText et = (EditText) ll.findViewById(R.id.textmsg);
                                     String msg = et.getText().toString();
                                     et.setText("");
-                                    UpdateTTService.startActionChat(getActivity(), msg);
-//                                    chatOut(msg);
+//                                    UpdateTTService.startActionChat(getActivity(), msg);
+
+                                    chatOut(msg);
                                 }
                             }
                     );
@@ -467,21 +468,26 @@ public class CRhomesliderfragment extends Fragment {
                     finalTimetable.add(sub);
             }
             handler.delete_day(day);
-            handler.add_day(finalTimetable.get(0),finalTimetable.get(1),finalTimetable.get(2),finalTimetable.get(3),
-                    finalTimetable.get(4),finalTimetable.get(5),finalTimetable.get(6),finalTimetable.get(7),finalTimetable.get(8));
-            getActivity().startActivity(new Intent(getActivity(),CRhome.class));
+            handler.add_day(finalTimetable.get(0), finalTimetable.get(1), finalTimetable.get(2), finalTimetable.get(3),
+                    finalTimetable.get(4), finalTimetable.get(5), finalTimetable.get(6), finalTimetable.get(7), finalTimetable.get(8));
+            getActivity().startActivity(new Intent(getActivity(), CRhome.class));
             getActivity().finish();
         }
     }
 
     private void chatOut(String msg) {
         new AsyncTask<String,Void,Void>(){
+            ProgressDialog dialog;
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(context);
+                dialog.setMessage("Sending Message....");
+                dialog.show();
+            }
 
             @Override
             protected Void doInBackground(String... params) {
-                ProgressDialog dialog = new ProgressDialog(context);
-                dialog.setMessage("Sending Message....");
-                dialog.show();
+
                 SharedPreferences share1=getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
                 String rno=share1.getString("crrno", ":)");
                 String batch = rno.substring(0, rno.length() - 3);
@@ -557,9 +563,15 @@ public class CRhomesliderfragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e("JSON Parser", "Error parsing data " + e.toString());
                 }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
                 dialog.dismiss();
                 Toast.makeText(context, "Sent SuccessFully. Refresh To GetAnnouncement.", Toast.LENGTH_SHORT).show();
-                return null;
+
             }
         }.execute(msg);
     }
