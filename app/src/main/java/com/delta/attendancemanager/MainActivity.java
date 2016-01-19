@@ -165,6 +165,7 @@ public class MainActivity extends ActionBarActivity {
                 return success == 1;                                                //authentication
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(MainActivity.this,"Check Internet Connection and Try Again Later.",Toast.LENGTH_LONG).show();
 
             }
 

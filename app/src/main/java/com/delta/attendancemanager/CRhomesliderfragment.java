@@ -325,8 +325,8 @@ public class CRhomesliderfragment extends Fragment {
                                     EditText et = (EditText) ll.findViewById(R.id.textmsg);
                                     String msg = et.getText().toString();
                                     et.setText("");
-                                    UpdateTTService.startActionChat(getActivity(), msg);
-//                                    chatOut(msg);
+//                                    UpdateTTService.startActionChat(getActivity(), msg);
+                                    chatOut(msg);
                                 }
                             }
                     );
@@ -476,12 +476,16 @@ public class CRhomesliderfragment extends Fragment {
 
     private void chatOut(String msg) {
         new AsyncTask<String,Void,Void>(){
+            ProgressDialog dialog = new ProgressDialog(context);
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog.setMessage("Sending Message....");
+                dialog.show();
+            }
 
             @Override
             protected Void doInBackground(String... params) {
-                ProgressDialog dialog = new ProgressDialog(context);
-                dialog.setMessage("Sending Message....");
-                dialog.show();
                 SharedPreferences share1=getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
                 String rno=share1.getString("crrno", ":)");
                 String batch = rno.substring(0, rno.length() - 3);
@@ -557,9 +561,14 @@ public class CRhomesliderfragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e("JSON Parser", "Error parsing data " + e.toString());
                 }
+               return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
                 dialog.dismiss();
                 Toast.makeText(context, "Sent SuccessFully. Refresh To GetAnnouncement.", Toast.LENGTH_SHORT).show();
-                return null;
             }
         }.execute(msg);
     }
