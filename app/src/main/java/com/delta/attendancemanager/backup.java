@@ -43,6 +43,7 @@ public class backup extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        dialog.setCancelable(false);
         dialog.setMessage("Syncing Attendance");
         dialog.show();
     }
