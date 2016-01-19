@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_dummy) {
             AttendanceServerService.addAttendance(this);
+            Toast.makeText(getApplicationContext(),"Today's attendance added",Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }
