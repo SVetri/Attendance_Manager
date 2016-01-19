@@ -27,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
-    public static final String URL = "http://6b757b24.ngrok.com";
+    public static final String URL = "https://64a40776.ngrok.com";
     public static final String RNO = "rno";
     static boolean wrong = false;
     MySqlAdapter handler;

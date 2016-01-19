@@ -33,7 +33,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != " "){
                 subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
             }
             c.moveToNext();
