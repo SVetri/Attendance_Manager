@@ -24,8 +24,7 @@ public class SubjectAttendance extends ActionBarActivity {
         TextView subjectname = (TextView) findViewById(R.id.subjectname);
         TextView classes = (TextView) findViewById(R.id.classes);
         TextView attendancepercent = (TextView) findViewById(R.id.attendancepercent);
-        TextView percentrequired = (TextView) findViewById(R.id.requiredpercent);                       //not touched as of now.
-        TextView projectedpercent = (TextView) findViewById(R.id.projectedatt);                         //not touched as of now.
+        TextView totalclasses = (TextView) findViewById(R.id.totalclasses);
 
         final String subname = getIntent().getStringExtra("subname");
         subjectname.setText(subname);
@@ -34,7 +33,8 @@ public class SubjectAttendance extends ActionBarActivity {
         int ca = atAdapter.getClasses_attended();
         int tc = atAdapter.getTotalclasses();
 
-        classes.setText(String.valueOf(ca)+" / "+String.valueOf(tc));
+        classes.setText(String.valueOf(ca));
+        totalclasses.setText(String.valueOf(tc));
         int percent = 0;
         if(tc!=0)
             percent = ca*100 / tc;

@@ -1,6 +1,7 @@
 package com.delta.attendancemanager;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -89,6 +90,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_dummy) {
             AttendanceServerService.addAttendance(this);
+            finish();
             return true;
         }
 
