@@ -43,7 +43,7 @@ public class ViewMyAttendance extends ActionBarActivity {
 
         for (int i=0; i < subjects.size(); i++) {
             SubjectInfo si = new SubjectInfo();
-            if(subjects.get(i) == null || subjects.get(i).isEmpty() || subjects.get(i) == " ")
+            if(subjects.get(i) == null || subjects.get(i).isEmpty() || subjects.get(i).equals(" "))
                 continue;
             si.subjectname=subjects.get(i);
             result.add(si);

@@ -52,7 +52,12 @@ public class MainActivity extends ActionBarActivity {
 
         handler = new MySqlAdapter(this, null);
         if (handler.get_days().size() == 0) {
-
+            handler.add_day("Monday","","","","","","","","");
+            handler.add_day("Tuesday","","","","","","","","");
+            handler.add_day("Wednesday","","","","","","","","");
+            handler.add_day("Thursday","","","","","","","","");
+            handler.add_day("Friday","","","","","","","","");
+            handler.add_day("tomorrow","","","","","","","","");
             isfirst = true;
         } else
             isfirst = false;
