@@ -168,7 +168,6 @@ Log.i("hel",jsons);
             Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),TTimings.hour[i], TTimings.min[i]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
             atAdapter.add_attendance(subjects[i], sdf.format(date), 0);
         }
-        toasthandler.post(new DisplayToast(getApplicationContext(),"Today's attendance added"));
     }
 
     private void handledelete(){
