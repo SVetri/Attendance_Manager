@@ -27,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
-    public static final String URL = "https://64a40776.ngrok.com";
+    public static final String URL = "http://30d9e412.ngrok.com";
     public static final String RNO = "rno";
     static boolean wrong = false;
     MySqlAdapter handler;
@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
 
         handler = new MySqlAdapter(this, null);
         if (handler.get_days().size() == 0) {
+
             isfirst = true;
         } else
             isfirst = false;
@@ -81,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
                 } else {
                     String user = username.getText().toString();
                     if (checkpref(user)) {
+
                         ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                         Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                         List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
@@ -138,6 +140,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
             dialog.setMessage("Logging in...");
             dialog.show();
         }
@@ -171,7 +174,6 @@ public class MainActivity extends ActionBarActivity {
             if(dialog.isShowing())
                 dialog.dismiss();
             if (aBoolean) {
-
                 SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
                 String rno = share1.getString(RNO, ":)");
                 SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);

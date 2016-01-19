@@ -119,7 +119,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             time = (TextView) v.findViewById(R.id.timecard);
             present = (Button) v.findViewById(R.id.presentbutton);
             absent = (Button) v.findViewById(R.id.absentbutton);
-            remove = (Button) v.findViewById(R.id.removebutton);
+            remove = (Button) v.findViewById(R.id.removebutton1);
         }
 
     }
