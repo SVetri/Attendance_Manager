@@ -43,6 +43,7 @@ public class retrieve extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        dialog.setCancelable(false);
         dialog.setMessage("Retrieveing Attendance");
         dialog.show();
     }

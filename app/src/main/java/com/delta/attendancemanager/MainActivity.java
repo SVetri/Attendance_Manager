@@ -140,7 +140,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            dialog.setCancelable(false);
             dialog.setMessage("Logging in...");
             dialog.show();
         }
