@@ -467,11 +467,49 @@ public class CRhomesliderfragment extends Fragment {
                     finalTimetable.add(sub);
             }
             handler.delete_day(day);
-            handler.add_day(finalTimetable.get(0),finalTimetable.get(1),finalTimetable.get(2),finalTimetable.get(3),
-                    finalTimetable.get(4),finalTimetable.get(5),finalTimetable.get(6),finalTimetable.get(7),finalTimetable.get(8));
-            getActivity().startActivity(new Intent(getActivity(),CRhome.class));
-            getActivity().finish();
+            handler.add_day(finalTimetable.get(0), finalTimetable.get(1), finalTimetable.get(2), finalTimetable.get(3),
+                    finalTimetable.get(4), finalTimetable.get(5), finalTimetable.get(6), finalTimetable.get(7), finalTimetable.get(8));
         }
+        String[] a = new String[9];
+        a = handler.get_tomo();
+        JSONObject j = new JSONObject();
+        for (int i = 1; i <= 8; i++) {
+            try {
+                j.put(EditUpcomingTT.slots[i - 1], a[i]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        UpdateTTService.startActionUpcoming(getActivity(), j);
+        List<String[]> all = new ArrayList<>();
+        all.add(handler.get_mon());
+        all.add(handler.get_tue());
+        all.add(handler.get_wed());
+        all.add(handler.get_thur());
+        all.add(handler.get_fri());
+
+         j = new JSONObject();
+
+        for (String[] k : all) {
+            JSONObject js = new JSONObject();
+            for (int i = 1; i <= 8; i++) {
+                try {
+                    js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                j.put(k[0], js);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        UpdateTTService.startActionTT(getActivity(), j);
+
+        getActivity().startActivity(new Intent(getActivity(),CRhome.class));
+        getActivity().finish();
     }
 
     private void chatOut(String msg) {

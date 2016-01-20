@@ -21,38 +21,38 @@ public class EditWeeklyTT extends ActionBarActivity {
     public static boolean ischanged;
     MySqlAdapter handler;
 
-    @Override
-    public void onBackPressed() {
-        if (ischanged) {
-            List<String[]> all = new ArrayList<>();
-            all.add(handler.get_mon());
-            all.add(handler.get_tue());
-            all.add(handler.get_wed());
-            all.add(handler.get_thur());
-            all.add(handler.get_fri());
-
-            JSONObject j = new JSONObject();
-
-            for (String[] k : all) {
-                JSONObject js = new JSONObject();
-                for (int i = 1; i <= 8; i++) {
-                    try {
-                        js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                try {
-                    j.put(k[0], js);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            UpdateTTService.startActionTT(this, j);
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (ischanged) {
+//            List<String[]> all = new ArrayList<>();
+//            all.add(handler.get_mon());
+//            all.add(handler.get_tue());
+//            all.add(handler.get_wed());
+//            all.add(handler.get_thur());
+//            all.add(handler.get_fri());
+//
+//            JSONObject j = new JSONObject();
+//
+//            for (String[] k : all) {
+//                JSONObject js = new JSONObject();
+//                for (int i = 1; i <= 8; i++) {
+//                    try {
+//                        js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                try {
+//                    j.put(k[0], js);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            UpdateTTService.startActionTT(this, j);
+//        }
+//        super.onBackPressed();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
