@@ -1,86 +1,75 @@
 package com.delta.attendancemanager;
 
+import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.support.v4.os.AsyncTaskCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
-    Context applicationContext=MainActivity.this;
-    public static final String URL="http://1032dd71.ngrok.com/updateTT";
-    public static final String GOOGLE_PROJ_ID="624474961071";
-    String regId="";
-    public static final String REG_ID="REG-ID";
-    public static final String RNO="RNO";
-    boolean wrong=false;
-
-    GoogleCloudMessaging gcmObj;
+    Context applicationContext = MainActivity.this;
+    public static final String URL = "http://30d9e412.ngrok.com";
+    public static final String RNO = "rno";
+    static boolean wrong = false;
     MySqlAdapter handler;
     String usernme;
     String pass;
-    boolean isfirst;
+    static boolean isfirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        InitialHandShake("110114070");
-//        regId = gcmObj
-//                .register(GOOGLE_PROJ_ID);
-        Bundle b=getIntent().getExtras();
-        if(b!=null){
-            boolean g=b.getBoolean("wrong");
-            if(g)
-            wrong=true;
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            boolean g = b.getBoolean("wrong");
+            if (g)
+                wrong = true;
 
         }
-        handler=new MySqlAdapter(this,null);
-        if(handler.get_days()==null){
-            isfirst=true;
-        }
-        else
-            isfirst=false;
+        SharedPreferences prefs = getSharedPreferences("user",
+                Context.MODE_PRIVATE);
+        String rollno = prefs.getString(RNO, "default");
+
+        handler = new MySqlAdapter(this, null);
+        if (handler.get_days().size() == 0) {
+            handler.add_day("Monday","","","","","","","","");
+            handler.add_day("Tuesday","","","","","","","","");
+            handler.add_day("Wednesday","","","","","","","","");
+            handler.add_day("Thursday","","","","","","","","");
+            handler.add_day("Friday","","","","","","","","");
+            handler.add_day("tomorrow","","","","","","","","");
+            isfirst = true;
+        } else
+            isfirst = false;
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
-        if(wrong){
+        if (!rollno.equals("default")) {
+            Intent i = new Intent(MainActivity.this, Userhome.class);
+            i.putExtra("rno", rollno);
+            startActivity(i);
+            finish();
+        }
+        if (wrong) {
             YoYo.with(Techniques.Tada).duration(700).playOn(username);
             YoYo.with(Techniques.Tada).duration(700).playOn(password);
         }
@@ -96,14 +85,30 @@ public class MainActivity extends ActionBarActivity {
                 } else if (password.getText().length() == 0) {
                     Toast.makeText(MainActivity.this, "Enter a password", Toast.LENGTH_SHORT).show();
                 } else {
-                    String user=username.getText().toString();
-                    usernme=username.getText().toString();
-                    pass=password.getText().toString();
-                    Log.d("TAG", user + pass);
-                    Authenticate a = new Authenticate();
-                    a.execute(usernme, pass);
-                    //finish();                         TODO: taking it off for checking
+                    String user = username.getText().toString();
+                    if (checkpref(user)) {
 
+                        ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                        Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                        List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                        for (int i = 0; i < subscribedchannels.size(); i++) {
+                            Log.d("Parse channel", subscribedchannels.get(i));
+                        }
+                        startActivity(new Intent(MainActivity.this, Userhome.class));
+                        finish();
+
+                         subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                        for (int i = 0; i < subscribedchannels.size(); i++) {
+                            Log.d("Parse channel", subscribedchannels.get(i));
+                        }   //TODO just to check delete this
+
+                    } else {
+                        usernme = username.getText().toString();
+                        pass = password.getText().toString();
+                        Log.d("TAG", user + pass);
+                        Authenticate a = new Authenticate();
+                        a.execute(usernme, pass);
+                    }
                 }
             }
         });
@@ -111,159 +116,111 @@ public class MainActivity extends ActionBarActivity {
         crswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              startActivity(new Intent(applicationContext,CRLogin.class));
+                startActivity(new Intent(applicationContext, CRLogin.class));
             }
         });
 
     }
 
-    private void InitialHandShake(String user) {
-        registerInBackground(user);
-
-
-    }
-    private void registerInBackground(final String rollnumber) {
-        new AsyncTask<Void, Void, String>() {
-            JSONParser jp;
-            @Override
-            protected String doInBackground(Void... params) {
-                jp=new JSONParser();
-                String msg = "";
-                try {
-                    if (gcmObj == null) {
-                        gcmObj = GoogleCloudMessaging
-                                .getInstance(applicationContext);
-                        Log.i("came here","dgyc");
-                    }
-                    regId = gcmObj
-                            .register(GOOGLE_PROJ_ID);
-                    msg = "Registration ID :" + regId;
-                    Log.d("fbj",regId);
-
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                }
-                List<NameValuePair> aut=new ArrayList<>();
-                aut.add(new BasicNameValuePair("rollnumber",rollnumber));
-                aut.add(new BasicNameValuePair("regno",regId));
-                JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
-//                Log.i("Json",js.toString());
-                try {
-                    int success=js.getInt("success");
-                    if(success!=1){
-                        wrongpassword();
-                    }
-                } catch (JSONException e) {
-                    msg = "Error :" + e.getMessage();
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-                if (!TextUtils.isEmpty(regId)) {
-                    // Store RegId created by GCM Server in SharedPref
-                    storeRegIdinSharedPref(applicationContext, regId, rollnumber);
-                    Toast.makeText(
-                            applicationContext,
-                            "Registered with GCM Server successfully.\n\n"
-                                    + msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(
-                            applicationContext,
-                            "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
-                                    + msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        }.execute(null, null, null);
-    }
-    private void storeRegIdinSharedPref(Context context, String regId,
-                                        String rollnumber) {
-        SharedPreferences prefs = getSharedPreferences("UserDetails",
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(REG_ID, regId);
-        editor.putString(RNO, rollnumber);
-        editor.commit();
+    private boolean checkpref(String user) {
+        SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno = share.getString("rno", "-1");
+        if (rno.equals("-1"))
+            return false;
+        else if (user.equals(rno))
+            return true;
+        else
+            return false;
 
 
     }
 
-
-    class Authenticate extends AsyncTask<String,Void,Boolean>{
+    class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
-
-
+        ProgressDialog dialog;
+        public Authenticate(){
+            dialog = new ProgressDialog(MainActivity.this);
+         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
-            JSONParser jp=new JSONParser();
-   /*
-            try {
-                List<NameValuePair> aut=new ArrayList<>();
-                aut.add(new BasicNameValuePair("username",params[0]));
-                aut.add(new BasicNameValuePair("password",params[1]));
-                JSONObject js=jp.makeHttpRequest(URL,"POST",aut);
-                Log.i(TAG,js.toString());
-                int success=js.getInt("success");
-                jp=null;
-                js=null;
-                return success==1;                                                //authentication
-            }  catch (Exception e) {
-                e.printStackTrace();
-
-            }
-*/
-
-            return true;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setCancelable(false);
+            dialog.setMessage("Logging in...");
+            dialog.show();
         }
 
         @Override
+        protected Boolean doInBackground(String... params) {
+            JSONParser jp = new JSONParser();
+
+            try {
+                JSONObject js = new JSONObject();
+
+                js.put("username", params[0]);
+                js.put("password", params[1]);
+                JSONObject jd = jp.makeHttpRequest(URL + "/login", "POST", js);
+                Log.i(TAG, js.toString());
+                int success = jd.getInt("logged_in");
+                return success == 1;                                                //authentication
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(MainActivity.this,"Check Internet Connection and Try Again Later.",Toast.LENGTH_LONG).show();
+
+            }
+
+
+            return false;
+        }
+
+        //  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+        @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if(aBoolean){
-                if(isfirst)
-                    InitialHandShake(usernme);
-                else {
-                    SharedPreferences share=getSharedPreferences("user",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=share.edit();
-                    editor.putString("rno", usernme);
-                    editor.apply();
-                    Intent i = new Intent(MainActivity.this, Userhome.class);
-                    i.putExtra("rno", usernme);
-                    startActivity(i);
-                    finish();
-                }
-            }
-            else{
+            if(dialog.isShowing())
+                dialog.dismiss();
+            if (aBoolean) {
+                SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
+                String rno = share1.getString(RNO, ":)");
+                SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = share.edit();
+                editor.putString(RNO, usernme);
+                editor.putString("pass", pass);
+                startService(new Intent(MainActivity.this,APIManagerService.class));
+                editor.apply();
+                ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
+                Intent i = new Intent(MainActivity.this, Userhome.class);
+                i.putExtra("rno", usernme);
+
+                List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                for (int j = 0; j < subscribedchannels.size(); j++) {
+                    Log.d("Parse channel", subscribedchannels.get(j));
+                }   //TODO just to check delete this
+
+
+                AttendanceServerService.retrieveAttendance(getApplicationContext());
+                AlarmService.cancelAlarm(getApplicationContext());
+                AlarmService.startActionSetDefaultAlarm(getApplicationContext());
+                ComponentName receiver = new ComponentName(getApplicationContext(), BootReceiver.class);
+                PackageManager pm = getApplicationContext().getPackageManager();
+
+                pm.setComponentEnabledSetting(receiver,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
+                startActivity(i);
+                finish();
+            } else {
                 wrongpassword();
             }
         }
     }
 
     private void wrongpassword() {
-        Intent i =new Intent(MainActivity.this,MainActivity.class);
-        i.putExtra("wrong",true);
+        Intent i = new Intent(MainActivity.this, MainActivity.class);
+        i.putExtra("wrong", true);
         startActivity(i);  //TODO: enhance with textview "Wrong password"
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

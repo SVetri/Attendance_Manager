@@ -11,23 +11,28 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rahul on 9/14/15.
- */
 public class UserHomeSliderFragment extends Fragment {
 
     MySqlAdapter handler;
     List<String[]> all;
+    int page;
 
     private SlidingTabLayout mSlidingTabLayout;
 
     private ViewPager mViewPager;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        page=getArguments().getInt("page");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +45,7 @@ public class UserHomeSliderFragment extends Fragment {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager3);
         mViewPager.setAdapter(new SamplePagerAdapter());
+        mViewPager.setCurrentItem(page);
 
         // Give the SlidingTabLayout the ViewPager, this must be done AFTER the ViewPager has had
         // it's PagerAdapter set.
@@ -54,7 +60,7 @@ public class UserHomeSliderFragment extends Fragment {
          */
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         /**
@@ -84,6 +90,8 @@ public class UserHomeSliderFragment extends Fragment {
                     return "Timetable";
                 case 1:
                     return "Attendance";
+                case 2:
+                    return "Announcements";
 
             }
 
@@ -139,6 +147,17 @@ public class UserHomeSliderFragment extends Fragment {
                             }
                     );
                     break;
+
+                case 2:
+                    view = getActivity().getLayoutInflater().inflate(R.layout.layout_announcement,
+                            container, false);
+                    handler=new MySqlAdapter(getActivity(),null);
+                    ListView l=(ListView)view.findViewById(R.id.chat);
+                    Chat[] a=handler.getmsgs();
+                    ChatAdapter adapter=new ChatAdapter(getActivity(),a);
+                    l.setAdapter(adapter);
+                    break;
+
                 default:
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_manage_attendance,
                             container, false);
@@ -167,6 +186,7 @@ public class UserHomeSliderFragment extends Fragment {
                     });
 
                     break;
+
             }
             container.addView(view);
             return  view;

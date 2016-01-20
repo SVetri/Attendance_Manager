@@ -1,5 +1,6 @@
 package com.delta.attendancemanager;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,6 +75,22 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
                 notifyItemRemoved(position);
             }
         });
+        attendanceviewholder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    date = sdf1.parse(ci.classdate+" "+ci.classtime);
+                }
+                catch(Exception e){
+                    Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
+                }
+
+                int position = attendanceList.indexOf(ci);
+                atAdapter.delete_data(ci.coursename, sdf.format(date));
+                attendanceList.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
 
     }
 
@@ -92,6 +109,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         protected TextView time;
         protected Button present;
         protected Button absent;
+        protected Button remove;
 
         public AttendanceViewHolder(View v)
         {
@@ -101,6 +119,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             time = (TextView) v.findViewById(R.id.timecard);
             present = (Button) v.findViewById(R.id.presentbutton);
             absent = (Button) v.findViewById(R.id.absentbutton);
+            remove = (Button) v.findViewById(R.id.removebutton1);
         }
 
     }

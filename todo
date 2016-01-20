@@ -1,0 +1,17 @@
+cancel in cr home  		          						- r       DONE
+messsage sending loader         			      - r       NOT WORKING
+delete delete in manage courses             - r       DONE
+refresh subject delete                      - r       NOT WORKING
+change when deleted                         - r       NOT WORKING
+CR Announcements ListView               	  - r       DONE
+CR Announcements RelativeLayout             - r       DONE
+announcement notifi to announcement page    - r       DONE
+Internet Check  							              - n
+space adding in subjects        			      discuss
+Crlogin icon    				                    - r       DONE 		
+Loader          							              - n       DONE			
+orientation vertical                    	  - n			  DONE
+toast removal   							              - n			  DONE
+CRLOgOut                        			      - n	  		DONE
+retrieve backup loader          		      	- n 			DONE
+parse push troubleshoot         			      - n       DONE (due to gcm mismatch error - resolved)

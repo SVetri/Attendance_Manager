@@ -24,19 +24,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/deletebutton"
-            android:text="DELETE"
-            android:background="#3f85f4"
-            android:textColor="#ffffff"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/abc_text_size_body_1_material"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/addbutton"
             android:background="#3f85f4"
             android:textColor="#ffffff"
-            android:text="ADD"
+            android:text="ADD SUBJECT"
             android:layout_weight="1"
             android:layout_margin="@dimen/abc_text_size_body_1_material"/>
 

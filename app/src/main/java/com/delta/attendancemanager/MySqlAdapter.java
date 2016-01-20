@@ -33,7 +33,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != " "){
                 subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
             }
             c.moveToNext();
@@ -65,6 +65,7 @@ public class MySqlAdapter {
 
     public void delete_sub(String sub){                                                         //TODO for deleting subject from the cr side
         SQLiteDatabase db = mysqlhelper.getWritableDatabase();
+        subs.remove(sub);
         db.delete(Mysqlhelper.TNAME, Mysqlhelper.CNAME + " =? ", new String[]{sub});
     }
 
@@ -83,9 +84,9 @@ public class MySqlAdapter {
         db.delete(Mysqlhelper.TABLENAME, Mysqlhelper.DAY + " = ?", new String[]{day});
     }
 
-    public List<String[]> get_days(){
+    public ArrayList<String[]> get_days(){
         String[] all=new String[9];
-        List<String[]> s=new ArrayList<>();
+        ArrayList<String[]> s=new ArrayList<>();
         SQLiteDatabase db=mysqlhelper.getReadableDatabase();
         Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
                         Mysqlhelper.DAY,
@@ -346,6 +347,11 @@ public class MySqlAdapter {
     }
 
     public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
+        try{
+            delete_day(day);
+        }catch(Exception e){
+
+        }
         if(ispresent(day))
             delete_day(day);
         ContentValues v=new ContentValues();
@@ -362,13 +368,55 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
+    public void addmsg(String msg,String time,String date){
+        ContentValues v=new ContentValues();
+        v.put(Mysqlhelper.ACNAME,msg);
+        v.put(Mysqlhelper.ATIMES,time);
+        v.put(Mysqlhelper.ADATES,date);
+        SQLiteDatabase db=mysqlhelper.getWritableDatabase();
+        db.insert(Mysqlhelper.ATNAME, null, v);
+    }
+
+    public Chat[] getmsgs(){
+        List<Chat> msg=new ArrayList<>();
+        Chat chat;
+
+        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+        Cursor c=db.query(true, Mysqlhelper.ATNAME, new String[] {
+                        Mysqlhelper.ACNAME,Mysqlhelper.ATIMES,Mysqlhelper.ADATES},
+                null,
+                null,
+                null, null, "_id DESC" ,null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            chat=new Chat();
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME))!=null){
+                chat.setMsg(c.getString(c.getColumnIndex(Mysqlhelper.ACNAME)));
+            }
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ATIMES))!=null){
+                chat.setTime(c.getString(c.getColumnIndex(Mysqlhelper.ATIMES)));
+            }
+            if(c.getString(c.getColumnIndex(Mysqlhelper.ADATES))!=null){
+                chat.setDate(c.getString(c.getColumnIndex(Mysqlhelper.ADATES)));
+            }
+            c.moveToNext();
+            msg.add(chat);
+        }
+        c.close();
+
+        Chat[] msgs=new Chat[msg.size()];
+        msgs=msg.toArray(msgs);
+
+        return msgs;
+    }
+
     public void update_tomo(String[] subs){
         delete_day(Mysqlhelper.TOMO);
         add_day(Mysqlhelper.TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
     }
 
     static class Mysqlhelper extends SQLiteOpenHelper{
-        private static final int VERSION =4;
+        private static final int VERSION =6;
         public static final  String TOMO="tomorrow";
         private static final String DATABASE_NAME="class.db";
         private static final String TABLENAME="timetable";
@@ -383,7 +431,10 @@ public class MySqlAdapter {
         private static final String t400="t400";
         private static final String TNAME = "subjects";
         private static final String CNAME = "subject";
-
+        private static final String ATNAME="Announcements";
+        private static final String ACNAME="announcements";
+        private static final String ATIMES="time";
+        private static final String ADATES="date";
         Context context = null;
 
         public Mysqlhelper(Context context,SQLiteDatabase.CursorFactory factory){
@@ -406,14 +457,20 @@ public class MySqlAdapter {
                     t400+" TEXT" +
                     ");";
             db.execSQL(query);
-            String Create_subs  = "CREATE tABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
+            String Create_subs  = "CREATE TABLE "+TNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+CNAME+" TEXT);";
             db.execSQL(Create_subs);
+            String chats  = "CREATE TABLE "+ATNAME+"(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ACNAME+" TEXT, " +
+                    ADATES+" TEXT, " +
+                    ATIMES+" TEXT );";
+            db.execSQL(chats);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLENAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TNAME);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ATNAME);
             onCreate(sqLiteDatabase);
         }
     }

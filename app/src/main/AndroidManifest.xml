@@ -4,10 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="ANDROID.PERMISSION.GET_ACCOUNTS" />
-    <uses-permission android:name="ANDROID.PERMISSION.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <permission
         android:name="com.delta.attendancemanager.permission.C2D_MESSAGE"
@@ -15,13 +17,17 @@
 
     <uses-permission android:name="com.delta.attendancemanager.permission.C2D_MESSAGE" />
 
+    <!-- meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/"/ TODO: change push icon. -->
     <application
+        android:name=".ParseUser"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,28 +36,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserHome"
-            android:label="@string/title_activity_user_home" >
-        </activity>
-        <activity
             android:name=".WeeklyTimetable"
             android:label="@string/title_activity_weekly_timetable"
-            android:parentActivityName=".UserHome" >
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:parentActivityName=".Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.UserHome" />
+                android:value="com.delta.attendancemanager.Userhome" />
         </activity>
         <activity
             android:name=".ManageAttendance"
             android:label="@string/title_activity_manage_attendance"
-            android:parentActivityName=".UserHome" >
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:parentActivityName=".Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.UserHome" />
+                android:value="com.delta.attendancemanager.Userhome" />
         </activity>
         <activity
             android:name=".UpdateMyAttendance"
             android:label="@string/title_activity_update_my_attendance"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".ManageAttendance" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -60,6 +68,8 @@
         <activity
             android:name=".ViewMyAttendance"
             android:label="@string/title_activity_view_my_attendance"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".ManageAttendance" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -68,6 +78,8 @@
         <activity
             android:name=".SubjectAttendance"
             android:label="@string/title_activity_subject_attendance"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".ViewMyAttendance" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -76,6 +88,8 @@
         <activity
             android:name=".EditHistory"
             android:label="@string/title_activity_edit_history"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".SubjectAttendance" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -84,38 +98,42 @@
         <activity
             android:name=".CRLogin"
             android:label="@string/title_activity_crlogin"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.delta.attendancemanager.MainActivity" />
         </activity>
         <activity
-            android:name=".CRHome"
-            android:label="@string/title_activity_crhome" >
-        </activity>
-        <activity
             android:name=".EditWeeklyTT"
             android:label="@string/title_activity_edit_weekly_tt"
-            android:parentActivityName=".CRHome" >
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
         <activity
             android:name=".UpcomingTT"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_upcoming_tt"
-            android:parentActivityName=".CRHome" >
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
         <activity
             android:name=".EditUpcomingTT"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_edit_upcoming_tt"
-            android:parentActivityName=".CRHome" >
+            android:parentActivityName=".CRhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.CRHome" />
+                android:value="com.delta.attendancemanager.CRhome" />
         </activity>
 
         <service
@@ -125,6 +143,8 @@
 
         <activity
             android:name=".ManageCourse"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_manage_course" >
         </activity>
 
@@ -137,46 +157,76 @@
             android:exported="false" >
         </service>
 
+        <activity
+            android:name=".CourseInfo"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_course_info" >
+        </activity>
+        <activity
+            android:name=".Userhome"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_userhome" >
+        </activity>
+        <activity
+            android:name=".CRhome"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_crhome" >
+        </activity>
+
         <receiver
-            android:name=".GCMReceiver"
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="false"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".AlarmService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".AttendanceServerService"
+            android:exported="false" >
+        </service>
+        <service android:name="com.parse.PushService"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".ParseReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+
+                <category android:name="com.delta.attendancemanager" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
                 <category android:name="com.delta.attendancemanager" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMMessageHandler" />
-
-        <activity
-            android:name=".CourseInfo"
-            android:label="@string/title_activity_course_info" >
-        </activity>
-        <activity
-            android:name=".Userhome"
-            android:label="@string/title_activity_userhome" >
-        </activity>
-
-        <receiver
-            android:name=".ALarm"
-            android:process=":remote" />
-
-        <activity
-            android:name=".CRhome"
-            android:label="@string/title_activity_crhome" >
-        </activity>
-
-        <receiver android:name=".AutoStart">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
         <service
-            android:name=".AlarmSetterService"
-            android:enabled="true"
-            android:exported="true" >
+            android:name=".ParseHandler"
+            android:exported="false" >
         </service>
     </application>
 

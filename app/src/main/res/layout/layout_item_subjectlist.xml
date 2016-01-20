@@ -4,6 +4,9 @@
     android:id="@+id/subjectbutton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="25dp"
+    android:background="#3f85f4"
+    android:textColor="#ffffff"
     android:text="Subject"
     android:layout_margin="10dp"
     />

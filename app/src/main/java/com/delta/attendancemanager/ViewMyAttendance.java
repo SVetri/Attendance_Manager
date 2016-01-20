@@ -1,17 +1,21 @@
 //view my attendance option.
 package com.delta.attendancemanager;
 
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//TODO subjects list should come up
 
 public class ViewMyAttendance extends ActionBarActivity {
 
@@ -20,25 +24,29 @@ public class ViewMyAttendance extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_my_attendance);
 
+        MySqlAdapter mySqlAdapter = new MySqlAdapter(getApplicationContext(),null);
+        ArrayList<String> subjects = mySqlAdapter.getSubs();
+
         RecyclerView reclist = (RecyclerView) findViewById(R.id.usersubjectList);
         reclist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         reclist.setLayoutManager(llm);
 
-        SubjectAdapter subadapter = new SubjectAdapter(createList(9), ViewMyAttendance.this);
+        SubjectAdapter subadapter = new SubjectAdapter(createList(subjects), ViewMyAttendance.this);
         reclist.setAdapter(subadapter);
     }
 
-    private List<SubjectInfo> createList(int size) {
+    private List<SubjectInfo> createList(ArrayList<String> subjects) {
 
         List<SubjectInfo> result = new ArrayList<SubjectInfo>();
-        for (int i=1; i <= size; i++) {
+
+        for (int i=0; i < subjects.size(); i++) {
             SubjectInfo si = new SubjectInfo();
-            si.subjectname="Subject " + i;
-
+            if(subjects.get(i) == null || subjects.get(i).isEmpty() || subjects.get(i).equals(" "))
+                continue;
+            si.subjectname=subjects.get(i);
             result.add(si);
-
         }
 
         return result;
@@ -59,11 +67,15 @@ public class ViewMyAttendance extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_retrieve) {
+            new retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
         }
+        if(id == R.id.action_backup){
+            new backup(ViewMyAttendance.this,getApplicationContext()).execute();
+            return true;
 
+        }
         return super.onOptionsItemSelected(item);
     }
 }

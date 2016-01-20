@@ -15,6 +15,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class JSONParser {
     // function get json from url
     // by making HTTP POST or GET mehtod
     public JSONObject makeHttpRequest(String url, String method,
-                                      List<NameValuePair> params) {
+                                      JSONObject js) {
 
         // Making HTTP request
         try {
@@ -44,10 +45,14 @@ public class JSONParser {
             if(method == "POST"){
                 // request method is POST
                 // defaultHttpClient
+//                JSONObject js=new JSONObject();
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url);
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
 
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
+                StringEntity s=new StringEntity(js.toString());
+                httpPost.setEntity(s);
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
@@ -56,8 +61,8 @@ public class JSONParser {
             }else if(method == "GET"){
                 // request method is GET
                 DefaultHttpClient httpClient = new DefaultHttpClient();
-                String paramString = URLEncodedUtils.format(params, "utf-8");
-                url += "?" + paramString;
+               // String paramString = URLEncodedUtils.format(params, "utf-8");
+               // url += "?" + paramString;
                 HttpGet httpGet = new HttpGet(url);
 
                 HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -72,7 +77,7 @@ public class JSONParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        String jsons="";
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     is, "iso-8859-1"), 8);
@@ -82,14 +87,14 @@ public class JSONParser {
                 sb.append(line + "\n");
             }
             is.close();
-            json = sb.toString();
+            jsons = sb.toString();
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
 
         // try parse the string to a JSON object
         try {
-            jObj = new JSONObject(json);
+            jObj = new JSONObject(jsons);
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }

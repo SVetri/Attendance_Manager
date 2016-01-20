@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.delta.attendancemanager"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -20,6 +20,8 @@ android {
 }
 
 dependencies {
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile 'com.parse:parse-android:1.+'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.+'

@@ -3,9 +3,9 @@ package com.delta.attendancemanager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -13,11 +13,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 
 public class APIManagerService extends IntentService {
+    MySqlAdapter handler;
+    String[] allString;
     MySqlAdapter adapter;
     List<String[]> all,subs;
 
@@ -29,12 +32,13 @@ public class APIManagerService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         subs=new ArrayList<>();
-        String user="";
-        Toast.makeText(getApplicationContext(),"going in",Toast.LENGTH_LONG).show();
         String[] days={"Monday","Tuesday","Wednesday","Thursday","Friday"};
         int mode=0;
         String[] times;
-        String URL = "http://10.0.0.109/~rahulzoldyck/timetable";
+        SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rno=share1.getString(MainActivity.RNO, ":)");
+        String batch = rno.substring(0,rno.length()-3);
+        String URL = MainActivity.URL+"/getTimetable/"+batch;
 //TODO:send username using SharedPref
         all=new ArrayList<>();
         adapter=new MySqlAdapter(this,null);
@@ -50,9 +54,10 @@ public class APIManagerService extends IntentService {
                     times=new String[9];
                     JSONParser jp = new JSONParser();
                     List<NameValuePair> tt = new ArrayList<>();
+                    JSONObject jd=new JSONObject();
 //                    tt.add(new BasicNameValuePair("username", user));
                     // aut.add(new BasicNameValuePair("password",params[1]));
-                    JSONObject js = jp.makeHttpRequest(URL, "POST", tt);
+                    JSONObject js = jp.makeHttpRequest(URL, "POST", jd);
                     for(String i : days) {
                         JSONObject day = js.getJSONObject(i);
                         times[0]=i;
@@ -66,7 +71,6 @@ public class APIManagerService extends IntentService {
                         times[8]=day.getString("400");
                         for(int k=1;k<9;k++)
                             adapter.add_sub(times[k]);
-                        Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
                         Log.d("hel","api manager: "+times[0]+" "+times[5]);
                         adapter.add_day(times[0],times[1],times[2],times[3],times[4],times[5],times[6],times[7],times[8]);
                     }
@@ -84,6 +88,54 @@ public class APIManagerService extends IntentService {
 
 
         }
+        handler=new MySqlAdapter(getApplicationContext(),null);
+        Calendar c=Calendar.getInstance();
+        int hour=c.get(Calendar.HOUR_OF_DAY);
+        allString=new String[9];
+        boolean today;
+        if(hour<16)
+            today=true;
+        else
+            today=false;
+
+        int dayw=c.get(Calendar.DAY_OF_WEEK);
+        switch (dayw) {
+            case Calendar.MONDAY:
+                if(today)
+                    allString = handler.get_mon();
+                else
+                    allString=handler.get_tue();
+                break;
+            case Calendar.TUESDAY:
+                if(today)
+                    allString = handler.get_tue();
+                else
+                    allString=handler.get_wed();
+                break;
+            case Calendar.WEDNESDAY:
+                if(today)
+                    allString = handler.get_wed();
+                else
+                    allString=handler.get_thur();
+                break;
+            case Calendar.THURSDAY:
+                if(today)
+                    allString = handler.get_thur();
+                else
+                    allString=handler.get_fri();
+                break;
+            case Calendar.FRIDAY:
+                if(today)
+                    allString = handler.get_fri();
+                else
+                    allString=handler.get_mon();
+                break;
+            default:
+                allString=handler.get_mon();
+
+        }
+        handler.update_tomo(allString);
+        startActivity(new Intent(getApplicationContext(),Userhome.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
 }

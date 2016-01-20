@@ -1,5 +1,8 @@
 package com.delta.attendancemanager;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +23,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
     ArrayList<String> subjects;
     ArrayList<Date> dates;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,26 +32,6 @@ public class UpdateMyAttendance extends ActionBarActivity {
         AtAdapter atAdapter = new AtAdapter(getApplicationContext());
 
         atAdapter.fetch_pending_data();
-        //**************************************************************************************************
-        if(atAdapter.getSubj().isEmpty()) {
-            String format = "yyyy-MM-dd HH:mm";
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date d1 = new Date(2015, 9, 14, 8, 30);
-            Date d2 = new Date(2015, 9, 14, 9, 20);
-            Date d3 = new Date(2015, 9, 14, 10, 30);
-            Date d4 = new Date(2015, 9, 14, 11, 20);
-            Date d5 = new Date(2015, 9, 14, 1, 30);
-            Date d6 = new Date(2015, 9, 14, 2, 20);
-
-            atAdapter.add_attendance("Circuit Theory", sdf.format(d1), 0);                                               //date format: yyyy-MM-dd HH:mm
-            atAdapter.add_attendance("Digital Electronics", sdf.format(d2), 0);
-            atAdapter.add_attendance("Thermodynamics", sdf.format(d3), 0);
-            atAdapter.add_attendance("Material Science", sdf.format(d4), 0);
-            atAdapter.add_attendance("Circuit lab", sdf.format(d5), 0);
-            atAdapter.add_attendance("Maths", sdf.format(d6), 0);
-            atAdapter.fetch_pending_data();
-        }
-        //**************************************************************************************************
 
         ArrayList<String> subjects, datetime;
         subjects = atAdapter.getSubj();
@@ -103,7 +89,10 @@ public class UpdateMyAttendance extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add_dummy) {
+            AttendanceServerService.addAttendance(this);
+            Toast.makeText(getApplicationContext(),"Today's attendance added",Toast.LENGTH_SHORT).show();
+            finish();
             return true;
         }
 

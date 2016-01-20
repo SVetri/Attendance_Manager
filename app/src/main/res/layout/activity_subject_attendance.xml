@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="4"
-        android:weightSum="9">
+        android:weightSum="6">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,9 +58,37 @@
             android:layout_weight="2"
             android:textSize="20sp"
             android:gravity="center"
-            android:text="25 / 30 "/>
+            android:text="25"/>
 
      </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="Total Classes : "/>
+
+            <TextView
+                android:id="@+id/totalclasses"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text=" 75 %"/>
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,60 +114,6 @@
             android:textSize="20sp"
             android:gravity="center"
             android:text=" 80% "/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:layout_weight="2"
-        android:weightSum="5">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="Percentage Required: "/>
-
-        <TextView
-            android:id="@+id/requiredpercent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text=" 75 "/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:layout_weight="2"
-        android:weightSum="5">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text="Projected Percentage: "/>
-
-        <TextView
-            android:id="@+id/projectedatt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:text=" 85% "/>
 
     </LinearLayout>
 
