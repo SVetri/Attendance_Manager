@@ -122,6 +122,15 @@ public class AtAdapter {
         return subj;
     }
 
+    public void refresh_delete_data(String subject, String datet){
+        Log.i("in AtAdapter","refresh delete data called");
+        if(subject==null||  subject.isEmpty()||datet.isEmpty())
+            return;
+        SQLiteDatabase db = athelper.getWritableDatabase();
+        //DELETE * FROM attendance WHERE subject = subject AND datetime = datet AND present = 0;
+        db.delete(Athelper.TABLE_NAME,Athelper.SUBJECT+ " =? AND "+Athelper.DATETIME+" =? AND "+Athelper.PRESENT+" == 0",new String[]{subject,datet});
+    }
+
     public void delete_data(String subject,String datet){                                                   //as of now no use
         Log.i("in AtAdapter","delete data called");
         if(subject==null||  subject.isEmpty()||datet.isEmpty())

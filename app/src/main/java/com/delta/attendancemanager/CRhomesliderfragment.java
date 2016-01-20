@@ -438,6 +438,7 @@ public class CRhomesliderfragment extends Fragment {
     public void UpdateSubs(String subs){
         final String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","tomorrow"};
         String[] dayTimetable = new String[9];
+        AttendanceServerService.deleteAttendance(context);
         for (String day : days ){
             switch(day){
                 case "Monday":
@@ -505,6 +506,8 @@ public class CRhomesliderfragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
+        AttendanceServerService.addAttendance(context);
 
         UpdateTTService.startActionTT(getActivity(), j);
 

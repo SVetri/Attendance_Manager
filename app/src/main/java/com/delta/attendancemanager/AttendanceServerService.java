@@ -164,6 +164,8 @@ Log.i("hel",jsons);
         String format = "yyyy-MM-dd HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Calendar now = Calendar.getInstance();
+        if(now.get(Calendar.HOUR_OF_DAY)>15)
+            now.add(Calendar.DAY_OF_MONTH,1);
         for(int i=1;i<=8;i++){
             Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),TTimings.hour[i], TTimings.min[i]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
             atAdapter.add_attendance(subjects[i], sdf.format(date), 0);
@@ -178,9 +180,11 @@ Log.i("hel",jsons);
         String format = "yyyy-MM-dd HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Calendar now = Calendar.getInstance();
+        if(now.get(Calendar.HOUR_OF_DAY)>15)
+            now.add(Calendar.DAY_OF_MONTH,1);
         for(int i=1;i<=8;i++){
             Date date = new Date(now.get(Calendar.YEAR)-1900, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),TTimings.hour[i], TTimings.min[i]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
-            atAdapter.delete_data(subjects[i], sdf.format(date));
+            atAdapter.refresh_delete_data(subjects[i], sdf.format(date));
         }
     }
 
