@@ -172,6 +172,9 @@ class SlidingTabStrip extends LinearLayout {
         return Color.rgb((int) r, (int) g, (int) b);
     }
 
+    /**
+     * Define the colours for the Tab
+     */
     private static class SimpleTabColorizer implements SlidingTabLayout.TabColorizer {
         private int[] mIndicatorColors;
         private int[] mDividerColors;

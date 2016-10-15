@@ -3,10 +3,10 @@ package com.delta.attendancemanager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-
+/**
+ * Handle the view dispalying the weekly timetable
+ */
 public class WeeklyTimetable extends ActionBarActivity{
 
     @Override

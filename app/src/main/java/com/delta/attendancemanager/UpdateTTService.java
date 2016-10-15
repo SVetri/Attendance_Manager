@@ -7,12 +7,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,25 +18,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-
+/**
+ * Handle the view and the methods to edit the TimeTable
+ */
 public class UpdateTTService extends IntentService {
     private static final String ACTION_UPCOMING = "com.delta.attendancemanager.action.UPCOMING";
     private static final String ACTION_CHAT = "com.delta.attendancemanager.action.CHAT";
     private static final String ACTION_TT = "com.delta.attendancemanager.action.TT";
     private static final String MSG = "com.delta.attendancemanager.extra.MSG";
     private static final String JSON = "com.delta.attendancemanager.extra.JSON";
-
-    public static void startActionChat(Context context, String msg){
-        Intent intent = new Intent(context, UpdateTTService.class);
-        intent.setAction(ACTION_CHAT);
-        intent.putExtra(MSG, msg);
-        context.startService(intent);
-    }
 
 
     public static void startActionUpcoming(Context context, JSONObject json) {
@@ -70,7 +60,7 @@ public class UpdateTTService extends IntentService {
                     final JSONObject json = new JSONObject(intent.getStringExtra(JSON));
                     handleUpcoming(json);
                 } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
 
             } else if (ACTION_TT.equals(action)) {
@@ -78,18 +68,24 @@ public class UpdateTTService extends IntentService {
                     final JSONObject json = new JSONObject(intent.getStringExtra(JSON));
                     handleTT(json);
                 } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
             }else if (ACTION_CHAT.equals(action)){
                 try {
                     handlechat(intent.getStringExtra(MSG));
                 } catch (JSONException  | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
             }
         }
     }
 
+    /**
+     * Retrieve a message from the chat
+     * @param msg message to retrieve
+     * @throws JSONException
+     * @throws IOException
+     */
     private void handlechat(String msg) throws JSONException ,IOException {
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
         String rno=share1.getString("crrno",":)");

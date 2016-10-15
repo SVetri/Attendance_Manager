@@ -7,8 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
+/**
+ * Handle the view displaying the chat system
+ */
 public class ChatAdapter extends ArrayAdapter<Chat> {
+    /**
+     * Create the view for the chat
+     * @param context specify where to construct the view
+     * @param objects list of the messages
+     */
     public ChatAdapter(Context context, Chat[] objects) {
         super(context, R.layout.chat_layout, objects);
     }
@@ -17,13 +24,17 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater r = LayoutInflater.from(getContext());
         View v = r.inflate(R.layout.chat_layout, parent, false);
-        TextView time=(TextView)v.findViewById(R.id.atimes);
-        TextView date=(TextView)v.findViewById(R.id.adates);
-        TextView msg=(TextView)v.findViewById(R.id.amsgs);
+
+        int [] subsInt = {R.id.atimes, R.id.adates, R.id.amsgs};
+        TextView sub [] = new TextView[3];
+        for (int i= 0; i < sub.length; i++){
+            sub[i] = (TextView) v.findViewById(subsInt[i]);
+        }
+
         Chat temp=getItem(position);
-        time.setText(temp.getTime());
-        date.setText(temp.getDate());
-        msg.setText(temp.getMsg());
+        sub[0].setText(temp.getTime());
+        sub[1].setText(temp.getDate());
+        sub[2].setText(temp.getMsg());
         return v;
     }
 }

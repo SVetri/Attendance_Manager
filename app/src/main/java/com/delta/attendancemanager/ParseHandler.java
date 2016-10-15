@@ -16,6 +16,9 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handle the methods to parse an object
+ */
 public class ParseHandler extends IntentService {
     static final String MSG_TT = "tt";
     static final String MSG_UT = "ut";
@@ -29,6 +32,9 @@ public class ParseHandler extends IntentService {
     String mes;
     private MySqlAdapter handler;
 
+    /**
+     * Create the object to parse JSON information
+     */
     public ParseHandler() {
         super("ParseHandler");
     }
@@ -71,7 +77,7 @@ public class ParseHandler extends IntentService {
                         AttendanceServerService.addAttendance(getApplicationContext());
                         sendNotification(1, "Upcoming Timetable Updated");
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("ParseHandler", e.toString());
                     }
                 }
                 if (message.equals(MSG_CHAT)) {
@@ -87,7 +93,7 @@ public class ParseHandler extends IntentService {
                         String msg = data.getString("msg");
                         announcements(msg, date, time);
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("ParseHandler", e.toString());
                     }
 
 
@@ -101,6 +107,11 @@ public class ParseHandler extends IntentService {
 
     }
 
+    /**
+     * Update the hours table for the next day
+     * @param js JSONObject to parse
+     * @throws JSONException
+     */
     private void updateUT(JSONObject js) throws JSONException {
 
         times[0] = "tomorrow";
@@ -115,7 +126,7 @@ public class ParseHandler extends IntentService {
         handler.update_tomo(times);
     }
 
-    private void updateTT(JSONObject js) throws JSONException {
+    private void updateTT() throws JSONException {
         //TODO:Drop Table
         startService(new Intent(getApplicationContext(),APIManagerService.class));
     }
@@ -127,6 +138,7 @@ public class ParseHandler extends IntentService {
     }
 
     private void sendNotification(int type, String msg) {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         switch (type) {
             case 0:
                 Intent resultIntent = new Intent(this, WeeklyTimetable.class);
@@ -135,9 +147,6 @@ public class ParseHandler extends IntentService {
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
                 NotificationCompat.Builder mNotifyBuilder;
-                NotificationManager mNotificationManager;
-
-                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle(msg)
@@ -165,8 +174,6 @@ public class ParseHandler extends IntentService {
                 resultIntent.putExtra("msg", msg);
                 resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
-
-                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("Alert")
@@ -196,9 +203,6 @@ public class ParseHandler extends IntentService {
                 resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
-
-                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("CR App")//TODO: name it
                         .setContentText(msg)
@@ -220,8 +224,6 @@ public class ParseHandler extends IntentService {
                 // Post a notification
                 mNotificationManager.notify(notifyID, mNotifyBuilder.build());
                 break;
-
-
         }
 
     }

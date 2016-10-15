@@ -38,7 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -86,7 +85,10 @@ public class CRhomesliderfragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
-    class SamplePagerAdapter extends PagerAdapter {
+    /**
+     * Support class for the beahviour of the sample pager
+     */
+    protected class SamplePagerAdapter extends PagerAdapter {
 
         /**
          * @return the number of pages to display
@@ -129,7 +131,7 @@ public class CRhomesliderfragment extends Fragment {
             return null;
         }
 
-        public void selectsubdialog(View v, String time, int no) {
+        public void selectsubdialog(View v, int no) {
             final TextView t = (TextView) v;
             final int n = no;
             final Dialog dialog = new Dialog(getActivity());
@@ -140,11 +142,11 @@ public class CRhomesliderfragment extends Fragment {
             subs = handler.getSubs();
             String[] al = new String[subs.size()];
             al = subs.toArray(al);
-
+            RadioButton rb;
             for (String i : al) {
-                if (i.equals(" "))
+                if (i.equals(Constants.BLANK_STRING))
                     continue;
-                RadioButton rb = new RadioButton(getActivity());
+                rb = new RadioButton(getActivity());
                 rb.setText(i);
                 rg.addView(rb);
             }
@@ -166,7 +168,7 @@ public class CRhomesliderfragment extends Fragment {
                         try {
                             j.put(EditUpcomingTT.slots[i - 1], a[i]);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("CRhomesliderfragment", e.toString());
                         }
                     }
                     UpdateTTService.startActionUpcoming(getActivity(), j);
@@ -195,7 +197,9 @@ public class CRhomesliderfragment extends Fragment {
             context = getActivity().getApplicationContext();
             // Inflate a new layout from our resources
             View view;
-            TextView sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8;
+            TextView sub [] = new TextView[8];
+            Button btns [] = new Button[3];
+            int [] btnsInt = {R.id.refreshChat, R.id.chatbutton, R.id.addbutton};
             // Add the newly created View to the ViewPager
 
             switch (position) {
@@ -209,77 +213,74 @@ public class CRhomesliderfragment extends Fragment {
                     handler = new MySqlAdapter(getActivity(), null);
                     //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
                     all = new String[9];
-                    sub1 = (TextView) view.findViewById(R.id.sub1);
-                    sub2 = (TextView) view.findViewById(R.id.sub2);
-                    sub3 = (TextView) view.findViewById(R.id.sub3);
-                    sub4 = (TextView) view.findViewById(R.id.sub4);
-                    sub5 = (TextView) view.findViewById(R.id.sub5);
-                    sub6 = (TextView) view.findViewById(R.id.sub6);
-                    sub7 = (TextView) view.findViewById(R.id.sub7);
-                    sub8 = (TextView) view.findViewById(R.id.sub8);
+                    int [] subsInt = {R.id.sub1, R.id.sub2, R.id.sub3, R.id.sub4, R.id.sub5, R.id.sub6, R.id.sub7, R.id.sub8};
+                    for (int i= 0; i < sub.length; i++){
+                        sub[i] = (TextView) view.findViewById(subsInt[i]);
+                    }
 
                     all = handler.get_tomo();
-                    sub1.setText(all[1]);
-                    sub2.setText(all[2]);
-                    sub3.setText(all[3]);
-                    sub4.setText(all[4]);
-                    sub5.setText(all[5]);
-                    sub6.setText(all[6]);
-                    sub7.setText(all[7]);
-                    sub8.setText(all[8]);
-                    sub1.setOnClickListener(new View.OnClickListener() {
+                    sub[0].setText(all[1]);
+                    sub[1].setText(all[2]);
+                    sub[2].setText(all[3]);
+                    sub[3].setText(all[4]);
+                    sub[4].setText(all[5]);
+                    sub[5].setText(all[6]);
+                    sub[6].setText(all[7]);
+                    sub[7].setText(all[8]);
+
+                    sub[0].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "830", 1);
+                            selectsubdialog(v, 1);
                         }
                     });
 
-                    sub2.setOnClickListener(new View.OnClickListener() {
+                    sub[1].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "920", 2);
+                            selectsubdialog(v, 2);
                         }
                     });
 
-                    sub3.setOnClickListener(new View.OnClickListener() {
+                    sub[2].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "1030", 3);
+                            selectsubdialog(v, 3);
                         }
                     });
 
-                    sub4.setOnClickListener(new View.OnClickListener() {
+                    sub[3].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "1120", 4);
+                            selectsubdialog(v, 4);
                         }
                     });
 
-                    sub5.setOnClickListener(new View.OnClickListener() {
+                    sub[4].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "130", 5);
+                            selectsubdialog(v, 5);
                         }
                     });
 
-                    sub6.setOnClickListener(new View.OnClickListener() {
+                    sub[5].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "220", 6);
+                            selectsubdialog(v, 6);
                         }
                     });
 
-                    sub7.setOnClickListener(new View.OnClickListener() {
+                    sub[6].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "310", 7);
+                            selectsubdialog(v, 7);
                         }
                     });
 
-                    sub8.setOnClickListener(new View.OnClickListener() {
+                    sub[7].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            selectsubdialog(v, "400", 8);
+                            selectsubdialog(v, 8);
                         }
                     });
                     FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating1);
@@ -297,6 +298,7 @@ public class CRhomesliderfragment extends Fragment {
                     break;
 
                 case 2:
+
                     view = getActivity().getLayoutInflater().inflate(R.layout.layout_cr_announcement,
                             container, false);
                     handler = new MySqlAdapter(getActivity(), null);
@@ -304,8 +306,16 @@ public class CRhomesliderfragment extends Fragment {
                     Chat[] a = handler.getmsgs();
                     final ChatAdapter adapter = new ChatAdapter(getActivity(), a);
                     l.setAdapter(adapter);
-                    Button refresh = (Button) view.findViewById(R.id.refreshChat);
-                    refresh.setOnClickListener(
+
+
+
+                    for (int i= 0; i < btnsInt.length; i++){
+                        btns[i] = (Button) view.findViewById(btnsInt[i]);
+                    }
+
+
+
+                    btns[0].setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -315,10 +325,10 @@ public class CRhomesliderfragment extends Fragment {
                                 }
                             }
                     );
-                    Button bt = (Button) view.findViewById(R.id.chatbutton);
+
                     final View v = view;
                     final LinearLayout ll = (LinearLayout) view.findViewById(R.id.ll1);
-                    bt.setOnClickListener(
+                    btns[1].setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -336,10 +346,10 @@ public class CRhomesliderfragment extends Fragment {
                     view = getActivity().getLayoutInflater().inflate(R.layout.activity_manage_course,
                             container, false);
 
-                    Button add = (Button) view.findViewById(R.id.addbutton);
 //                    MySqlHandler handler=new MySqlHandler(getActivity(),null);
                     final ListView li = (ListView) view.findViewById(R.id.courses);
-                    add.setOnClickListener(
+                    btns[2] = (Button) view.findViewById(btnsInt[2]);
+                    btns[2].setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -439,8 +449,75 @@ public class CRhomesliderfragment extends Fragment {
         final String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","tomorrow"};
         String[] dayTimetable = new String[9];
         AttendanceServerService.deleteAttendance(context);
-        for (String day : days ){
-            switch(day){
+        ArrayList<String> finalTimetable=new ArrayList<>();
+
+        getDay(days, finalTimetable, dayTimetable, subs);
+
+
+        JSONObject j = setJSON();
+
+        UpdateTTService.startActionUpcoming(getActivity(), j);
+        List<String[]> all = new ArrayList<>();
+        all.add(handler.get_mon());
+        all.add(handler.get_tue());
+        all.add(handler.get_wed());
+        all.add(handler.get_thur());
+        all.add(handler.get_fri());
+
+         j = new JSONObject();
+
+        for (String[] k : all) {
+            JSONObject js = new JSONObject();
+            for (int i = 1; i <= 8; i++) {
+                try {
+                    js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
+                } catch (JSONException e) {
+                    Log.e("CRhomesliderfragment", e.toString());
+                }
+            }
+            try {
+                j.put(k[0], js);
+            } catch (JSONException e) {
+                Log.e("CRhomesliderfragment", e.toString());
+            }
+        }
+
+        AttendanceServerService.addAttendance(context);
+
+        UpdateTTService.startActionTT(getActivity(), j);
+
+        getActivity().startActivity(new Intent(getActivity(),CRhome.class));
+        getActivity().finish();
+    }
+
+    /**
+     * Set the JSON object to interact with
+     * @return json object
+     */
+    private JSONObject setJSON(){
+        String[] a = new String[9];
+        a = handler.get_tomo();
+        JSONObject j = new JSONObject();
+        for (int i = 1; i <= 8; i++) {
+            try {
+                j.put(EditUpcomingTT.slots[i - 1], a[i]);
+            } catch (JSONException e) {
+                Log.e("CRhomesliderfragment", e.toString());
+            }
+        }
+        return j;
+    }
+
+    /**
+     * Set the handler for the days
+     * @param days days of the week
+     * @param finalTimetable Subjects in the time table
+     * @param dayTimetable Day time table
+     * @param subs
+     */
+    private void getDay(String [] days, ArrayList<String> finalTimetable, String[] dayTimetable, String subs){
+        for (String day : days ) {
+            switch (day) {
                 case "Monday":
                     dayTimetable = handler.get_mon();
                     break;
@@ -460,61 +537,33 @@ public class CRhomesliderfragment extends Fragment {
                     dayTimetable = handler.get_tomo();
                     break;
             }
-            ArrayList<String> finalTimetable=new ArrayList<>();
-            for (String sub : dayTimetable){
-                if(sub.equals(subs))
-                    finalTimetable.add("");
-                else
-                    finalTimetable.add(sub);
-            }
+            setSub(finalTimetable, dayTimetable, subs);
+
             handler.delete_day(day);
             handler.add_day(finalTimetable.get(0), finalTimetable.get(1), finalTimetable.get(2), finalTimetable.get(3),
                     finalTimetable.get(4), finalTimetable.get(5), finalTimetable.get(6), finalTimetable.get(7), finalTimetable.get(8));
         }
-        String[] a = new String[9];
-        a = handler.get_tomo();
-        JSONObject j = new JSONObject();
-        for (int i = 1; i <= 8; i++) {
-            try {
-                j.put(EditUpcomingTT.slots[i - 1], a[i]);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        UpdateTTService.startActionUpcoming(getActivity(), j);
-        List<String[]> all = new ArrayList<>();
-        all.add(handler.get_mon());
-        all.add(handler.get_tue());
-        all.add(handler.get_wed());
-        all.add(handler.get_thur());
-        all.add(handler.get_fri());
-
-         j = new JSONObject();
-
-        for (String[] k : all) {
-            JSONObject js = new JSONObject();
-            for (int i = 1; i <= 8; i++) {
-                try {
-                    js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                j.put(k[0], js);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        AttendanceServerService.addAttendance(context);
-
-        UpdateTTService.startActionTT(getActivity(), j);
-
-        getActivity().startActivity(new Intent(getActivity(),CRhome.class));
-        getActivity().finish();
     }
 
+    /**
+     * Set the subs for the view
+     * @param finalTimetable Subjects in the time table
+     * @param dayTimetable Day time table
+     * @param subs
+     */
+    private void setSub(ArrayList<String> finalTimetable, String[] dayTimetable, String subs){
+        for (String sub : dayTimetable){
+            if(sub.equals(subs))
+                finalTimetable.add("");
+            else
+                finalTimetable.add(sub);
+        }
+    }
+
+    /**
+     * Sends a message into the caht
+     * @param msg message to submit
+     */
     private void chatOut(String msg) {
         new AsyncTask<String,Void,Void>(){
             ProgressDialog dialog = new ProgressDialog(context);
@@ -557,7 +606,7 @@ public class CRhomesliderfragment extends Fragment {
                     js.put("username",rollno);
                     js.put("batch",batch);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("CRhomesliderfragment", e.toString());
                 }
 
 
@@ -568,7 +617,7 @@ public class CRhomesliderfragment extends Fragment {
                 try {
                     s = new StringEntity(js.toString());
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    Log.e("CRhomesliderfragment", e.toString());
                 }
                 httpPost.setEntity(s);
                 httpPost.setHeader("Accept", "application/json");

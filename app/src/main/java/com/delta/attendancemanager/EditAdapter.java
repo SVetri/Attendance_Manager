@@ -5,27 +5,31 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 // TODO: editing the absent and present accordingly and updating the attendance database.
 
+/**
+ * This class handles the view and the mechanics for edit an attendance
+ */
 public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder> {
 
-    SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy H:m");
     private List<EditCardInfo> attendanceList;
     private Context context;
     Date date = null;
-    String format = "yyyy-MM-dd HH:mm";
-    SimpleDateFormat sdf = new SimpleDateFormat(format);
     AtAdapter atAdapter;
 
-    public EditAdapter(Context context,List<EditCardInfo> contactList) {
+    /**
+     * Construct the view to edit the attendances
+     *
+     * @param context     specify where to construct the view
+     * @param contactList list of the attendances
+     */
+    public EditAdapter(Context context, List<EditCardInfo> contactList) {
         this.context = context;
         this.attendanceList = contactList;
     }
@@ -36,64 +40,59 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final EditViewHolder attendanceviewholder, final int i)
-    {
+    public void onBindViewHolder(final EditViewHolder attendanceviewholder, final int i) {
         final EditCardInfo eci = attendanceList.get(i);
-        attendanceviewholder.subject.setText(eci.coursename);
-        attendanceviewholder.date.setText(eci.classdate);
-        attendanceviewholder.time.setText(eci.classtime);
-        if(eci.attendance.equals(true))
-        {
-            attendanceviewholder.mark.setText("PRESENT");
-            attendanceviewholder.change.setText("Mark as Absent");
+        attendanceviewholder.sub[0].setText(eci.coursename);
+        attendanceviewholder.sub[1].setText(eci.classdate);
+        attendanceviewholder.sub[2].setText(eci.classtime);
+        if (eci.attendance.equals(true)) {
+            attendanceviewholder.sub[3].setText("PRESENT");
+            attendanceviewholder.sub[4].setText("Mark as Absent");
+        } else {
+            attendanceviewholder.sub[3].setText("ABSENT");
+            attendanceviewholder.sub[4].setText("Mark as Present");
         }
-        else
-        {
-            attendanceviewholder.mark.setText("ABSENT");
-            attendanceviewholder.change.setText("Mark as Present");
-        }
-        attendanceviewholder.change.setOnClickListener(new View.OnClickListener() {
+        attendanceviewholder.sub[4].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 atAdapter = new AtAdapter(context);
-                try{
-                    date = sdf1.parse(eci.classdate+" "+eci.classtime);
-                }
-                catch(Exception e){
+                try {
+                    date = new Date(eci.classdate + " " + eci.classtime);
+                } catch (Exception e) {
                     Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
                 }
-                if(eci.attendance.equals(true))
-                    {
-                        eci.attendance = false;
-                        atAdapter.update_attendance(eci.coursename,sdf.format(date),-1);
-                        attendanceviewholder.mark.setText("ABSENT");
-                        attendanceviewholder.change.setText("Mark as Present");
-                    }
-                    else
-                    {
-                        eci.attendance = true;
-                        atAdapter.update_attendance(eci.coursename,sdf.format(date),1);
-                        attendanceviewholder.mark.setText("PRESENT");
-                        attendanceviewholder.change.setText("Mark as Absent");
-                    }
+                if (eci.attendance.equals(true)) {
+                    eci.attendance = false;
+                    atAdapter.update_attendance(eci.coursename, formatDate(eci.classdate + " " + eci.classtime), -1);
+                    attendanceviewholder.sub[3].setText("ABSENT");
+                    attendanceviewholder.sub[4].setText("Mark as Present");
+                } else {
+                    eci.attendance = true;
+                    atAdapter.update_attendance(eci.coursename, formatDate(eci.classdate + " " + eci.classtime), 1);
+                    attendanceviewholder.sub[3].setText("PRESENT");
+                    attendanceviewholder.sub[4].setText("Mark as Absent");
+                }
             }
         });
-        attendanceviewholder.remove.setOnClickListener(new View.OnClickListener() {
+        attendanceviewholder.sub[5].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 atAdapter = new AtAdapter(context);
-                try{
-                    date = sdf1.parse(eci.classdate+" "+eci.classtime);
-                }
-                catch(Exception e){
-                    Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
-                }
-                atAdapter.delete_data(eci.coursename,sdf.format(date));                                                         //TODO: Refreshing the screen should be added if required
+                atAdapter.delete_data(eci.coursename, formatDate(eci.classdate + " " + eci.classtime));                                                         //TODO: Refreshing the screen should be added if required
                 int position = attendanceList.indexOf(eci);
                 attendanceList.remove(position);
                 notifyItemRemoved(position);
             }
         });
+    }
+
+    private String formatDate(String fullDate) {
+        String year = fullDate.substring(6, 10);
+        String month = fullDate.substring(3, 5);
+        String day = fullDate.substring(0, 2);
+        String hour = fullDate.substring(11);
+        String out = year + "-" + month + "-" + day + " " + hour;
+        return out;
     }
 
     @Override
@@ -105,26 +104,25 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         return new EditViewHolder(itemView);
     }
 
-    public class EditViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * This class defines the design for the edit view
+     */
+    protected class EditViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView subject;
-        protected TextView date;
-        protected TextView time;
-        protected TextView mark;
-        protected Button change;
-        protected Button remove;
+        protected TextView sub[] = new TextView[6];
 
-        public EditViewHolder(View v)
-        {
+        /**
+         * Create the fragment
+         * @param v where appends the fragment
+         */
+        public EditViewHolder(View v) {
             super(v);
-            subject = (TextView) v.findViewById(R.id.subjectcard);
-            date = (TextView) v.findViewById(R.id.datecard);
-            time = (TextView) v.findViewById(R.id.timecard);
-            mark = (TextView) v.findViewById(R.id.mark);
-            change = (Button) v.findViewById(R.id.changebutton);
-            remove = (Button) v.findViewById(R.id.removebutton);
-        }
+            int[] subsInt = {R.id.subjectcard, R.id.datecard, R.id.timecard, R.id.mark, R.id.changebutton, R.id.removebutton};
 
+            for (int i = 0; i < sub.length; i++) {
+                sub[i] = (TextView) v.findViewById(subsInt[i]);
+            }
+        }
     }
 
 }

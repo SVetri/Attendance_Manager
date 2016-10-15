@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,16 @@ import java.util.List;
 public class MySqlAdapter {
     Context context;
     Mysqlhelper mysqlhelper;
+    /**
+     * Provides a string arraylist for the textview text
+     */
     private static ArrayList<String> subs = new ArrayList<>();
+
+    /**
+     * Construct a MySql Adapter
+     * @param context specify in which view construct
+     * @param factory specify in which shape construct
+     */
     public MySqlAdapter(Context context,SQLiteDatabase.CursorFactory factory)
     {
         this.context = context;
@@ -33,7 +41,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != " "){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != Constants.BLANK_STRING){
                 subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
             }
             c.moveToNext();
@@ -346,7 +354,7 @@ public class MySqlAdapter {
         return  all;
     }
 
-    public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
+    public void add_day(String day, String s830, String s920, String s1030, String s1120, String s130, String s220, String s310, String s400){
         try{
             delete_day(day);
         }catch(Exception e){
@@ -368,7 +376,7 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
-    public void addmsg(String msg,String time,String date){
+    public void addmsg(String msg, String time, String date){
         ContentValues v=new ContentValues();
         v.put(Mysqlhelper.ACNAME,msg);
         v.put(Mysqlhelper.ATIMES,time);
@@ -415,25 +423,85 @@ public class MySqlAdapter {
         add_day(Mysqlhelper.TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
     }
 
-    static class Mysqlhelper extends SQLiteOpenHelper{
+    /**
+     * Support class for the handling of the SQLite database
+     */
+    protected static class Mysqlhelper extends SQLiteOpenHelper{
+        /**
+         * Indicate version
+         */
         private static final int VERSION =6;
+        /**
+         * Tomorrow String
+         */
         public static final  String TOMO="tomorrow";
+        /**
+         * Database Name
+         */
         private static final String DATABASE_NAME="class.db";
+        /**
+         * Table name
+         */
         private static final String TABLENAME="timetable";
+        /**
+         * Day
+         */
         private static final String DAY="day";
+        /**
+         * 8,30 hour
+         */
         private static final String t830="t830";
+        /**
+         * 9,20 hour
+         */
         private static final String t920="t920";
+        /**
+         * 10,30 hour
+         */
         private static final String t1030="t1030";
+        /**
+         * 11,20 hour
+         */
         private static final String t1120="t1120";
+        /**
+         * 1,30 Hour
+         */
         private static final String t130="t130";
+        /**
+         * 2,20 hour
+         */
         private static final String t220="t220";
+        /**
+         * 3,10 hour
+         */
         private static final String t310="t310";
+        /**
+         * 4,00 hour
+         */
         private static final String t400="t400";
+        /**
+         * Subjects
+         */
         private static final String TNAME = "subjects";
+        /**
+         * subject
+         */
         private static final String CNAME = "subject";
+        /**
+         * Announcements
+         */
         private static final String ATNAME="Announcements";
+        /**
+         * Announcements
+         */
         private static final String ACNAME="announcements";
+        /**
+         * Time
+         */
         private static final String ATIMES="time";
+        /**
+         * Date
+         */
         private static final String ADATES="date";
         Context context = null;
 

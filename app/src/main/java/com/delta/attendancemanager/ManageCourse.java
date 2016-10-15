@@ -5,19 +5,17 @@ import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Handle the view and the methods to manage the course inserted into the system
+ */
 public class ManageCourse extends ActionBarActivity {
     MySqlAdapter handler;
     boolean ischanged;
