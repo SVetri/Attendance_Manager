@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -106,13 +107,13 @@ public class EditWeeklyTT extends ActionBarActivity {
                                     try {
                                         js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Log.e("EditWeeklyTT", e.toString());
                                     }
                                 }
                                 try {
                                     j.put(k[0], js);
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.e("EditWeeklyTT", e.toString());
                                 }
                             }
 

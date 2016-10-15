@@ -20,37 +20,37 @@ public class SubjectAttendance extends ActionBarActivity {
         setContentView(R.layout.activity_subject_attendance);
 
         Button edithistory = (Button) findViewById(R.id.edithistory);
-        TextView updnotice = (TextView) findViewById(R.id.updatenotice);
-        TextView subjectname = (TextView) findViewById(R.id.subjectname);
-        TextView classes = (TextView) findViewById(R.id.classes);
-        TextView attendancepercent = (TextView) findViewById(R.id.attendancepercent);
-        TextView totalclasses = (TextView) findViewById(R.id.totalclasses);
+        int [] subsInt = {R.id.updatenotice, R.id.subjectname, R.id.classes, R.id.attendancepercent, R.id.totalclasses};
+        TextView text [] = new TextView[5];
+        for (int i= 0; i < text.length; i++){
+            text[i] = (TextView) findViewById(subsInt[i]);
+        }
 
         final String subname = getIntent().getStringExtra("subname");
-        subjectname.setText(subname);
+        text[1].setText(subname);
         atAdapter.subject_info(subname);
 
         int ca = atAdapter.getClasses_attended();
         int tc = atAdapter.getTotalclasses();
 
-        classes.setText(String.valueOf(ca));
-        totalclasses.setText(String.valueOf(tc));
+        text[2].setText(String.valueOf(ca));
+        text[4].setText(String.valueOf(tc));
         int percent = 0;
         if(tc!=0)
             percent = ca*100 / tc;
         else
             percent = 100;
-        attendancepercent.setText(String.valueOf(percent)+"%");
+        text[3].setText(String.valueOf(percent)+"%");
 
         Boolean dispnotice = getIntent().getBooleanExtra("pendupd", false);
 
         if(dispnotice.equals(true))
         {
-            updnotice.setVisibility(View.VISIBLE);
+            text[0].setVisibility(View.VISIBLE);
         }
         else
         {
-            updnotice.setVisibility(View.GONE);
+            text[0].setVisibility(View.GONE);
         }
         edithistory.setOnClickListener(new View.OnClickListener() {
             @Override

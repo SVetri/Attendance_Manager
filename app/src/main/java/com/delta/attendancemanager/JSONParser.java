@@ -71,11 +71,11 @@ public class JSONParser {
             }
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e("JSONParser", e.toString());
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
+            Log.e("JSONParser", e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("JSONParser", e.toString());
         }
         String jsons="";
         try {

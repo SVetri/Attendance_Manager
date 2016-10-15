@@ -68,7 +68,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return new SubjectViewHolder(itemView);
     }
 
-    public class SubjectViewHolder extends RecyclerView.ViewHolder {
+    protected class SubjectViewHolder extends RecyclerView.ViewHolder {
 
         protected Button subject;
 

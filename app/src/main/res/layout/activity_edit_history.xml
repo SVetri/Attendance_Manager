@@ -22,7 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:onClick="addclass"
+
         app:elevation="10dp"
         app:borderWidth="0dp"
         app:backgroundTint="#3f85f4"

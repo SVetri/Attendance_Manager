@@ -47,30 +47,32 @@ public class UpdateMyAttendance extends ActionBarActivity {
         reclist.setAdapter(attadapter);
     }
 
-    private List<CardInfo> createList(ArrayList<String> subject,ArrayList<String> datetime) {
-
-        Date date=null;
+    private List<CardInfo> createList(ArrayList<String> subject, ArrayList<String> datetime) {
+        CardInfo ci;
         List<CardInfo> result = new ArrayList<CardInfo>();
         for (int i=0; i < subject.size(); i++) {
-            CardInfo ci = new CardInfo();
+            ci = new CardInfo();
             ci.coursename = subject.get(i);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            try{
-                date = sdf.parse(datetime.get(i));
-            }
-            catch(Exception e){
-                Log.d("hel",e.toString());
-            }
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
-            SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
-            ci.classdate = sdf1.format(date);
-            ci.classtime = sdf2.format(date);
-
+            ci.classdate = formatDate(datetime.get(i));
+            ci.classtime = formatHour(datetime.get(i));
             result.add(ci);
 
         }
 
         return result;
+    }
+
+    private String formatDate(String fullDate){
+        String year = fullDate.substring(0, 4);
+        String month = fullDate.substring(5, 7);
+        String day = fullDate.substring(8, 10);
+        String out = day + "/"+ month + "/" + year;
+        return out;
+    }
+
+    private String formatHour(String fullDate){
+        String entire = fullDate.substring(11);
+        return entire;
     }
 
 

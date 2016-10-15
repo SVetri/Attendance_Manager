@@ -70,7 +70,7 @@ public class UpdateTTService extends IntentService {
                     final JSONObject json = new JSONObject(intent.getStringExtra(JSON));
                     handleUpcoming(json);
                 } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
 
             } else if (ACTION_TT.equals(action)) {
@@ -78,13 +78,13 @@ public class UpdateTTService extends IntentService {
                     final JSONObject json = new JSONObject(intent.getStringExtra(JSON));
                     handleTT(json);
                 } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
             }else if (ACTION_CHAT.equals(action)){
                 try {
                     handlechat(intent.getStringExtra(MSG));
                 } catch (JSONException  | IOException e) {
-                    e.printStackTrace();
+                    Log.e("UpdateTTService", e.toString());
                 }
             }
         }
