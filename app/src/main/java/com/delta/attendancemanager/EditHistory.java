@@ -1,45 +1,31 @@
 package com.delta.attendancemanager;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import static android.app.PendingIntent.getActivity;
 
 //TODO edit history class to edit the already marked history - local attendance database should be used.
 
+/**
+ * Handle the view and the methods to edit the history of the attendaces
+ */
 public class EditHistory extends ActionBarActivity {
     AtAdapter atAdapter;
     String subname;
@@ -71,6 +57,13 @@ public class EditHistory extends ActionBarActivity {
         reclist.setAdapter(edadapter);
     }
 
+    /**
+     * Create the objects for the attendances editing
+     * @param sname
+     * @param datetime
+     * @param present
+     * @return
+     */
     private List<EditCardInfo> createList(String sname, ArrayList<String> datetime, ArrayList<Integer> present) {
         EditCardInfo eci;
         List<EditCardInfo> result = new ArrayList<EditCardInfo>();
@@ -104,6 +97,9 @@ public class EditHistory extends ActionBarActivity {
     }
 
 
+    /**
+     * Allows the user to add an attendance manually
+     */
     public void addClass(){
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.add_att_dialog);

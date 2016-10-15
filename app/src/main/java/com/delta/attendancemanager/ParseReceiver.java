@@ -1,8 +1,5 @@
 package com.delta.attendancemanager;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -12,7 +9,14 @@ import com.parse.ParsePushBroadcastReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handles the push notification
+ */
 public class ParseReceiver extends ParsePushBroadcastReceiver {
+
+    /**
+     * Main constructor
+     */
     public ParseReceiver() {
         super();
     }

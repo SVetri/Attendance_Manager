@@ -16,9 +16,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Handles the view where weekly table could be managed
+ */
 public class EditWeeklyTT extends ActionBarActivity {
+    /**
+     * Week days list
+     */
     public static final String[] Days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    /**
+     * Flag value
+     */
     public static boolean ischanged;
     MySqlAdapter handler;
 

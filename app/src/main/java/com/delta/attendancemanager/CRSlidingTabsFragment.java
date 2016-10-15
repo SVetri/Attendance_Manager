@@ -16,8 +16,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.HandshakeCompletedListener;
-
+/**
+ * Handles the fragments for the CR mode
+ */
 public class CRSlidingTabsFragment extends Fragment{
 
 
@@ -45,6 +46,9 @@ public class CRSlidingTabsFragment extends Fragment{
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
+    /**
+     * Defines the beahvior for the sample pager
+     */
     protected class SamplePagerAdapter extends PagerAdapter {
 
         /**

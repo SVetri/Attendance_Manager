@@ -1,14 +1,12 @@
 package com.delta.attendancemanager;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-
+/**
+ * Handle the view for the classes on the next days
+ */
 public class UpcomingTT extends ActionBarActivity {
     TextView sub1,sub2,sub3,sub4,sub5,sub6,sub7,sub8;
     String[] all;

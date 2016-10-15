@@ -21,34 +21,62 @@ public class AtAdapter {
     ArrayList<String> subj = new ArrayList<>();
     ArrayList<String> dt = new ArrayList<>();
     ArrayList<Integer> presint = new ArrayList<>();
+
+    /**
+     * Handle the methods for the update adapter
+     * @param contex specify where to construct
+     */
     public AtAdapter(Context contex)
     {
         this.context = contex;
         athelper = new Athelper(context);
     }
 
+    /**
+     * Get the number of classes attended
+     * @return number of classes attended
+     */
     public int getClasses_attended() {
         return classes_attended;
     }
 
+    /**
+     * Get the percentage of attending
+     * @return percentage of attending
+     */
     public int getPercentage() {
         percentage = classes_attended*100;
         percentage/=totalclasses;
         return percentage;
     }
 
+    /**
+     * Get a projection of the future attending
+     * @return
+     */
     public int getProjected_percentage() {                                      //TODO finding out projected percentage
         return projected_percentage;
     }
 
+    /**
+     * Get the number of the total classes attended
+     * @return number of the total classes attended
+     */
     public int getTotalclasses() {
         return totalclasses;
     }
 
+    /**
+     * Get the number of the class pending
+     * @return number of the class pending
+     */
     public int getPending_classes() {
         return pending_classes;
     }
 
+    /**
+     * Update data to the server
+     */
     public void to_update_data(){
         Log.i("in AtAdapter","to update data called");
         SQLiteDatabase db = athelper.getWritableDatabase();
@@ -73,6 +101,12 @@ public class AtAdapter {
         cursor.close();
     }
 
+    /**
+     * Update an attending
+     * @param subject
+     * @param datetime
+     * @param present
+     */
     public void update_up(String subject, String datetime, int present){                     //updating an already existing attendance -----
         Log.i("in AtAdapter","update up called");
         if(subject==null||subject.isEmpty())
@@ -83,6 +117,12 @@ public class AtAdapter {
         db.update(Athelper.TABLE_NAME, cv, "(" + Athelper.SUBJECT + "=?) AND (" + Athelper.DATETIME + "=?) AND (" + Athelper.PRESENT + "=?)", new String[]{subject, datetime, String.valueOf(present)});
     }
 
+    /**
+     * Add an attending
+     * @param subject
+     * @param datetime
+     * @param present
+     */
     public void add_attendance(String subject, String datetime, int present){               //to add attendance
         Log.i("in AtAdapter","add attendance called");
         if(subject==null||subject.isEmpty()||datetime.isEmpty())
@@ -109,6 +149,7 @@ public class AtAdapter {
         cursor1.close();
         return (no_of_existing_records==0);
     }
+
 
     public ArrayList<String> getDt() {
         return dt;
@@ -233,6 +274,10 @@ public class AtAdapter {
         int result = db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
         Log.i("in AtAdapter","updated "+ Integer.toString(result));
     }
+
+    /**
+     * Support class for the handling of the SQLite database
+     */
     protected static class Athelper extends SQLiteOpenHelper{
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";

@@ -29,10 +29,18 @@ import java.util.ArrayList;
 public class Backup extends AsyncTask<Void, Void, Boolean> {
     ProgressDialog dialog;
     ActionBarActivity activity;
+    /**
+     * Rno String
+     */
     public static final String RNO = "rno";
     Handler toasthandler;
     Context cont;
 
+    /**
+     * Construct the object to prepare a backup
+     * @param act action bar of the activity where execute the backup
+     * @param context specify where execute the backup
+     */
     public Backup(ActionBarActivity act, Context context) {
         this.activity = act;
         dialog = new ProgressDialog(act);

@@ -1,24 +1,22 @@
 package com.delta.attendancemanager;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Update the attendances for the current day
+ */
 public class UpdateMyAttendance extends ActionBarActivity {
     ArrayList<String> subjects;
     ArrayList<Date> dates;
@@ -47,6 +45,12 @@ public class UpdateMyAttendance extends ActionBarActivity {
         reclist.setAdapter(attadapter);
     }
 
+    /**
+     * Create a list with the whole attendances
+     * @param subject the list of the subjects checking the attendances to
+     * @param datetime the list of the dates attended
+     * @return a List of {@link CardInfo}
+     */
     private List<CardInfo> createList(ArrayList<String> subject, ArrayList<String> datetime) {
         CardInfo ci;
         List<CardInfo> result = new ArrayList<CardInfo>();

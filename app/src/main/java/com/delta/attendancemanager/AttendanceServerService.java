@@ -1,13 +1,10 @@
 package com.delta.attendancemanager;
 
-import android.app.DownloadManager;
 import android.app.IntentService;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 import android.os.Handler;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,23 +20,39 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  *service that syncs attendance and retrieves it.
  */
 public class AttendanceServerService extends IntentService {
+    /**
+     * Provide the Sync action
+     */
     private static final String SYNC = "com.delta.attendancemanager.action.sync.attendance";
+    /**
+     * Provides the retrieve action
+     */
     private static final String RETRIEVE = "com.delta.attendancemanager.action.Retrieve.attendance";
+    /**
+     * Provides the add action
+     */
     private static final String ADD = "com.delta.attendancemanager.action.add.local.attendance";
+    /**
+     * Provide the delete action
+     */
     private static final String DELETE = "com.delta.attendancemanager.action.delete.local.attendance";
+    /**
+     * String rno
+     */
     public static final String RNO="rno";
     Handler toasthandler;
 
+    /**
+     * Syncs the the attendances with the server
+     * @param context
+     */
     public static void syncAttendance(Context context) {
         Intent intent = new Intent(context, AttendanceServerService.class);
         intent.setAction(SYNC);
@@ -74,29 +87,45 @@ public class AttendanceServerService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (SYNC.equals(action)) {
-                try {
-                    handleSync();
-                } catch (IOException | JSONException e) {
-                    Log.e("AttendanceServerService", e.toString());
-                }
+                getSync();
             } else if(ADD.equals(action)) {
                 handleAdd();
             } else if(DELETE.equals(action)) {
                 handledelete();
             } else {
                 if (RETRIEVE.equals(action)) {
-                    try {
-                        handleRetrieve();
-                    } catch (JSONException e) {
-                        Log.e("AttendanceServerService", e.toString());
-                    } catch (IOException e) {
-                        Log.e("AttendanceServerService", e.toString());
-                    }
+                    getRetrieve();
                 }
             }
         }
     }
 
+    private void getSync(){
+        try {
+            handleSync();
+        } catch (IOException | JSONException e) {
+            Log.e("AttendanceServerService", e.toString());
+        }
+    }
+
+    /**
+     * Get the retrieve operations
+     */
+    private void getRetrieve(){
+        try {
+            handleRetrieve();
+        } catch (JSONException e) {
+            Log.e("AttendanceServerService", e.toString());
+        } catch (IOException e) {
+            Log.e("AttendanceServerService", e.toString());
+        }
+    }
+
+    /**
+     * Sync the attendace server with the current thread
+     * @throws IOException
+     * @throws JSONException
+     */
     private void handleSync() throws IOException, JSONException {
 
         Log.i("in AttendanceServer","handleSync() called");

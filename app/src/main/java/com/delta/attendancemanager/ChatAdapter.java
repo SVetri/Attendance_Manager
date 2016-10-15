@@ -7,8 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
+/**
+ * Handle the view displaying the chat system
+ */
 public class ChatAdapter extends ArrayAdapter<Chat> {
+    /**
+     * Create the view for the chat
+     * @param context specify where to construct the view
+     * @param objects list of the messages
+     */
     public ChatAdapter(Context context, Chat[] objects) {
         super(context, R.layout.chat_layout, objects);
     }

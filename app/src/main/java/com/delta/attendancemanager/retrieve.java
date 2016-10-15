@@ -29,10 +29,18 @@ import java.util.ArrayList;
 public class Retrieve extends AsyncTask<Void, Void, Boolean> {
     ProgressDialog dialog;
     ActionBarActivity activity;
+    /**
+     * Rno String
+     */
     public static final String RNO = "rno";
     Handler toasthandler;
     Context cont;
 
+    /**
+     * Retrieves attendances from a backup
+     * @param act action bar of the current view
+     * @param context specify where to construct
+     */
     public Retrieve(ActionBarActivity act, Context context) {
         this.activity = act;
         dialog = new ProgressDialog(act);

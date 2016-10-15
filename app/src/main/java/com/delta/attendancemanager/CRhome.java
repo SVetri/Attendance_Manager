@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the view after the CRLogin
+ */
 public class CRhome extends ActionBarActivity {
     int page = 0;
 

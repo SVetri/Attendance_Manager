@@ -1,19 +1,13 @@
 package com.delta.attendancemanager;
 
-import com.delta.attendancemanager.SlidingTabLayout;
-
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +44,9 @@ public class SlidingTabsFragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
+    /**
+     * Defines the behaviour for the sample Adapter
+     */
     protected class SamplePagerAdapter extends PagerAdapter {
 
         /**

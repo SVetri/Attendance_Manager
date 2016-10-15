@@ -2,7 +2,6 @@ package com.delta.attendancemanager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handle the view that contains the fragment for the home page
+ */
 public class UserHomeSliderFragment extends Fragment {
 
     MySqlAdapter handler;
@@ -53,6 +53,9 @@ public class UserHomeSliderFragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
+    /**
+     * Defines the behaviour for the sample adapter
+     */
     protected class SamplePagerAdapter extends PagerAdapter {
 
         /**

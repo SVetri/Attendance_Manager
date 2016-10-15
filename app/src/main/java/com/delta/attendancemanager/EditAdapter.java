@@ -5,16 +5,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 // TODO: editing the absent and present accordingly and updating the attendance database.
 
+/**
+ * This class handles the view and the mechanics for edit an attendance
+ */
 public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder> {
 
     private List<EditCardInfo> attendanceList;
@@ -22,6 +23,12 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
     Date date = null;
     AtAdapter atAdapter;
 
+    /**
+     * Construct the view to edit the attendances
+     *
+     * @param context     specify where to construct the view
+     * @param contactList list of the attendances
+     */
     public EditAdapter(Context context, List<EditCardInfo> contactList) {
         this.context = context;
         this.attendanceList = contactList;
@@ -97,10 +104,17 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         return new EditViewHolder(itemView);
     }
 
+    /**
+     * This class defines the design for the edit view
+     */
     protected class EditViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView sub[] = new TextView[6];
 
+        /**
+         * Create the fragment
+         * @param v where appends the fragment
+         */
         public EditViewHolder(View v) {
             super(v);
             int[] subsInt = {R.id.subjectcard, R.id.datecard, R.id.timecard, R.id.mark, R.id.changebutton, R.id.removebutton};

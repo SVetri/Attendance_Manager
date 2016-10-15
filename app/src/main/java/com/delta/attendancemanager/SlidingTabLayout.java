@@ -50,14 +50,29 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     private final SlidingTabStrip mTabStrip;
 
+    /**
+     * Sets the basics for the tabs handling
+     * @param context specify where to construct
+     */
     public SlidingTabLayout(Context context) {
         this(context, null);
     }
 
+    /**
+     * Sets the basics for the tabs handling
+     * @param context specify where to construct
+     * @param attrs specify the attributes for the tabs
+     */
     public SlidingTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Sets the basics for the tabs handling
+     * @param context specify where to construct
+     * @param attrs specify the attributes for the tabs
+     * @param defStyle specify the style for the tabs
+     */
     public SlidingTabLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
@@ -165,6 +180,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
         return textView;
     }
 
+    /**
+     * Populate the Tab with its strips
+     */
     private void populateTabStrip() {
         final PagerAdapter adapter = mViewPager.getAdapter();
         final View.OnClickListener tabClickListener = new TabClickListener();
@@ -223,6 +241,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
+    /**
+     * Handle the view for the Pager Listener
+     */
     private class InternalViewPagerListener implements ViewPager.OnPageChangeListener {
         private int mScrollState;
 
@@ -270,6 +291,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     }
 
+    /**
+     * Handle the behaviour while clicking on a tab
+     */
     private class TabClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {

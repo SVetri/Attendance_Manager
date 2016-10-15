@@ -38,7 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -86,6 +85,9 @@ public class CRhomesliderfragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
+    /**
+     * Support class for the beahviour of the sample pager
+     */
     protected class SamplePagerAdapter extends PagerAdapter {
 
         /**
@@ -447,49 +449,13 @@ public class CRhomesliderfragment extends Fragment {
         final String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","tomorrow"};
         String[] dayTimetable = new String[9];
         AttendanceServerService.deleteAttendance(context);
-        ArrayList<String> finalTimetable;
-        for (String day : days ){
-            switch(day){
-                case "Monday":
-                    dayTimetable = handler.get_mon();
-                    break;
-                case "Tuesday":
-                    dayTimetable = handler.get_tue();
-                    break;
-                case "Wednesday":
-                    dayTimetable = handler.get_wed();
-                    break;
-                case "Thursday":
-                    dayTimetable = handler.get_thur();
-                    break;
-                case "Friday":
-                    dayTimetable = handler.get_fri();
-                    break;
-                case "tomorrow":
-                    dayTimetable = handler.get_tomo();
-                    break;
-            }
-            finalTimetable=new ArrayList<>();
-            for (String sub : dayTimetable){
-                if(sub.equals(subs))
-                    finalTimetable.add("");
-                else
-                    finalTimetable.add(sub);
-            }
-            handler.delete_day(day);
-            handler.add_day(finalTimetable.get(0), finalTimetable.get(1), finalTimetable.get(2), finalTimetable.get(3),
-                    finalTimetable.get(4), finalTimetable.get(5), finalTimetable.get(6), finalTimetable.get(7), finalTimetable.get(8));
-        }
-        String[] a = new String[9];
-        a = handler.get_tomo();
-        JSONObject j = new JSONObject();
-        for (int i = 1; i <= 8; i++) {
-            try {
-                j.put(EditUpcomingTT.slots[i - 1], a[i]);
-            } catch (JSONException e) {
-                Log.e("CRhomesliderfragment", e.toString());
-            }
-        }
+        ArrayList<String> finalTimetable=new ArrayList<>();
+
+        getDay(days, finalTimetable, dayTimetable, subs);
+
+
+        JSONObject j = setJSON();
+
         UpdateTTService.startActionUpcoming(getActivity(), j);
         List<String[]> all = new ArrayList<>();
         all.add(handler.get_mon());
@@ -524,6 +490,80 @@ public class CRhomesliderfragment extends Fragment {
         getActivity().finish();
     }
 
+    /**
+     * Set the JSON object to interact with
+     * @return json object
+     */
+    private JSONObject setJSON(){
+        String[] a = new String[9];
+        a = handler.get_tomo();
+        JSONObject j = new JSONObject();
+        for (int i = 1; i <= 8; i++) {
+            try {
+                j.put(EditUpcomingTT.slots[i - 1], a[i]);
+            } catch (JSONException e) {
+                Log.e("CRhomesliderfragment", e.toString());
+            }
+        }
+        return j;
+    }
+
+    /**
+     * Set the handler for the days
+     * @param days days of the week
+     * @param finalTimetable Subjects in the time table
+     * @param dayTimetable Day time table
+     * @param subs
+     */
+    private void getDay(String [] days, ArrayList<String> finalTimetable, String[] dayTimetable, String subs){
+        for (String day : days ) {
+            switch (day) {
+                case "Monday":
+                    dayTimetable = handler.get_mon();
+                    break;
+                case "Tuesday":
+                    dayTimetable = handler.get_tue();
+                    break;
+                case "Wednesday":
+                    dayTimetable = handler.get_wed();
+                    break;
+                case "Thursday":
+                    dayTimetable = handler.get_thur();
+                    break;
+                case "Friday":
+                    dayTimetable = handler.get_fri();
+                    break;
+                case "tomorrow":
+                    dayTimetable = handler.get_tomo();
+                    break;
+            }
+            setSub(finalTimetable, dayTimetable, subs);
+
+            handler.delete_day(day);
+            handler.add_day(finalTimetable.get(0), finalTimetable.get(1), finalTimetable.get(2), finalTimetable.get(3),
+                    finalTimetable.get(4), finalTimetable.get(5), finalTimetable.get(6), finalTimetable.get(7), finalTimetable.get(8));
+        }
+    }
+
+    /**
+     * Set the subs for the view
+     * @param finalTimetable Subjects in the time table
+     * @param dayTimetable Day time table
+     * @param subs
+     */
+    private void setSub(ArrayList<String> finalTimetable, String[] dayTimetable, String subs){
+        for (String sub : dayTimetable){
+            if(sub.equals(subs))
+                finalTimetable.add("");
+            else
+                finalTimetable.add(sub);
+        }
+    }
+
+    /**
+     * Sends a message into the caht
+     * @param msg message to submit
+     */
     private void chatOut(String msg) {
         new AsyncTask<String,Void,Void>(){
             ProgressDialog dialog = new ProgressDialog(context);

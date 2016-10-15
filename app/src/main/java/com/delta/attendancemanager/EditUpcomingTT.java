@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -17,14 +15,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TooManyListenersException;
 
-
+/**
+ * Handle the view to edit the classes on the next day
+ */
 public class EditUpcomingTT extends ActionBarActivity {
     String[] all;
     MySqlAdapter handler;
+    /**
+     * Create a String list with the timetable hours
+     */
     public static final String[] slots={"830","920","1030","1120","130","220","310","400"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,11 @@ public class EditUpcomingTT extends ActionBarActivity {
         });
     }
 
+    /**
+     * Create a menu dialog that allows the user to select a subject
+     * @param v where to construct the menu dialog
+     * @param no number of element
+     */
     public void selectsubdialog(View v, int no)
     {
         final TextView t = (TextView) v;

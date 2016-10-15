@@ -24,10 +24,18 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
+/**
+ * Handle the lunch activity and its methods
+ */
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
+    /**
+     * Server Url
+     */
     public static final String URL = "http://30d9e412.ngrok.com";
+    /**
+     * Rno String
+     */
     public static final String RNO = "rno";
     static boolean wrong = false;
     MySqlAdapter handler;
@@ -40,27 +48,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle b = getIntent().getExtras();
-        if (b != null) {
-            boolean g = b.getBoolean("wrong");
-            if (g)
-                wrong = true;
+        checkBundle(b);
 
-        }
         SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
         String rollno = prefs.getString(RNO, "default");
 
-        handler = new MySqlAdapter(this, null);
-        if (handler.get_days().size() == 0) {
-            handler.add_day("Monday", "", "", "", "", "", "", "", "");
-            handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
-            handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
-            handler.add_day("Thursday", "", "", "", "", "", "", "", "");
-            handler.add_day("Friday", "", "", "", "", "", "", "", "");
-            handler.add_day("tomorrow", "", "", "", "", "", "", "", "");
-            isfirst = true;
-        } else
-            isfirst = false;
+        handler = setWeekDays();
+
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
         if (!rollno.equals("default")) {
@@ -123,6 +118,39 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void checkBundle (Bundle b) {
+        if (b != null) {
+            boolean g = b.getBoolean("wrong");
+            if (g)
+                wrong = true;
+
+        }
+    }
+
+    /**
+     * Set the week days for the Mysql Adapter
+     * @return Mysql Adapter
+     */
+    private MySqlAdapter setWeekDays(){
+        MySqlAdapter handler = new MySqlAdapter(this, null);
+        if (handler.get_days().size() == 0) {
+            handler.add_day("Monday", "", "", "", "", "", "", "", "");
+            handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
+            handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
+            handler.add_day("Thursday", "", "", "", "", "", "", "", "");
+            handler.add_day("Friday", "", "", "", "", "", "", "", "");
+            handler.add_day("tomorrow", "", "", "", "", "", "", "", "");
+            isfirst = true;
+        } else
+            isfirst = false;
+        return handler;
+    }
+
+    /**
+     * Check if a username has been stored into the preferences
+     * @param user username to check if has been stored
+     * @return true if found, false otherwise
+     */
     private boolean checkpref(String user) {
         SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
         String rno = share.getString("rno", "-1");
@@ -136,10 +164,16 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    /**
+     * This class defines the authentication machanisms
+     */
     protected class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
         ProgressDialog dialog;
 
+        /**
+         * Handle the Authentication mechanisms
+         */
         public Authenticate() {
             dialog = new ProgressDialog(MainActivity.this);
         }

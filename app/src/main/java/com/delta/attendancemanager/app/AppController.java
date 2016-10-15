@@ -11,6 +11,9 @@ import com.android.volley.toolbox.Volley;
  * Created by lakshmanaram on 26/10/15.
  */
 public class AppController extends Application{
+    /**
+     * Identifies The AppeController class
+     */
     public static final String TAG = AppController.class.getSimpleName();
 
     private RequestQueue mRequestQueue;

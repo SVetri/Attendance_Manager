@@ -16,6 +16,9 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handle the methods to parse an object
+ */
 public class ParseHandler extends IntentService {
     static final String MSG_TT = "tt";
     static final String MSG_UT = "ut";
@@ -29,6 +32,9 @@ public class ParseHandler extends IntentService {
     String mes;
     private MySqlAdapter handler;
 
+    /**
+     * Create the object to parse JSON information
+     */
     public ParseHandler() {
         super("ParseHandler");
     }
@@ -101,6 +107,11 @@ public class ParseHandler extends IntentService {
 
     }
 
+    /**
+     * Update the hours table for the next day
+     * @param js JSONObject to parse
+     * @throws JSONException
+     */
     private void updateUT(JSONObject js) throws JSONException {
 
         times[0] = "tomorrow";

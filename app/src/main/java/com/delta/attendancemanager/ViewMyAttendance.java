@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the view and the behaviour where attendances are shown
+ */
 public class ViewMyAttendance extends ActionBarActivity {
 
     @Override
@@ -31,6 +34,11 @@ public class ViewMyAttendance extends ActionBarActivity {
         reclist.setAdapter(subadapter);
     }
 
+    /**
+     * Create a list with the whole attendances for a subject
+     * @param subjects the list of the subjects checking the attendances to
+     * @return
+     */
     private List<SubjectInfo> createList(ArrayList<String> subjects) {
 
         List<SubjectInfo> result = new ArrayList<SubjectInfo>();
