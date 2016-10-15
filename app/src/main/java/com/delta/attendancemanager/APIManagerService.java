@@ -56,7 +56,6 @@ public class APIManagerService extends IntentService {
                     List<NameValuePair> tt = new ArrayList<>();
                     JSONObject jd=new JSONObject();
 //                    tt.add(new BasicNameValuePair("username", user));
-                    // aut.add(new BasicNameValuePair("password",params[1]));
                     JSONObject js = jp.makeHttpRequest(URL, "POST", jd);
                     for(String i : days) {
                         JSONObject day = js.getJSONObject(i);
@@ -79,7 +78,7 @@ public class APIManagerService extends IntentService {
                     Log.d("TAG", js.toString());
 
                 } catch (JSONException e) {
-                e.printStackTrace();
+                    Log.e("APIManagerService", e.toString());
                 }
 
                 break;

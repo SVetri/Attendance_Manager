@@ -26,14 +26,14 @@ import java.util.ArrayList;
 /**
  * Created by lakshmanaram on 14/1/16.
  */
-public class retrieve extends AsyncTask<Void, Void, Boolean> {
+public class Retrieve extends AsyncTask<Void, Void, Boolean> {
     ProgressDialog dialog;
     ActionBarActivity activity;
     public static final String RNO = "rno";
     Handler toasthandler;
     Context cont;
 
-    public retrieve(ActionBarActivity act, Context context) {
+    public Retrieve(ActionBarActivity act, Context context) {
         this.activity = act;
         dialog = new ProgressDialog(act);
         cont = context;
@@ -100,10 +100,10 @@ public class retrieve extends AsyncTask<Void, Void, Boolean> {
                 return false;
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("Retrieve", e.toString());
             return false;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("Retrieve", e.toString());
             return false;
         }
     }

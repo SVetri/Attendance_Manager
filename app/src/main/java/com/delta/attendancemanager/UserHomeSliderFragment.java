@@ -53,7 +53,7 @@ public class UserHomeSliderFragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
-    class SamplePagerAdapter extends PagerAdapter {
+    protected class SamplePagerAdapter extends PagerAdapter {
 
         /**
          * @return the number of pages to display
@@ -107,7 +107,6 @@ public class UserHomeSliderFragment extends Fragment {
 
             // Inflate a new layout from our resources
             View view ;
-            TextView sub1,sub2,sub3,sub4,sub5,sub6,sub7,sub8;
             // Add the newly created View to the ViewPager
 
             switch (position){
@@ -118,23 +117,21 @@ public class UserHomeSliderFragment extends Fragment {
 
                     //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
                     String[] al=new String[9];
-                    sub1=(TextView)view.findViewById(R.id.sub1);
-                    sub2=(TextView)view.findViewById(R.id.sub2);
-                    sub3=(TextView)view.findViewById(R.id.sub3);
-                    sub4=(TextView)view.findViewById(R.id.sub4);
-                    sub5=(TextView)view.findViewById(R.id.sub5);
-                    sub6=(TextView)view.findViewById(R.id.sub6);
-                    sub7=(TextView)view.findViewById(R.id.sub7);
-                    sub8=(TextView)view.findViewById(R.id.sub8);
+                    int [] subsInt = {R.id.sub1, R.id.sub2, R.id.sub3, R.id.sub4, R.id.sub5, R.id.sub6, R.id.sub7, R.id.sub8};
+                    TextView sub [] = new TextView[8];
+                    for (int i= 0; i < sub.length; i++){
+                        sub[i] = (TextView) view.findViewById(subsInt[i]);
+                    }
+
                     al=handler.get_tomo();
-                    sub1.setText(al[1]);
-                    sub2.setText(al[2]);
-                    sub3.setText(al[3]);
-                    sub4.setText(al[4]);
-                    sub5.setText(al[5]);
-                    sub6.setText(al[6]);
-                    sub7.setText(al[7]);
-                    sub8.setText(al[8]);
+                    sub[0].setText(al[1]);
+                    sub[1].setText(al[2]);
+                    sub[2].setText(al[3]);
+                    sub[3].setText(al[4]);
+                    sub[4].setText(al[5]);
+                    sub[5].setText(al[6]);
+                    sub[6].setText(al[7]);
+                    sub[7].setText(al[8]);
                     final Context context=getActivity();
                     FloatingActionButton fab=(FloatingActionButton)view.findViewById(R.id.floating);
                     fab.setOnClickListener(
