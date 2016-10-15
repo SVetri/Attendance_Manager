@@ -33,7 +33,7 @@ public class MySqlAdapter {
                 null, null, null , null);
         c.moveToFirst();
         while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != " "){
+            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != Constants.BLANK_STRING){
                 subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
             }
             c.moveToNext();
@@ -346,7 +346,7 @@ public class MySqlAdapter {
         return  all;
     }
 
-    public void add_day(String day,String s830,String s920,String s1030,String s1120,String s130,String s220,String s310,String s400){
+    public void add_day(String day, String s830, String s920, String s1030, String s1120, String s130, String s220, String s310, String s400){
         try{
             delete_day(day);
         }catch(Exception e){
@@ -368,7 +368,7 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
-    public void addmsg(String msg,String time,String date){
+    public void addmsg(String msg, String time, String date){
         ContentValues v=new ContentValues();
         v.put(Mysqlhelper.ACNAME,msg);
         v.put(Mysqlhelper.ATIMES,time);
@@ -415,7 +415,7 @@ public class MySqlAdapter {
         add_day(Mysqlhelper.TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
     }
 
-    static class Mysqlhelper extends SQLiteOpenHelper{
+    protected static class Mysqlhelper extends SQLiteOpenHelper{
         private static final int VERSION =6;
         public static final  String TOMO="tomorrow";
         private static final String DATABASE_NAME="class.db";

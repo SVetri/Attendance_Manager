@@ -26,14 +26,14 @@ import java.util.ArrayList;
 /**
  * Created by lakshmanaram on 14/1/16.
  */
-public class backup extends AsyncTask<Void, Void, Boolean> {
+public class Backup extends AsyncTask<Void, Void, Boolean> {
     ProgressDialog dialog;
     ActionBarActivity activity;
     public static final String RNO = "rno";
     Handler toasthandler;
     Context cont;
 
-    public backup(ActionBarActivity act, Context context) {
+    public Backup(ActionBarActivity act, Context context) {
         this.activity = act;
         dialog = new ProgressDialog(act);
         cont = context;
@@ -71,7 +71,7 @@ public class backup extends AsyncTask<Void, Void, Boolean> {
             }
             Log.i("sending something?", jsarray.toString());
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(MainActivity.URL+"/backup");
+            HttpPost httpPost = new HttpPost(MainActivity.URL+"/Backup");
             StringEntity s=new StringEntity(jsarray.toString());
             httpPost.setEntity(s);
             httpPost.setHeader("Accept", "application/json");
@@ -107,10 +107,10 @@ public class backup extends AsyncTask<Void, Void, Boolean> {
                 return false;
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("Backup", e.toString());
             return false;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("Backup", e.toString());
             return false;
         }
     }

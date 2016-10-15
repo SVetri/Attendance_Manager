@@ -131,7 +131,7 @@ public class AtAdapter {
         db.delete(Athelper.TABLE_NAME,Athelper.SUBJECT+ " =? AND "+Athelper.DATETIME+" =? AND "+Athelper.PRESENT+" == 0",new String[]{subject,datet});
     }
 
-    public void delete_data(String subject,String datet){                                                   //as of now no use
+    public void delete_data(String subject, String datet){                                                   //as of now no use
         Log.i("in AtAdapter","delete data called");
         if(subject==null||  subject.isEmpty()||datet.isEmpty())
             return;
@@ -233,7 +233,7 @@ public class AtAdapter {
         int result = db.update(Athelper.TABLE_NAME,cv,"("+Athelper.SUBJECT+"=?) AND ("+Athelper.DATETIME + "=?)",new String[]{subject,datetime});
         Log.i("in AtAdapter","updated "+ Integer.toString(result));
     }
-    static class Athelper extends SQLiteOpenHelper{
+    protected static class Athelper extends SQLiteOpenHelper{
         private static final String DATABASE_NAME = "semester.db";
         private static String TABLE_NAME = "attendance";
         Context context = null;
