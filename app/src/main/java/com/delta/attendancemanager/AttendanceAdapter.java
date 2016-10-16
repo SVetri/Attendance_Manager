@@ -1,29 +1,34 @@
 package com.delta.attendancemanager;
 
-import android.app.DialogFragment;
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
+import android.widget.TextView;
+
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Handles the view in which are displayed the attendaces
+ */
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
 
     private List<CardInfo> attendanceList;
     AtAdapter atAdapter;
     Context context;
     Date date = null;
-    String format = "yyyy-MM-dd HH:mm";
-    SimpleDateFormat sdf = new SimpleDateFormat(format),sdf1;
 
-    public AttendanceAdapter(List<CardInfo> contactList,Context context) {
+    /**
+     * Buil the view in which display the attendances
+     *
+     * @param contactList list of the attendances
+     * @param context     specify where to construct
+     */
+    public AttendanceAdapter(List<CardInfo> contactList, Context context) {
         this.attendanceList = contactList;
         this.context = context;
         atAdapter = new AtAdapter(context);
@@ -35,63 +40,49 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
     }
 
     @Override
-    public void onBindViewHolder(AttendanceViewHolder attendanceviewholder, final int i)
-    {
+    public void onBindViewHolder(AttendanceViewHolder attendanceviewholder, final int i) {
         final CardInfo ci = attendanceList.get(i);
-        attendanceviewholder.subject.setText(ci.coursename);
-        attendanceviewholder.date.setText(ci.classdate);
-        attendanceviewholder.time.setText(ci.classtime);
+        attendanceviewholder.sub[0].setText(ci.coursename);
+        attendanceviewholder.sub[1].setText(ci.classdate);
+        attendanceviewholder.sub[2].setText(ci.classtime);
 
-        sdf1 = new SimpleDateFormat("d/M/yyyy H:m");
-
-        attendanceviewholder.present.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            try{
-                date = sdf1.parse(ci.classdate+" "+ci.classtime);
-            }
-            catch(Exception e){
-                Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
-            }
-            int position = attendanceList.indexOf(ci);
-            atAdapter.update_attendance(ci.coursename, sdf.format(date), 1);
-            attendanceList.remove(position);
-            notifyItemRemoved(position);
-        }
-    });
-        attendanceviewholder.absent.setOnClickListener(new View.OnClickListener() {
+        attendanceviewholder.sub[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    date = sdf1.parse(ci.classdate+" "+ci.classtime);
-                }
-                catch(Exception e){
-                    Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
-                }
-
                 int position = attendanceList.indexOf(ci);
-                atAdapter.update_attendance(ci.coursename, sdf.format(date), -1);
+                atAdapter.update_attendance(ci.coursename, formatDate(ci.classdate + " " + ci.classtime), 1);
                 attendanceList.remove(position);
                 notifyItemRemoved(position);
             }
         });
-        attendanceviewholder.remove.setOnClickListener(new View.OnClickListener() {
+        attendanceviewholder.sub[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = attendanceList.indexOf(ci);
+                atAdapter.update_attendance(ci.coursename, formatDate(ci.classdate + " " + ci.classtime), -1);
+                attendanceList.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
+        attendanceviewholder.sub[5].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    date = sdf1.parse(ci.classdate+" "+ci.classtime);
-                }
-                catch(Exception e){
-                    Toast.makeText(context,"date problem",Toast.LENGTH_LONG).show();
-                }
-
                 int position = attendanceList.indexOf(ci);
-                atAdapter.delete_data(ci.coursename, sdf.format(date));
+                atAdapter.delete_data(ci.coursename, formatDate(ci.classdate + " " + ci.classtime));
                 attendanceList.remove(position);
                 notifyItemRemoved(position);
             }
         });
 
+    }
+
+    private String formatDate(String fullDate) {
+        String year = fullDate.substring(6, 10);
+        String month = fullDate.substring(3, 5);
+        String day = fullDate.substring(0, 2);
+        String hour = fullDate.substring(11);
+        String out = year + "-" + month + "-" + day + " " + hour;
+        return out;
     }
 
     @Override
@@ -102,24 +93,20 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         return new AttendanceViewHolder(itemView);
     }
 
-    public class AttendanceViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * This class defines the design for the attendance view
+     */
+    protected class AttendanceViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView subject;
-        protected TextView date;
-        protected TextView time;
-        protected Button present;
-        protected Button absent;
-        protected Button remove;
+        protected TextView sub[] = new TextView[6];
 
-        public AttendanceViewHolder(View v)
-        {
+        public AttendanceViewHolder(View v) {
             super(v);
-            subject = (TextView) v.findViewById(R.id.subjectcard);
-            date = (TextView) v.findViewById(R.id.datecard);
-            time = (TextView) v.findViewById(R.id.timecard);
-            present = (Button) v.findViewById(R.id.presentbutton);
-            absent = (Button) v.findViewById(R.id.absentbutton);
-            remove = (Button) v.findViewById(R.id.removebutton1);
+            int[] subsInt = {R.id.subjectcard, R.id.datecard, R.id.timecard, R.id.presentbutton, R.id.absentbutton, R.id.removebutton1};
+
+            for (int i = 0; i < sub.length; i++) {
+                sub[i] = (TextView) v.findViewById(subsInt[i]);
+            }
         }
 
     }

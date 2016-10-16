@@ -1,27 +1,26 @@
 package com.delta.attendancemanager;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
-import android.os.Build;
 
 import java.util.Calendar;
 
+/**
+ * Manage the Alarm feature
+ */
 public class AlarmService extends IntentService {
     private static final String ACTION_SET_CUSTOM_ALARM = "com.delta.attendancemanager.action.SET_CUSTOM_ALARM";
     private static final String CANCEL_ALARM = "com.delta.attendancemanager.action.CANCEL_ALARM";
     private static final String HOUR = "com.delta.attendancemanager.hour";
     private static final String MIN = "com.delta.attendancemanager.min";
-    public static void startActionSetCustomAlarm(Context context, int hour, int min) {
-        Intent intent = new Intent(context, AlarmService.class);
-        intent.setAction(ACTION_SET_CUSTOM_ALARM);
-        intent.putExtra(HOUR,hour);
-        intent.putExtra(MIN,min);
-        context.startService(intent);
-    }
+
+    /**
+     * Start the action setted as custum alarm
+     * @param context specify the context where apply to
+     */
     public static void startActionSetDefaultAlarm(Context context){
         Intent intent = new Intent(context,AlarmService.class);
         intent.setAction(ACTION_SET_CUSTOM_ALARM);
@@ -29,12 +28,20 @@ public class AlarmService extends IntentService {
         intent.putExtra(MIN,0);
         context.startService(intent);
     }
+
+    /**
+     * Cancel an already create alarm
+     * @param context specify the context where apply to
+     */
     public static void cancelAlarm(Context context){
         Intent intent = new Intent(context,AlarmService.class);
         intent.setAction(CANCEL_ALARM);
         context.startService(intent);
     }
 
+    /**
+     * Create the object to handle the Alrms
+     */
     public AlarmService() {
         super("AlarmService");
     }
@@ -53,6 +60,12 @@ public class AlarmService extends IntentService {
             }
         }
     }
+
+    /**
+     * Defines the time for a custom alert
+     * @param lhour hour for the alert
+     * @param lmin minutes for the alert
+     */
     private void handleActionSetcustomalarm(int lhour, int lmin) {
         Intent inten = new Intent(this, AlarmReceiver.class);
         Calendar cal = Calendar.getInstance();
@@ -66,6 +79,9 @@ public class AlarmService extends IntentService {
     }
 
 
+    /**
+     * Handle the event to cancel an alarm
+     */
     private void handleCancelAlarm(){
         Intent inten = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this,0,inten,PendingIntent.FLAG_UPDATE_CURRENT);

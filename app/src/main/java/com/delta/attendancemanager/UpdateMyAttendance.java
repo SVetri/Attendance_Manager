@@ -1,24 +1,22 @@
 package com.delta.attendancemanager;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Update the attendances for the current day
+ */
 public class UpdateMyAttendance extends ActionBarActivity {
     ArrayList<String> subjects;
     ArrayList<Date> dates;
@@ -47,30 +45,38 @@ public class UpdateMyAttendance extends ActionBarActivity {
         reclist.setAdapter(attadapter);
     }
 
-    private List<CardInfo> createList(ArrayList<String> subject,ArrayList<String> datetime) {
-
-        Date date=null;
+    /**
+     * Create a list with the whole attendances
+     * @param subject the list of the subjects checking the attendances to
+     * @param datetime the list of the dates attended
+     * @return a List of {@link CardInfo}
+     */
+    private List<CardInfo> createList(ArrayList<String> subject, ArrayList<String> datetime) {
+        CardInfo ci;
         List<CardInfo> result = new ArrayList<CardInfo>();
         for (int i=0; i < subject.size(); i++) {
-            CardInfo ci = new CardInfo();
+            ci = new CardInfo();
             ci.coursename = subject.get(i);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            try{
-                date = sdf.parse(datetime.get(i));
-            }
-            catch(Exception e){
-                Log.d("hel",e.toString());
-            }
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
-            SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
-            ci.classdate = sdf1.format(date);
-            ci.classtime = sdf2.format(date);
-
+            ci.classdate = formatDate(datetime.get(i));
+            ci.classtime = formatHour(datetime.get(i));
             result.add(ci);
 
         }
 
         return result;
+    }
+
+    private String formatDate(String fullDate){
+        String year = fullDate.substring(0, 4);
+        String month = fullDate.substring(5, 7);
+        String day = fullDate.substring(8, 10);
+        String out = day + "/"+ month + "/" + year;
+        return out;
+    }
+
+    private String formatHour(String fullDate){
+        String entire = fullDate.substring(11);
+        return entire;
     }
 
 

@@ -2,9 +2,9 @@ package com.delta.attendancemanager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
+/**
+ * Handle the view where display the basic information for a course
+ */
 public class CourseInfo extends ActionBarActivity {
 
     @Override

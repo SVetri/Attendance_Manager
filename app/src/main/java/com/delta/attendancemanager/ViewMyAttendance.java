@@ -1,22 +1,19 @@
 //view my attendance option.
 package com.delta.attendancemanager;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the view and the behaviour where attendances are shown
+ */
 public class ViewMyAttendance extends ActionBarActivity {
 
     @Override
@@ -37,13 +34,18 @@ public class ViewMyAttendance extends ActionBarActivity {
         reclist.setAdapter(subadapter);
     }
 
+    /**
+     * Create a list with the whole attendances for a subject
+     * @param subjects the list of the subjects checking the attendances to
+     * @return
+     */
     private List<SubjectInfo> createList(ArrayList<String> subjects) {
 
         List<SubjectInfo> result = new ArrayList<SubjectInfo>();
 
         for (int i=0; i < subjects.size(); i++) {
             SubjectInfo si = new SubjectInfo();
-            if(subjects.get(i) == null || subjects.get(i).isEmpty() || subjects.get(i).equals(" "))
+            if(subjects.get(i) == null || subjects.get(i).isEmpty() || subjects.get(i).equals(Constants.BLANK_STRING))
                 continue;
             si.subjectname=subjects.get(i);
             result.add(si);
@@ -68,11 +70,11 @@ public class ViewMyAttendance extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_retrieve) {
-            new retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
+            new Retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
         }
         if(id == R.id.action_backup){
-            new backup(ViewMyAttendance.this,getApplicationContext()).execute();
+            new Backup(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
 
         }

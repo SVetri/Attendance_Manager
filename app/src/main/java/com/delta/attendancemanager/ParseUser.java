@@ -19,7 +19,7 @@ public class ParseUser extends Application {
             ParseInstallation.getCurrentInstallation().saveInBackground();
             Log.d("Parse initialized", "Parse got initialized");
     }catch (Exception e){
-            e.printStackTrace();
+            Log.e("ParseUser", e.toString());
         }
 
     }

@@ -15,6 +15,9 @@ import com.parse.ParsePush;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handle the views for the main page after the login
+ */
 public class Userhome extends ActionBarActivity {
     int page = 0;
     @Override
@@ -36,8 +39,7 @@ public class Userhome extends ActionBarActivity {
         if(alls.size()==0){
 //            Intent i=new Intent(this,AlarmSetterService.class);
 //            startService(i);
-            SharedPreferences share=getSharedPreferences("user", Context.MODE_PRIVATE);
-            String username = share.getString("rno","");
+
 //            Intent j=new Intent(this,APIManagerService.class);
 //            j.putExtra("rno",username);
 //            j.putExtra("mode",0);

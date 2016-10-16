@@ -5,25 +5,23 @@ import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Handle the view and the methods to manage the course inserted into the system
+ */
 public class ManageCourse extends ActionBarActivity {
     MySqlAdapter handler;
     boolean ischanged;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {                                                //TODO delete_subs created, use it to delete a subject
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_course);
         ischanged=false;
@@ -87,14 +85,5 @@ public class ManageCourse extends ActionBarActivity {
 
         );
 
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if(ischanged){
-            //update server
-        }
     }
 }

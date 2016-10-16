@@ -3,19 +3,16 @@ package com.delta.attendancemanager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
 /**
  * Created by S on 12/24/2014.
  */
-
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
 
     private List<SubjectInfo> subjectList;
@@ -23,6 +20,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     AtAdapter atAdapter;
     int p = 0;
     SubjectInfo si;
+
+    /**
+     * Create a the view where list the subjects
+     * @param subList subjects list
+     * @param context specify where to construct the view
+     */
     public SubjectAdapter(List<SubjectInfo> subList, Context context) {
         this.subjectList = subList;
         cont = context;
@@ -68,14 +71,17 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return new SubjectViewHolder(itemView);
     }
 
-    public class SubjectViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * Defines the design for the subjects view
+     */
+    protected class SubjectViewHolder extends RecyclerView.ViewHolder {
 
         protected Button subject;
 
         public SubjectViewHolder(View v)
         {
             super(v);
-            subject = (Button) v.findViewById(R.id.subjectbutton);                                      //TODO: buttons could be changed here, even grid view can be implemented
+            subject = (Button) v.findViewById(R.id.subjectbutton);
         }
 
     }

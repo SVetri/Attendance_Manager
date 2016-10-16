@@ -1,19 +1,13 @@
 package com.delta.attendancemanager;
 
-import com.delta.attendancemanager.SlidingTabLayout;
-
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +44,10 @@ public class SlidingTabsFragment extends Fragment {
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
-    class SamplePagerAdapter extends PagerAdapter {
+    /**
+     * Defines the behaviour for the sample Adapter
+     */
+    protected class SamplePagerAdapter extends PagerAdapter {
 
         /**
          * @return the number of pages to display
@@ -66,7 +63,7 @@ public class SlidingTabsFragment extends Fragment {
          */
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return o == view;
+            return o.equals(view);
         }
 
         /**
@@ -93,6 +90,8 @@ public class SlidingTabsFragment extends Fragment {
                     return "Thursday";
                 case 4:
                     return "Friday";
+                default:
+                    break;
             }
 
             return null;
@@ -121,15 +120,11 @@ public class SlidingTabsFragment extends Fragment {
                     container, false);
             // Add the newly created View to the ViewPager
             container.addView(view);
-
-            TextView sub1 = (TextView) view.findViewById(R.id.sub1);
-            TextView sub2 = (TextView) view.findViewById(R.id.sub2);
-            TextView sub3 = (TextView) view.findViewById(R.id.sub3);
-            TextView sub4 = (TextView) view.findViewById(R.id.sub4);
-            TextView sub5 = (TextView) view.findViewById(R.id.sub5);
-            TextView sub6 = (TextView) view.findViewById(R.id.sub6);
-            TextView sub7 = (TextView) view.findViewById(R.id.sub7);
-            TextView sub8 = (TextView) view.findViewById(R.id.sub8);
+            int [] subsInt = {R.id.sub1, R.id.sub2, R.id.sub3, R.id.sub4, R.id.sub5, R.id.sub6, R.id.sub7, R.id.sub8};
+            TextView sub [] = new TextView[8];
+            for (int i= 0; i < sub.length; i++){
+                sub[i] = (TextView) view.findViewById(subsInt[i]);
+            }
 
             switch (position){
                 case 0:
@@ -147,15 +142,17 @@ public class SlidingTabsFragment extends Fragment {
                 case 4:
                     x=f;
                     break;
+                default:
+                    break;
             }
-            sub1.setText(x[1]);
-            sub2.setText(x[2]);
-            sub3.setText(x[3]);
-            sub4.setText(x[4]);
-            sub5.setText(x[5]);
-            sub6.setText(x[6]);
-            sub7.setText(x[7]);
-            sub8.setText(x[8]);
+            sub[0].setText(x[1]);
+            sub[1].setText(x[2]);
+            sub[2].setText(x[3]);
+            sub[3].setText(x[4]);
+            sub[4].setText(x[5]);
+            sub[5].setText(x[6]);
+            sub[6].setText(x[7]);
+            sub[7].setText(x[8]);
             return  view;
 
         }

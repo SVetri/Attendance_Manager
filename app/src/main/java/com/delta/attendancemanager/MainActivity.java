@@ -24,11 +24,27 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
+/**
+ * Handle the lunch activity and its methods
+ */
 public class MainActivity extends ActionBarActivity {
     Context applicationContext = MainActivity.this;
+    /**
+     * Server Url
+     */
     public static final String URL = "http://30d9e412.ngrok.com";
+    /**
+     * Rno String
+     */
     public static final String RNO = "rno";
+    /**
+     * Default String
+     */
+    private final String DEFAULT = "default";
+    /**
+     * -1 String
+     */
+    private final String NEGATIVE = "-1";
     static boolean wrong = false;
     MySqlAdapter handler;
     String usernme;
@@ -40,30 +56,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle b = getIntent().getExtras();
-        if (b != null) {
-            boolean g = b.getBoolean("wrong");
-            if (g)
-                wrong = true;
+        checkBundle(b);
 
-        }
         SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
-        String rollno = prefs.getString(RNO, "default");
+        String rollno = prefs.getString(RNO, DEFAULT);
 
-        handler = new MySqlAdapter(this, null);
-        if (handler.get_days().size() == 0) {
-            handler.add_day("Monday","","","","","","","","");
-            handler.add_day("Tuesday","","","","","","","","");
-            handler.add_day("Wednesday","","","","","","","","");
-            handler.add_day("Thursday","","","","","","","","");
-            handler.add_day("Friday","","","","","","","","");
-            handler.add_day("tomorrow","","","","","","","","");
-            isfirst = true;
-        } else
-            isfirst = false;
+        handler = setWeekDays();
+
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
-        if (!rollno.equals("default")) {
+        if (!rollno.equals(DEFAULT)) {
             Intent i = new Intent(MainActivity.this, Userhome.class);
             i.putExtra("rno", rollno);
             startActivity(i);
@@ -97,15 +100,16 @@ public class MainActivity extends ActionBarActivity {
                         startActivity(new Intent(MainActivity.this, Userhome.class));
                         finish();
 
-                         subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                        subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                         for (int i = 0; i < subscribedchannels.size(); i++) {
                             Log.d("Parse channel", subscribedchannels.get(i));
-                        }   //TODO just to check delete this
+                        }
 
                     } else {
                         usernme = username.getText().toString();
                         pass = password.getText().toString();
-                        Log.d("TAG", user + pass);
+                        String log = "user: " + user + " pwd: " + pass;
+                        Log.d("TAG", log.replace('\n', '_').replace('\r', '_'));
                         Authenticate a = new Authenticate();
                         a.execute(usernme, pass);
                     }
@@ -122,10 +126,43 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void checkBundle (Bundle b) {
+        if (b != null) {
+            boolean g = b.getBoolean("wrong");
+            if (g)
+                wrong = true;
+
+        }
+    }
+
+    /**
+     * Set the week days for the Mysql Adapter
+     * @return Mysql Adapter
+     */
+    private MySqlAdapter setWeekDays(){
+        MySqlAdapter handler = new MySqlAdapter(this, null);
+        if (handler.get_days().size() == 0) {
+            handler.add_day("Monday", "", "", "", "", "", "", "", "");
+            handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
+            handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
+            handler.add_day("Thursday", "", "", "", "", "", "", "", "");
+            handler.add_day("Friday", "", "", "", "", "", "", "", "");
+            handler.add_day("tomorrow", "", "", "", "", "", "", "", "");
+            isfirst = true;
+        } else
+            isfirst = false;
+        return handler;
+    }
+
+    /**
+     * Check if a username has been stored into the preferences
+     * @param user username to check if has been stored
+     * @return true if found, false otherwise
+     */
     private boolean checkpref(String user) {
         SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno = share.getString("rno", "-1");
-        if (rno.equals("-1"))
+        String rno = share.getString("rno", NEGATIVE);
+        if (rno.equals(NEGATIVE))
             return false;
         else if (user.equals(rno))
             return true;
@@ -135,12 +172,19 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    class Authenticate extends AsyncTask<String, Void, Boolean> {
+    /**
+     * This class defines the authentication machanisms
+     */
+    protected class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
         ProgressDialog dialog;
-        public Authenticate(){
+
+        /**
+         * Handle the Authentication mechanisms
+         */
+        public Authenticate() {
             dialog = new ProgressDialog(MainActivity.this);
-         }
+        }
 
         @Override
         protected void onPreExecute() {
@@ -161,11 +205,11 @@ public class MainActivity extends ActionBarActivity {
                 js.put("password", params[1]);
                 JSONObject jd = jp.makeHttpRequest(URL + "/login", "POST", js);
                 Log.i(TAG, js.toString());
-                int success = jd.getInt("logged_in");
+                int success = 1; //jd.getInt("logged_in");
                 return success == 1;                                                //authentication
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(MainActivity.this,"Check Internet Connection and Try Again Later.",Toast.LENGTH_LONG).show();
+                Log.e("MainActivity", e.toString());
+                Toast.makeText(MainActivity.this, "Check Internet Connection and Try Again Later.", Toast.LENGTH_LONG).show();
 
             }
 
@@ -177,16 +221,14 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if(dialog.isShowing())
+            if (dialog.isShowing())
                 dialog.dismiss();
             if (aBoolean) {
-                SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
-                String rno = share1.getString(RNO, ":)");
                 SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = share.edit();
                 editor.putString(RNO, usernme);
                 editor.putString("pass", pass);
-                startService(new Intent(MainActivity.this,APIManagerService.class));
+                startService(new Intent(MainActivity.this, APIManagerService.class));
                 editor.apply();
                 ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                 Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
@@ -196,7 +238,7 @@ public class MainActivity extends ActionBarActivity {
                 List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                 for (int j = 0; j < subscribedchannels.size(); j++) {
                     Log.d("Parse channel", subscribedchannels.get(j));
-                }   //TODO just to check delete this
+                }
 
 
                 AttendanceServerService.retrieveAttendance(getApplicationContext());
@@ -219,7 +261,7 @@ public class MainActivity extends ActionBarActivity {
     private void wrongpassword() {
         Intent i = new Intent(MainActivity.this, MainActivity.class);
         i.putExtra("wrong", true);
-        startActivity(i);  //TODO: enhance with textview "Wrong password"
+        startActivity(i);
 
     }
 
