@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MySqlAdapter {
     Context context;
     Mysqlhelper mysqlhelper;
+    private String [] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     /**
      * Provides a string arraylist for the textview text
      */
@@ -31,24 +33,38 @@ public class MySqlAdapter {
         mysqlhelper = new Mysqlhelper(context,factory);
 
     }
+
+    /**
+     * Retrive subs from the SQLite server
+     */
     public void get_ub()
     {
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TNAME, new String[] {
-                        Mysqlhelper.CNAME},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != Constants.BLANK_STRING){
-                subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
+        Cursor c = null;
+        try {
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TNAME, new String[] {
+                            Mysqlhelper.CNAME},
+                    null,
+                    null,
+                    null, null, null , null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.CNAME))!=null || !c.getString(c.getColumnIndex(Mysqlhelper.CNAME)).isEmpty() || c.getString(c.getColumnIndex(Mysqlhelper.CNAME)) != Constants.BLANK_STRING){
+                    subs.add(c.getString(c.getColumnIndex(Mysqlhelper.CNAME)));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
+        } finally {
+            c.close();
         }
-        c.close();
+
+
     }
 
+    /**
+     * Add a sub for the textview
+     * @param sub to insert
+     */
     public void add_sub(String sub)
     {
         if(subs.isEmpty())
@@ -64,6 +80,10 @@ public class MySqlAdapter {
         }
     }
 
+    /**
+     * Represents an arraylist with subs
+     * @return arraylist with subs
+     */
     public ArrayList<String> getSubs()
     {
         if(subs.isEmpty())
@@ -71,294 +91,373 @@ public class MySqlAdapter {
         return subs;
     }
 
-    public void delete_sub(String sub){                                                         //TODO for deleting subject from the cr side
+    /**
+     * Delete a sub from the list
+     * @param sub to delete
+     */
+    public void delete_sub(String sub){
         SQLiteDatabase db = mysqlhelper.getWritableDatabase();
         subs.remove(sub);
         db.delete(Mysqlhelper.TNAME, Mysqlhelper.CNAME + " =? ", new String[]{sub});
     }
 
+    /**
+     * Check if a day is present in a time table
+     * @param day to check
+     * @return true if found, else otherwise
+     */
     public boolean ispresent(String day){
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor cursor = db.query(Mysqlhelper.TABLENAME, new String[]{Mysqlhelper.DAY}, Mysqlhelper.DAY + "=?",
-                new String[]{day}, null, null, null, null);
-        if(!cursor.moveToFirst())
-            return false;
-        else
-            return true;
+        Cursor cursor = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            cursor = db.query(Mysqlhelper.TABLENAME, new String[]{Mysqlhelper.DAY}, Mysqlhelper.DAY + "=?",
+                    new String[]{day}, null, null, null, null);
+            if(!cursor.moveToFirst())
+                return false;
+            else
+                return true;
+        } finally {
+            cursor.close();
+        }
+
     }
 
+    /**
+     * Delete a day from the timetable
+     * @param day to delete
+     */
     public void delete_day(String day) {
         SQLiteDatabase db=mysqlhelper.getWritableDatabase();
         db.delete(Mysqlhelper.TABLENAME, Mysqlhelper.DAY + " = ?", new String[]{day});
     }
 
+    /**
+     * Retrive the list of attendance days
+     * @return list of days
+     */
     public ArrayList<String[]> get_days(){
-        String[] all=new String[9];
         ArrayList<String[]> s=new ArrayList<>();
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY))!=null){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
-                s.add(all);
-            }
-            c.moveToNext();
+        Cursor c = null;
+        try{
+            String[] all=new String[9];
 
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null , null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY))!=null){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                    s.add(all);
+                }
+                c.moveToNext();
+
+            }
+        } finally {
+            c.close();
+            return s;
         }
-        c.close();
-        return s;
+
     }
 
+    /**
+     * Retrieve the list of subjects for mondays
+     * @return list of subject
+     */
     public String[]  get_mon(){
         String[] all=new String[9];
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Monday")){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+        Cursor c = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[]{
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null, null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals(days[0])){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+
+                }
+                c.moveToNext();
 
             }
-            c.moveToNext();
-
+        }finally {
+            c.close();
+            return all;
         }
-        c.close();
-        return all;
     }
 
+    /**
+     * Retrieve the list of subjects for tuesday
+     * @return list of subject
+     */
     public String[]  get_tue(){
         String[] all=new String[9];
-
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Tuesday")){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
-
+        Cursor c = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[]{
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null, null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals(days[1])){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
-
+        } finally {
+            c.close();
+            return all;
         }
-        c.close();
-        return all;
+
     }
 
+    /**
+     * Retrieve the list of subjects for wednesday
+     * @return list of subject
+     */
     public String[]  get_wed(){
         String[] all=new String[9];
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Wednesday")){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
-
+        Cursor c = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c = db.query(true, Mysqlhelper.TABLENAME, new String[]{
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null, null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals(days[2])){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
-
+        } finally {
+            c.close();
+            return all;
         }
-        c.close();
-        return all;
     }
 
+    /**
+     * Retrieve the list of subjects for thursday
+     * @return list of subject
+     */
     public String[]  get_thur(){
         String[] all=new String[9];
-
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Thursday")){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
-
+        Cursor c = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null , null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals(days[3])){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
-
+        } finally {
+            c.close();
+            return all;
         }
-        c.close();
-        return all;
+
     }
 
+    /**
+     * Retrieve the list of subjects for friday
+     * @return list of subject
+     */
     public String[]  get_fri(){
         String[] all=new String[9];
-
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                null,
-                null,
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals("Friday")){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
-
+        Cursor c = null;
+        try{
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    null,
+                    null,
+                    null, null, null , null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY)).equals(days[4])){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
-
+        } finally {
+            c.close();
+            return all;
         }
-        c.close();
-        return all;
     }
 
+    /**
+     * Retrieve the list of subjects for the next day
+     * @return list of subject
+     */
     public String[] get_tomo(){
         String[] all=new String[9];
-        SQLiteDatabase db=mysqlhelper.getReadableDatabase();
-        Cursor c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
-                        Mysqlhelper.DAY,
-                        Mysqlhelper.t830,
-                        Mysqlhelper.t920,
-                        Mysqlhelper.t1030,
-                        Mysqlhelper.t1120,
-                        Mysqlhelper.t130,
-                        Mysqlhelper.t220,
-                        Mysqlhelper.t310,
-                        Mysqlhelper.t400},
-                Mysqlhelper.DAY + "=?" ,
-                new String[] {Mysqlhelper.TOMO},
-                null, null, null , null);
-        c.moveToFirst();
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex(Mysqlhelper.DAY))!=null){
-                all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
-                all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
-                all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
-                all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
-                all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
-                all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
-                all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
-                all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
-                all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+        Cursor c = null;
+        try {
+            SQLiteDatabase db=mysqlhelper.getReadableDatabase();
+            c=db.query(true, Mysqlhelper.TABLENAME, new String[] {
+                            Mysqlhelper.DAY,
+                            Mysqlhelper.t830,
+                            Mysqlhelper.t920,
+                            Mysqlhelper.t1030,
+                            Mysqlhelper.t1120,
+                            Mysqlhelper.t130,
+                            Mysqlhelper.t220,
+                            Mysqlhelper.t310,
+                            Mysqlhelper.t400},
+                    Mysqlhelper.DAY + "=?" ,
+                    new String[] {Mysqlhelper.TOMO},
+                    null, null, null , null);
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                if(c.getString(c.getColumnIndex(Mysqlhelper.DAY))!=null){
+                    all[0]=c.getString(c.getColumnIndex(Mysqlhelper.DAY));
+                    all[1]=c.getString(c.getColumnIndex(Mysqlhelper.t830));
+                    all[2]=c.getString(c.getColumnIndex(Mysqlhelper.t920));
+                    all[3]=c.getString(c.getColumnIndex(Mysqlhelper.t1030));
+                    all[4]=c.getString(c.getColumnIndex(Mysqlhelper.t1120));
+                    all[5]=c.getString(c.getColumnIndex(Mysqlhelper.t130));
+                    all[6]=c.getString(c.getColumnIndex(Mysqlhelper.t220));
+                    all[7]=c.getString(c.getColumnIndex(Mysqlhelper.t310));
+                    all[8]=c.getString(c.getColumnIndex(Mysqlhelper.t400));
+                }
+                c.moveToNext();
             }
-            c.moveToNext();
-
+        } finally {
+            c.close();
+            return  all;
         }
-        c.close();
-        return  all;
     }
 
+    /**
+     * Add a day into the time table
+     * @param day to insert
+     * @param s830 subject at 8.30
+     * @param s920 subject at 9.20
+     * @param s1030 subject at 10.30
+     * @param s1120 subject at 11.20
+     * @param s130 subject at 13.00
+     * @param s220 subject at 2.20
+     * @param s310 subject at 3.10
+     * @param s400 subject at 4.00
+     */
     public void add_day(String day, String s830, String s920, String s1030, String s1120, String s130, String s220, String s310, String s400){
         try{
             delete_day(day);
         }catch(Exception e){
-
+            Log.d("Attendance Manager","MySqlAdapter error");
         }
         if(ispresent(day))
             delete_day(day);
@@ -376,15 +475,25 @@ public class MySqlAdapter {
         db.insert(Mysqlhelper.TABLENAME, null, v);
     }
 
+    /**
+     * Add a msg from the chat
+     * @param msg message
+     * @param time time when has been sent
+     * @param date date when has been sent
+     */
     public void addmsg(String msg, String time, String date){
         ContentValues v=new ContentValues();
         v.put(Mysqlhelper.ACNAME,msg);
         v.put(Mysqlhelper.ATIMES,time);
-        v.put(Mysqlhelper.ADATES,date);
+        v.put(Mysqlhelper.ADATES, date);
         SQLiteDatabase db=mysqlhelper.getWritableDatabase();
         db.insert(Mysqlhelper.ATNAME, null, v);
     }
 
+    /**
+     * Get the list of messages from the chat
+     * @return messages from the chat
+     */
     public Chat[] getmsgs(){
         List<Chat> msg=new ArrayList<>();
         Chat chat;
@@ -418,9 +527,13 @@ public class MySqlAdapter {
         return msgs;
     }
 
-    public void update_tomo(String[] subs){
+    /**
+     * update the subjects for the next day
+     * @param subjects subjects
+     */
+    public void update_tomo(String[] subjects) {
         delete_day(Mysqlhelper.TOMO);
-        add_day(Mysqlhelper.TOMO,subs[1],subs[2],subs[3],subs[4],subs[5],subs[6],subs[7],subs[8]);
+        add_day(Mysqlhelper.TOMO, subjects[1], subjects[2], subjects[3], subjects[4], subjects[5], subjects[6], subjects[7], subjects[8]);
     }
 
     /**

@@ -104,7 +104,7 @@ public class CRhomesliderfragment extends Fragment {
          */
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return o == view;
+            return o.equals(view);
         }
 
         /**
@@ -125,6 +125,8 @@ public class CRhomesliderfragment extends Fragment {
                     return "Manage Courses  ";
                 case 2:
                     return " Announcements ";
+                default:
+                    break;
 
             }
 
@@ -208,7 +210,6 @@ public class CRhomesliderfragment extends Fragment {
                             container, false);
                     String[] all;
                     handler = new MySqlAdapter(getActivity(), null);
-                    final String[] slots = {"830", "920", "1030", "1120", "130", "220", "310", "400"};
 
                     handler = new MySqlAdapter(getActivity(), null);
                     //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
@@ -326,7 +327,7 @@ public class CRhomesliderfragment extends Fragment {
                             }
                     );
 
-                    final View v = view;
+
                     final LinearLayout ll = (LinearLayout) view.findViewById(R.id.ll1);
                     btns[1].setOnClickListener(
                             new View.OnClickListener() {
@@ -535,6 +536,8 @@ public class CRhomesliderfragment extends Fragment {
                     break;
                 case "tomorrow":
                     dayTimetable = handler.get_tomo();
+                    break;
+                default:
                     break;
             }
             setSub(finalTimetable, dayTimetable, subs);

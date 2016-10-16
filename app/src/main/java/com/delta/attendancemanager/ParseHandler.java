@@ -9,9 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +39,6 @@ public class ParseHandler extends IntentService {
 
     @Override
     public void onCreate() {
-        // TODO Auto-generated method stub
         super.onCreate();
         handler = new MySqlAdapter(this, null);
     }
@@ -58,7 +54,7 @@ public class ParseHandler extends IntentService {
                 Log.d("happens", myjsonObject.toString());
                  message = myjsonObject.getString("type");
 
-                //   String messageType = gcm.getMessageType(intent);        TODO message type
+                //   String messageType = gcm.getMessageType(intent);
 
                 if (message.equals(MSG_TT)) {
                     startService(new Intent(getApplicationContext(),APIManagerService.class));
@@ -124,11 +120,6 @@ public class ParseHandler extends IntentService {
         times[7] = js.getString("310");
         times[8] = js.getString("400");
         handler.update_tomo(times);
-    }
-
-    private void updateTT() throws JSONException {
-        //TODO:Drop Table
-        startService(new Intent(getApplicationContext(),APIManagerService.class));
     }
 
     private void announcements(String msg, String date, String time) {
@@ -223,6 +214,8 @@ public class ParseHandler extends IntentService {
                 mNotifyBuilder.setAutoCancel(true);
                 // Post a notification
                 mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+                break;
+            default:
                 break;
         }
 

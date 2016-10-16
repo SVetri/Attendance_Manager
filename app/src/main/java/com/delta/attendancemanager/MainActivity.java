@@ -37,6 +37,14 @@ public class MainActivity extends ActionBarActivity {
      * Rno String
      */
     public static final String RNO = "rno";
+    /**
+     * Default String
+     */
+    private final String DEFAULT = "default";
+    /**
+     * -1 String
+     */
+    private final String NEGATIVE = "-1";
     static boolean wrong = false;
     MySqlAdapter handler;
     String usernme;
@@ -52,13 +60,13 @@ public class MainActivity extends ActionBarActivity {
 
         SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
-        String rollno = prefs.getString(RNO, "default");
+        String rollno = prefs.getString(RNO, DEFAULT);
 
         handler = setWeekDays();
 
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.passwordm);
-        if (!rollno.equals("default")) {
+        if (!rollno.equals(DEFAULT)) {
             Intent i = new Intent(MainActivity.this, Userhome.class);
             i.putExtra("rno", rollno);
             startActivity(i);
@@ -95,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
                         subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                         for (int i = 0; i < subscribedchannels.size(); i++) {
                             Log.d("Parse channel", subscribedchannels.get(i));
-                        }   //TODO just to check delete this
+                        }
 
                     } else {
                         usernme = username.getText().toString();
@@ -153,8 +161,8 @@ public class MainActivity extends ActionBarActivity {
      */
     private boolean checkpref(String user) {
         SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rno = share.getString("rno", "-1");
-        if (rno.equals("-1"))
+        String rno = share.getString("rno", NEGATIVE);
+        if (rno.equals(NEGATIVE))
             return false;
         else if (user.equals(rno))
             return true;
@@ -216,8 +224,6 @@ public class MainActivity extends ActionBarActivity {
             if (dialog.isShowing())
                 dialog.dismiss();
             if (aBoolean) {
-                SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
-                String rno = share1.getString(RNO, ":)");
                 SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = share.edit();
                 editor.putString(RNO, usernme);
@@ -232,7 +238,7 @@ public class MainActivity extends ActionBarActivity {
                 List<String> subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                 for (int j = 0; j < subscribedchannels.size(); j++) {
                     Log.d("Parse channel", subscribedchannels.get(j));
-                }   //TODO just to check delete this
+                }
 
 
                 AttendanceServerService.retrieveAttendance(getApplicationContext());

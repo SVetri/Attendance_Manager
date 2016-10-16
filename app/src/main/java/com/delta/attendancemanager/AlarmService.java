@@ -8,6 +8,9 @@ import android.content.Context;
 
 import java.util.Calendar;
 
+/**
+ * Manage the Alarm feature
+ */
 public class AlarmService extends IntentService {
     private static final String ACTION_SET_CUSTOM_ALARM = "com.delta.attendancemanager.action.SET_CUSTOM_ALARM";
     private static final String CANCEL_ALARM = "com.delta.attendancemanager.action.CANCEL_ALARM";

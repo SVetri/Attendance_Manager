@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//TODO edit history class to edit the already marked history - local attendance database should be used.
-
 /**
  * Handle the view and the methods to edit the history of the attendaces
  */
@@ -155,20 +153,21 @@ public class EditHistory extends ActionBarActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RecyclerView rec;
                 //int pos = rg.getCheckedRadioButtonId();
                 AtAdapter atAdapter = new AtAdapter(getApplicationContext());
                 LocalDate ld = new LocalDate(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
                 String f = ld + " " + TTimings.hour[pos + 1] + ":" + TTimings.min[pos + 1];
                 atAdapter.add_attendance(subname, f, p);
-                reclist = (RecyclerView) findViewById(R.id.editcardList);
-                reclist.setHasFixedSize(true);
+                rec = (RecyclerView) findViewById(R.id.editcardList);
+                rec.setHasFixedSize(true);
                 LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
                 llm.setOrientation(LinearLayoutManager.VERTICAL);
-                reclist.setLayoutManager(llm);
+                rec.setLayoutManager(llm);
                 atAdapter.fetch_subject_data(subname);
                 EditAdapter edadapter = new EditAdapter(getApplicationContext(),createList(subname,atAdapter.getDt(),atAdapter.getPresint()));
                 dialog.cancel();
-                reclist.setAdapter(edadapter);
+                rec.setAdapter(edadapter);
             }
         });
 

@@ -20,7 +20,7 @@ public class DisplayToast implements Runnable {
         mText = text;
     }
 
-    public void run(){
+    public synchronized void run(){
         Toast.makeText(mContext, mText, Toast.LENGTH_SHORT).show();
     }
 }

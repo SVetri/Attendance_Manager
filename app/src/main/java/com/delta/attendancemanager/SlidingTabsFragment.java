@@ -63,7 +63,7 @@ public class SlidingTabsFragment extends Fragment {
          */
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return o == view;
+            return o.equals(view);
         }
 
         /**
@@ -90,6 +90,8 @@ public class SlidingTabsFragment extends Fragment {
                     return "Thursday";
                 case 4:
                     return "Friday";
+                default:
+                    break;
             }
 
             return null;
@@ -139,6 +141,8 @@ public class SlidingTabsFragment extends Fragment {
                     break;
                 case 4:
                     x=f;
+                    break;
+                default:
                     break;
             }
             sub[0].setText(x[1]);

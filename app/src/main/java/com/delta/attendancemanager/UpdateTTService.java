@@ -149,7 +149,6 @@ public class UpdateTTService extends IntentService {
         }
     }
 
-    //TODO: API console
     private void handleUpcoming(JSONObject json)  throws JSONException, IOException{
         SharedPreferences share1=getSharedPreferences("user", Context.MODE_PRIVATE);
         String rno=share1.getString("crrno",":)");

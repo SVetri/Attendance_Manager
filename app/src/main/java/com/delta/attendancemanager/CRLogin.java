@@ -42,8 +42,9 @@ public class CRLogin extends ActionBarActivity {
                 username = (EditText) findViewById(R.id.crbranch);
                 password = (EditText) findViewById(R.id.crpass);
                 SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
-                String rno = share1.getString("crrno", ":)");
-                if (rno.equals(":)")) {
+                String pm = ":)";
+                String rno = share1.getString("crrno", pm);
+                if (rno.equals(pm)) {
                     if (isEmpty) {
                         handler.add_day("Monday", "", "", "", "", "", "", "", "");
                         handler.add_day("Tuesday", "", "", "", "", "", "", "", "");

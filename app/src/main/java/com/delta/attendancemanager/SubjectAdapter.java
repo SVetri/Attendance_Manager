@@ -81,7 +81,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         public SubjectViewHolder(View v)
         {
             super(v);
-            subject = (Button) v.findViewById(R.id.subjectbutton);                                      //TODO: buttons could be changed here, even grid view can be implemented
+            subject = (Button) v.findViewById(R.id.subjectbutton);
         }
 
     }

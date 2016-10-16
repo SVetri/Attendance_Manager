@@ -11,7 +11,6 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
-// TODO: editing the absent and present accordingly and updating the attendance database.
 
 /**
  * This class handles the view and the mechanics for edit an attendance
@@ -45,7 +44,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         attendanceviewholder.sub[0].setText(eci.coursename);
         attendanceviewholder.sub[1].setText(eci.classdate);
         attendanceviewholder.sub[2].setText(eci.classtime);
-        if (eci.attendance.equals(true)) {
+        if (eci.attendance.booleanValue()) {
             attendanceviewholder.sub[3].setText("PRESENT");
             attendanceviewholder.sub[4].setText("Mark as Absent");
         } else {
@@ -61,7 +60,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
                 } catch (Exception e) {
                     Toast.makeText(context, "date problem", Toast.LENGTH_LONG).show();
                 }
-                if (eci.attendance.equals(true)) {
+                if (eci.attendance.booleanValue()) {
                     eci.attendance = false;
                     atAdapter.update_attendance(eci.coursename, formatDate(eci.classdate + " " + eci.classtime), -1);
                     attendanceviewholder.sub[3].setText("ABSENT");
@@ -78,7 +77,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
             @Override
             public void onClick(View view) {
                 atAdapter = new AtAdapter(context);
-                atAdapter.delete_data(eci.coursename, formatDate(eci.classdate + " " + eci.classtime));                                                         //TODO: Refreshing the screen should be added if required
+                atAdapter.delete_data(eci.coursename, formatDate(eci.classdate + " " + eci.classtime));
                 int position = attendanceList.indexOf(eci);
                 attendanceList.remove(position);
                 notifyItemRemoved(position);

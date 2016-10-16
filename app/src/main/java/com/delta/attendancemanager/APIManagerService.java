@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,7 +40,6 @@ public class APIManagerService extends IntentService {
         String rno=share1.getString(MainActivity.RNO, ":)");
         String batch = rno.substring(0,rno.length()-3);
         String URL = MainActivity.URL+"/getTimetable/"+batch;
-//TODO:send username using SharedPref
         all=new ArrayList<>();
         adapter=new MySqlAdapter(this,null);
 //        Bundle b=intent.getExtras();
@@ -55,7 +53,6 @@ public class APIManagerService extends IntentService {
                 try {
                     times=new String[9];
                     JSONParser jp = new JSONParser();
-                    List<NameValuePair> tt = new ArrayList<>();
                     JSONObject jd=new JSONObject();
 //                    tt.add(new BasicNameValuePair("username", user));
                     JSONObject js = jp.makeHttpRequest(URL, "POST", jd);
@@ -85,7 +82,9 @@ public class APIManagerService extends IntentService {
 
                 break;
             case 1:
-
+                break;
+            default:
+                break;
 
 
         }
@@ -125,6 +124,7 @@ public class APIManagerService extends IntentService {
                 break;
             default:
                 allString = handler.get_mon();
+                break;
         }
     }
 

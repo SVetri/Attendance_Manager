@@ -45,7 +45,7 @@ public class SubjectAttendance extends ActionBarActivity {
 
         Boolean dispnotice = getIntent().getBooleanExtra("pendupd", false);
 
-        if(dispnotice.equals(true))
+        if(dispnotice.booleanValue())
         {
             text[0].setVisibility(View.VISIBLE);
         }

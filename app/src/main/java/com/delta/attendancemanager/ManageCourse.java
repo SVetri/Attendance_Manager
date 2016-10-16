@@ -21,7 +21,7 @@ public class ManageCourse extends ActionBarActivity {
     boolean ischanged;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {                                                //TODO delete_subs created, use it to delete a subject
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_course);
         ischanged=false;
@@ -85,14 +85,5 @@ public class ManageCourse extends ActionBarActivity {
 
         );
 
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if(ischanged){
-            //update server
-        }
     }
 }

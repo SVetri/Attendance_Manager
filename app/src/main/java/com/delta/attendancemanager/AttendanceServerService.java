@@ -51,7 +51,7 @@ public class AttendanceServerService extends IntentService {
 
     /**
      * Syncs the the attendances with the server
-     * @param context
+     * @param context where it should be applied
      */
     public static void syncAttendance(Context context) {
         Intent intent = new Intent(context, AttendanceServerService.class);
@@ -114,9 +114,7 @@ public class AttendanceServerService extends IntentService {
     private void getRetrieve(){
         try {
             handleRetrieve();
-        } catch (JSONException e) {
-            Log.e("AttendanceServerService", e.toString());
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             Log.e("AttendanceServerService", e.toString());
         }
     }
@@ -201,13 +199,13 @@ Log.i("hel",jsons);
             if (TTimings.hour[i] < 10) {
                 shour = "0" + TTimings.hour[i];
             } else {
-                shour += TTimings.hour[i];
+                shour = shour.concat(String.valueOf(TTimings.hour[i]));
             }
 
             if (TTimings.min[i] < 10) {
                 smin = "0" + TTimings.min[i];
             } else {
-                smin += TTimings.min[i];
+                smin = smin.concat(String.valueOf(TTimings.min[i]));
             }
             String f = ld + " " + shour + ":" + smin;
             atAdapter.add_attendance(subjects[i], f, 0);
@@ -229,13 +227,13 @@ Log.i("hel",jsons);
             if (TTimings.hour[i] < 10) {
                 shour = "0" + TTimings.hour[i];
             } else {
-                shour += TTimings.hour[i];
+                shour = shour.concat(String.valueOf(TTimings.hour[i]));
             }
 
             if (TTimings.min[i] < 10) {
                 smin = "0" + TTimings.min[i];
             } else {
-                smin += TTimings.min[i];
+                smin = smin.concat(String.valueOf(TTimings.min[i]));
             }
             String f = ld + " " + shour + ":" + smin;
             atAdapter.refresh_delete_data(subjects[i], f);
@@ -250,8 +248,6 @@ Log.i("hel",jsons);
         SharedPreferences prefs = getSharedPreferences("user",
                 Context.MODE_PRIVATE);
         String rollno = prefs.getString(RNO, "default");
-        ArrayList<String> subjects = new ArrayList<>(), datetime = new ArrayList<>();
-        ArrayList<Integer> present = new ArrayList<>();
         js.put("rollno",rollno);
 //        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST,MainActivity.URL+"/Backup",js,new Response.Listener<JSONArray>(){
 //            @Override

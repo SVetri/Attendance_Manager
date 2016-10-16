@@ -45,6 +45,7 @@ public class TomorrowUpdateService extends IntentService {
                 break;
             default:
                 all = handler.get_mon();
+                break;
         }
         handler.update_tomo(all);
 

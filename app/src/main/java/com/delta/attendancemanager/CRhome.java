@@ -37,7 +37,6 @@ public class CRhome extends ActionBarActivity {
 //            Intent i=new Intent(this,AlarmSetterService.class);
 //            startService(i);
             SharedPreferences share = getSharedPreferences("user", Context.MODE_PRIVATE);
-            String username = share.getString("rno", "");
 //            Intent j=new Intent(this,APIManagerService.class);
 //            j.putExtra("rno",username);
 //            j.putExtra("mode",0);

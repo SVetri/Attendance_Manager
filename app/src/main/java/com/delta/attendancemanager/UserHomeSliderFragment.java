@@ -1,6 +1,5 @@
 package com.delta.attendancemanager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -72,7 +71,7 @@ public class UserHomeSliderFragment extends Fragment {
          */
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return o == view;
+            return o.equals(view);
         }
 
         /**
@@ -95,6 +94,8 @@ public class UserHomeSliderFragment extends Fragment {
                     return "Attendance";
                 case 2:
                     return "Announcements";
+                default:
+                    break;
 
             }
 
@@ -135,7 +136,7 @@ public class UserHomeSliderFragment extends Fragment {
                     sub[5].setText(al[6]);
                     sub[6].setText(al[7]);
                     sub[7].setText(al[8]);
-                    final Context context=getActivity();
+
                     FloatingActionButton fab=(FloatingActionButton)view.findViewById(R.id.floating);
                     fab.setOnClickListener(
                             new View.OnClickListener() {

@@ -21,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Created by lakshmanaram on 14/1/16.
@@ -64,8 +63,6 @@ public class Retrieve extends AsyncTask<Void, Void, Boolean> {
         SharedPreferences prefs = cont.getSharedPreferences("user",
                 Context.MODE_PRIVATE);
         String rollno = prefs.getString(RNO, "default");
-        ArrayList<String> subjects = new ArrayList<>(), datetime = new ArrayList<>();
-        ArrayList<Integer> present = new ArrayList<>();
         try {
             js.put("rollno", rollno);
             Log.i("hel", js.toString());
