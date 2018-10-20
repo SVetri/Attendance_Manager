@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.services.APIManagerService;
+import com.delta.attendancemanager.services.AttendanceServerService;
+import com.delta.attendancemanager.utility.Userhome;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONException;

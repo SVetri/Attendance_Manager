@@ -40,20 +40,20 @@
             android:label="@string/title_activity_weekly_timetable"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:parentActivityName=".Userhome" >
+            android:parentActivityName=".utility.Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.Userhome" />
+                android:value="com.delta.attendancemanager.utility.Userhome" />
         </activity>
         <activity
             android:name=".ManageAttendance"
             android:label="@string/title_activity_manage_attendance"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:parentActivityName=".Userhome" >
+            android:parentActivityName=".utility.Userhome" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.delta.attendancemanager.Userhome" />
+                android:value="com.delta.attendancemanager.utility.Userhome" />
         </activity>
         <activity
             android:name=".UpdateMyAttendance"
@@ -137,7 +137,7 @@
         </activity>
 
         <service
-            android:name=".APIManagerService"
+            android:name=".services.APIManagerService"
             android:exported="false" >
         </service>
 
@@ -153,18 +153,18 @@
             android:exported="false" >
         </service>
         <service
-            android:name=".TomorrowUpdateService"
+            android:name=".services.TomorrowUpdateService"
             android:exported="false" >
         </service>
 
         <activity
-            android:name=".CourseInfo"
+            android:name=".Info.CourseInfo"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_course_info" >
         </activity>
         <activity
-            android:name=".Userhome"
+            android:name=".utility.Userhome"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_userhome" >
@@ -177,11 +177,11 @@
         </activity>
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name=".BootReceiver"
+            android:name=".receivers.BootReceiver"
             android:enabled="false"
             android:exported="true" >
             <intent-filter>
@@ -190,18 +190,18 @@
         </receiver>
 
         <service
-            android:name=".AlarmService"
+            android:name=".services.AlarmService"
             android:exported="false" >
         </service>
         <service
-            android:name=".AttendanceServerService"
+            android:name=".services.AttendanceServerService"
             android:exported="false" >
         </service>
         <service android:name="com.parse.PushService"
             android:exported="false"/>
 
         <receiver
-            android:name=".ParseReceiver"
+            android:name=".receivers.ParseReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

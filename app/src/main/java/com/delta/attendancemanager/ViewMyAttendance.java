@@ -1,18 +1,17 @@
 //view my attendance option.
 package com.delta.attendancemanager;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.delta.attendancemanager.Info.SubjectInfo;
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.utility.backup;
+import com.delta.attendancemanager.utility.retrieve;
 
 import java.util.ArrayList;
 import java.util.List;

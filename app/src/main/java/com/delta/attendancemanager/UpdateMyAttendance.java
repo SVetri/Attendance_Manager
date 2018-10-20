@@ -1,7 +1,6 @@
 package com.delta.attendancemanager;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,9 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.delta.attendancemanager.Info.CardInfo;
+import com.delta.attendancemanager.adapters.AtAdapter;
+import com.delta.attendancemanager.adapters.AttendanceAdapter;
+import com.delta.attendancemanager.services.AttendanceServerService;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class UpdateMyAttendance extends ActionBarActivity {
         reclist.setAdapter(attadapter);
     }
 
-    private List<CardInfo> createList(ArrayList<String> subject,ArrayList<String> datetime) {
+    private List<CardInfo> createList(ArrayList<String> subject, ArrayList<String> datetime) {
 
         Date date=null;
         List<CardInfo> result = new ArrayList<CardInfo>();

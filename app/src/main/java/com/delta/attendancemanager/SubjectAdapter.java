@@ -3,12 +3,13 @@ package com.delta.attendancemanager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.delta.attendancemanager.Info.SubjectInfo;
+import com.delta.attendancemanager.adapters.AtAdapter;
 
 import java.util.List;
 

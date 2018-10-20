@@ -17,6 +17,13 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.receivers.BootReceiver;
+import com.delta.attendancemanager.services.APIManagerService;
+import com.delta.attendancemanager.services.AlarmService;
+import com.delta.attendancemanager.services.AttendanceServerService;
+import com.delta.attendancemanager.utility.JSONParser;
+import com.delta.attendancemanager.utility.Userhome;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 

@@ -8,12 +8,13 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.utility.JSONParser;
 
 import org.json.JSONObject;
 

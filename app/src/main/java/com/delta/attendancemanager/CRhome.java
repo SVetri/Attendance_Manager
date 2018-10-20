@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.fragments.CRhomesliderfragment;
+import com.delta.attendancemanager.utility.Userhome;
+
 import java.util.ArrayList;
 import java.util.List;
 

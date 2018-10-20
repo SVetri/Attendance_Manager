@@ -9,6 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.fragments.CRSlidingTabsFragment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
