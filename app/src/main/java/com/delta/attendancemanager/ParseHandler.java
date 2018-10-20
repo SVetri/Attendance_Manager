@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.services.APIManagerService;
+import com.delta.attendancemanager.services.AttendanceServerService;
+import com.delta.attendancemanager.utility.Userhome;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONException;
@@ -71,7 +74,7 @@ public class ParseHandler extends IntentService {
                         AttendanceServerService.addAttendance(getApplicationContext());
                         sendNotification(1, "Upcoming Timetable Updated");
                     } catch (JSONException e) {
-                        Log.e("ParseHandler", e.toString());
+                        e.printStackTrace();
                     }
                 }
                 if (message.equals(MSG_CHAT)) {
@@ -87,7 +90,7 @@ public class ParseHandler extends IntentService {
                         String msg = data.getString("msg");
                         announcements(msg, date, time);
                     } catch (JSONException e) {
-                        Log.e("ParseHandler", e.toString());
+                        e.printStackTrace();
                     }
 
 
@@ -115,7 +118,7 @@ public class ParseHandler extends IntentService {
         handler.update_tomo(times);
     }
 
-    private void updateTT() throws JSONException {
+    private void updateTT(JSONObject js) throws JSONException {
         //TODO:Drop Table
         startService(new Intent(getApplicationContext(),APIManagerService.class));
     }
@@ -127,7 +130,6 @@ public class ParseHandler extends IntentService {
     }
 
     private void sendNotification(int type, String msg) {
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         switch (type) {
             case 0:
                 Intent resultIntent = new Intent(this, WeeklyTimetable.class);
@@ -136,6 +138,9 @@ public class ParseHandler extends IntentService {
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
                 NotificationCompat.Builder mNotifyBuilder;
+                NotificationManager mNotificationManager;
+
+                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle(msg)
@@ -163,6 +168,8 @@ public class ParseHandler extends IntentService {
                 resultIntent.putExtra("msg", msg);
                 resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("Alert")
@@ -192,6 +199,9 @@ public class ParseHandler extends IntentService {
                 resultPendingIntent = PendingIntent.getActivity(this, 0,
                         resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
+
+                mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
                 mNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("CR App")//TODO: name it
                         .setContentText(msg)
@@ -213,6 +223,8 @@ public class ParseHandler extends IntentService {
                 // Post a notification
                 mNotificationManager.notify(notifyID, mNotifyBuilder.build());
                 break;
+
+
         }
 
     }

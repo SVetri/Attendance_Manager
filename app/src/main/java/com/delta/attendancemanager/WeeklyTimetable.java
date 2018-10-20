@@ -3,8 +3,8 @@ package com.delta.attendancemanager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.delta.attendancemanager.fragments.SlidingTabsFragment;
 
 
 public class WeeklyTimetable extends ActionBarActivity{

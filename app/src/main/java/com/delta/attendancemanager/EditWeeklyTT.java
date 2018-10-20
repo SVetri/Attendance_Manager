@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.fragments.CRSlidingTabsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,13 +109,13 @@ public class EditWeeklyTT extends ActionBarActivity {
                                     try {
                                         js.accumulate(EditUpcomingTT.slots[i - 1], k[i]);
                                     } catch (JSONException e) {
-                                        Log.e("EditWeeklyTT", e.toString());
+                                        e.printStackTrace();
                                     }
                                 }
                                 try {
                                     j.put(k[0], js);
                                 } catch (JSONException e) {
-                                    Log.e("EditWeeklyTT", e.toString());
+                                    e.printStackTrace();
                                 }
                             }
 

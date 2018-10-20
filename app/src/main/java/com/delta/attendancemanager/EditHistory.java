@@ -1,34 +1,24 @@
 package com.delta.attendancemanager;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Build;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.delta.attendancemanager.Info.EditCardInfo;
+import com.delta.attendancemanager.adapters.AtAdapter;
+import com.delta.attendancemanager.adapters.EditAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,24 +34,17 @@ public class EditHistory extends ActionBarActivity {
     AtAdapter atAdapter;
     String subname;
     DatePicker dp;
-    RecyclerView reclist;
+    Date date;
     int p = 1;
     int pos = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_history);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating12);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addClass();
-            }
-        });
         atAdapter = new AtAdapter(getApplicationContext());
         subname = getIntent().getStringExtra("sname");
 
-        reclist = (RecyclerView) findViewById(R.id.editcardList);
+        RecyclerView reclist = (RecyclerView) findViewById(R.id.editcardList);
         reclist.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -72,13 +55,22 @@ public class EditHistory extends ActionBarActivity {
     }
 
     private List<EditCardInfo> createList(String sname, ArrayList<String> datetime, ArrayList<Integer> present) {
-        EditCardInfo eci;
+
         List<EditCardInfo> result = new ArrayList<EditCardInfo>();
         for (int i=0; i < datetime.size(); i++) {
-            eci = new EditCardInfo();
+            EditCardInfo eci = new EditCardInfo();
             eci.coursename=sname;
-            eci.classdate = formatDate(datetime.get(i));
-            eci.classtime = formatHour(datetime.get(i));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            try{
+                date = sdf.parse(datetime.get(i));
+            }
+            catch(Exception e){
+                Log.d("hel", e.toString());
+            }
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
+            SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
+            eci.classdate = sdf1.format(date);
+            eci.classtime = sdf2.format(date);
             if (present.get(i) == 1)
             eci.attendance=Boolean.TRUE;
             else
@@ -89,22 +81,7 @@ public class EditHistory extends ActionBarActivity {
 
         return result;
     }
-
-    private String formatDate(String fullDate){
-        String year = fullDate.substring(0, 4);
-        String month = fullDate.substring(5, 7);
-        String day = fullDate.substring(8, 10);
-        String out = day + "/"+ month + "/" + year;
-        return out;
-    }
-
-    private String formatHour(String fullDate){
-        String entire = fullDate.substring(11);
-        return entire;
-    }
-
-
-    public void addClass(){
+    public void addclass(View v){
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.add_att_dialog);
         dialog.setTitle("Add Attendance");
@@ -161,10 +138,12 @@ public class EditHistory extends ActionBarActivity {
             public void onClick(View v) {
                 //int pos = rg.getCheckedRadioButtonId();
                 AtAdapter atAdapter = new AtAdapter(getApplicationContext());
-                LocalDate ld = new LocalDate(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
-                String f = ld + " " + TTimings.hour[pos + 1] + ":" + TTimings.min[pos + 1];
-                atAdapter.add_attendance(subname, f, p);
-                reclist = (RecyclerView) findViewById(R.id.editcardList);
+                String format = "yyyy-MM-dd HH:mm";
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                Calendar now = Calendar.getInstance();
+                Date date = new Date(dp.getYear()-1900, dp.getMonth(), dp.getDayOfMonth(), TTimings.hour[pos + 1], TTimings.min[pos + 1]);                                                                  //1900+yyyy;      TODO: check whther the normal date is working or change it to 1900+yyyy.
+                atAdapter.add_attendance(subname, sdf.format(date), p);
+                RecyclerView reclist = (RecyclerView) findViewById(R.id.editcardList);
                 reclist.setHasFixedSize(true);
                 LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
                 llm.setOrientation(LinearLayoutManager.VERTICAL);

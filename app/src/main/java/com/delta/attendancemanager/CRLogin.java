@@ -8,12 +8,13 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.utility.JSONParser;
 
 import org.json.JSONObject;
 
@@ -58,7 +59,7 @@ public class CRLogin extends ActionBarActivity {
         });
     }
 
-    protected class CrAuth extends AsyncTask<String,Void,Boolean>{
+    class CrAuth extends AsyncTask<String,Void,Boolean>{
         JSONParser jp=new JSONParser();
          String usernameString;
         ProgressDialog dialog;
@@ -83,8 +84,8 @@ public class CRLogin extends ActionBarActivity {
                 js.put("password", params[1]);
                 JSONObject jd=jp.makeHttpRequest(MainActivity.URL+"/crlogin","POST",js);
                 Log.i("ls", js.toString());
-                int success = 1; //jd.getInt("Signed Up");
-                String secret = "giuseppebrb"; //jd.getString("secret");
+                int success=jd.getInt("Signed Up");
+                String secret = jd.getString("secret");
                 SharedPreferences prefs = getSharedPreferences("user",
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -92,7 +93,7 @@ public class CRLogin extends ActionBarActivity {
                 editor.apply();
                 return success==1;                                                //authentication
             }  catch (Exception e) {
-                Log.e("CRLogin", e.toString());
+                e.printStackTrace();
 
             }
             return false;

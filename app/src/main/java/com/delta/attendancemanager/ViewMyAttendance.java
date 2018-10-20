@@ -8,6 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.delta.attendancemanager.Info.SubjectInfo;
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.utility.backup;
+import com.delta.attendancemanager.utility.retrieve;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +67,11 @@ public class ViewMyAttendance extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_retrieve) {
-            new Retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
+            new retrieve(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
         }
         if(id == R.id.action_backup){
-            new Backup(ViewMyAttendance.this,getApplicationContext()).execute();
+            new backup(ViewMyAttendance.this,getApplicationContext()).execute();
             return true;
 
         }

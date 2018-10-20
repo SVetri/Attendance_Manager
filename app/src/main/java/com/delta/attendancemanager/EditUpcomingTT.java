@@ -3,9 +3,6 @@ package com.delta.attendancemanager;
 import android.app.Dialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -13,13 +10,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TooManyListenersException;
 
 
 public class EditUpcomingTT extends ActionBarActivity {
@@ -33,79 +30,82 @@ public class EditUpcomingTT extends ActionBarActivity {
         handler=new MySqlAdapter(this,null);
         //handler.add_day("tomorrow","DS","DSD","DC","HOLA","QWER","ASDF","ZXCV","LKJH");
         all=new String[9];
-        int [] subsInt = {R.id.sub1, R.id.sub2, R.id.sub3, R.id.sub4, R.id.sub5, R.id.sub6, R.id.sub7, R.id.sub8};
-        TextView sub [] = new TextView[8];
-        for (int i= 0; i < sub.length; i++){
-            sub[i] = (TextView) findViewById(subsInt[i]);
-        }
+        TextView sub1 = (TextView) findViewById(R.id.sub1);
+        TextView sub2 = (TextView) findViewById(R.id.sub2);
+        TextView sub3 = (TextView) findViewById(R.id.sub3);
+        TextView sub4 = (TextView) findViewById(R.id.sub4);
+        TextView sub5 = (TextView) findViewById(R.id.sub5);
+        TextView sub6 = (TextView) findViewById(R.id.sub6);
+        TextView sub7 = (TextView) findViewById(R.id.sub7);
+        TextView sub8 = (TextView) findViewById(R.id.sub8);
 
         all=handler.get_tomo();
-        sub[0].setText(all[1]);
-        sub[1].setText(all[2]);
-        sub[2].setText(all[3]);
-        sub[3].setText(all[4]);
-        sub[4].setText(all[5]);
-        sub[5].setText(all[6]);
-        sub[6].setText(all[7]);
-        sub[7].setText(all[8]);
-        sub[0].setOnClickListener(new View.OnClickListener() {
+        sub1.setText(all[1]);
+        sub2.setText(all[2]);
+        sub3.setText(all[3]);
+        sub4.setText(all[4]);
+        sub5.setText(all[5]);
+        sub6.setText(all[6]);
+        sub7.setText(all[7]);
+        sub8.setText(all[8]);
+        sub1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,1);
+                selectsubdialog(v,"830",1);
             }
         });
 
-        sub[1].setOnClickListener(new View.OnClickListener() {
+        sub2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,2);
+                selectsubdialog(v,"920",2);
             }
         });
 
-        sub[2].setOnClickListener(new View.OnClickListener() {
+        sub3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v, 3);
+                selectsubdialog(v,"1030",3);
             }
         });
 
-        sub[3].setOnClickListener(new View.OnClickListener() {
+        sub4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,4);
+                selectsubdialog(v,"1120",4);
             }
         });
 
-        sub[4].setOnClickListener(new View.OnClickListener() {
+        sub5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,5);
+                selectsubdialog(v,"130",5);
             }
         });
 
-        sub[5].setOnClickListener(new View.OnClickListener() {
+        sub6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,6);
+                selectsubdialog(v,"220",6);
             }
         });
 
-        sub[6].setOnClickListener(new View.OnClickListener() {
+        sub7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,7);
+                selectsubdialog(v,"310",7);
             }
         });
 
-        sub[7].setOnClickListener(new View.OnClickListener() {
+        sub8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectsubdialog(v,8);
+                selectsubdialog(v,"400",8);
             }
         });
     }
 
-    public void selectsubdialog(View v, int no)
+    public void selectsubdialog(View v,String time,int no)
     {
         final TextView t = (TextView) v;
         final int n=no;
@@ -117,11 +117,11 @@ public class EditUpcomingTT extends ActionBarActivity {
         subs=handler.getSubs();
         String[] al=new String[subs.size()];
         al=subs.toArray(al);
-        RadioButton rb;
+
         for (String i : al){
-            if(i.equals(Constants.BLANK_STRING))
+            if(i.equals(" "))
                 continue;
-            rb=new RadioButton(this);
+            RadioButton rb=new RadioButton(this);
             rb.setText(i);
             rg.addView(rb);
         }
@@ -144,7 +144,7 @@ public class EditUpcomingTT extends ActionBarActivity {
                     try {
                         j.put(slots[i-1],a[i]);
                     } catch (JSONException e) {
-                        Log.e("EditUpcomingTT", e.toString());
+                        e.printStackTrace();
                     }
                 }
                 UpdateTTService.startActionUpcoming(EditUpcomingTT.this,j);

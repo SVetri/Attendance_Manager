@@ -3,11 +3,11 @@ package com.delta.attendancemanager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.delta.attendancemanager.adapters.AtAdapter;
 
 public class SubjectAttendance extends ActionBarActivity {
 
@@ -20,37 +20,37 @@ public class SubjectAttendance extends ActionBarActivity {
         setContentView(R.layout.activity_subject_attendance);
 
         Button edithistory = (Button) findViewById(R.id.edithistory);
-        int [] subsInt = {R.id.updatenotice, R.id.subjectname, R.id.classes, R.id.attendancepercent, R.id.totalclasses};
-        TextView text [] = new TextView[5];
-        for (int i= 0; i < text.length; i++){
-            text[i] = (TextView) findViewById(subsInt[i]);
-        }
+        TextView updnotice = (TextView) findViewById(R.id.updatenotice);
+        TextView subjectname = (TextView) findViewById(R.id.subjectname);
+        TextView classes = (TextView) findViewById(R.id.classes);
+        TextView attendancepercent = (TextView) findViewById(R.id.attendancepercent);
+        TextView totalclasses = (TextView) findViewById(R.id.totalclasses);
 
         final String subname = getIntent().getStringExtra("subname");
-        text[1].setText(subname);
+        subjectname.setText(subname);
         atAdapter.subject_info(subname);
 
         int ca = atAdapter.getClasses_attended();
         int tc = atAdapter.getTotalclasses();
 
-        text[2].setText(String.valueOf(ca));
-        text[4].setText(String.valueOf(tc));
+        classes.setText(String.valueOf(ca));
+        totalclasses.setText(String.valueOf(tc));
         int percent = 0;
         if(tc!=0)
             percent = ca*100 / tc;
         else
             percent = 100;
-        text[3].setText(String.valueOf(percent)+"%");
+        attendancepercent.setText(String.valueOf(percent)+"%");
 
         Boolean dispnotice = getIntent().getBooleanExtra("pendupd", false);
 
         if(dispnotice.equals(true))
         {
-            text[0].setVisibility(View.VISIBLE);
+            updnotice.setVisibility(View.VISIBLE);
         }
         else
         {
-            text[0].setVisibility(View.GONE);
+            updnotice.setVisibility(View.GONE);
         }
         edithistory.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,13 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.delta.attendancemanager.adapters.MySqlAdapter;
+import com.delta.attendancemanager.receivers.BootReceiver;
+import com.delta.attendancemanager.services.APIManagerService;
+import com.delta.attendancemanager.services.AlarmService;
+import com.delta.attendancemanager.services.AttendanceServerService;
+import com.delta.attendancemanager.utility.JSONParser;
+import com.delta.attendancemanager.utility.Userhome;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
@@ -52,12 +59,12 @@ public class MainActivity extends ActionBarActivity {
 
         handler = new MySqlAdapter(this, null);
         if (handler.get_days().size() == 0) {
-            handler.add_day("Monday", "", "", "", "", "", "", "", "");
-            handler.add_day("Tuesday", "", "", "", "", "", "", "", "");
-            handler.add_day("Wednesday", "", "", "", "", "", "", "", "");
-            handler.add_day("Thursday", "", "", "", "", "", "", "", "");
-            handler.add_day("Friday", "", "", "", "", "", "", "", "");
-            handler.add_day("tomorrow", "", "", "", "", "", "", "", "");
+            handler.add_day("Monday","","","","","","","","");
+            handler.add_day("Tuesday","","","","","","","","");
+            handler.add_day("Wednesday","","","","","","","","");
+            handler.add_day("Thursday","","","","","","","","");
+            handler.add_day("Friday","","","","","","","","");
+            handler.add_day("tomorrow","","","","","","","","");
             isfirst = true;
         } else
             isfirst = false;
@@ -97,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
                         startActivity(new Intent(MainActivity.this, Userhome.class));
                         finish();
 
-                        subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
+                         subscribedchannels = ParseInstallation.getCurrentInstallation().getList("channels");
                         for (int i = 0; i < subscribedchannels.size(); i++) {
                             Log.d("Parse channel", subscribedchannels.get(i));
                         }   //TODO just to check delete this
@@ -105,8 +112,7 @@ public class MainActivity extends ActionBarActivity {
                     } else {
                         usernme = username.getText().toString();
                         pass = password.getText().toString();
-                        String log = "user: " + user + " pwd: " + pass;
-                        Log.d("TAG", log.replace('\n', '_').replace('\r', '_'));
+                        Log.d("TAG", user + pass);
                         Authenticate a = new Authenticate();
                         a.execute(usernme, pass);
                     }
@@ -136,13 +142,12 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    protected class Authenticate extends AsyncTask<String, Void, Boolean> {
+    class Authenticate extends AsyncTask<String, Void, Boolean> {
         final String TAG = "JsonParser.java";
         ProgressDialog dialog;
-
-        public Authenticate() {
+        public Authenticate(){
             dialog = new ProgressDialog(MainActivity.this);
-        }
+         }
 
         @Override
         protected void onPreExecute() {
@@ -163,11 +168,11 @@ public class MainActivity extends ActionBarActivity {
                 js.put("password", params[1]);
                 JSONObject jd = jp.makeHttpRequest(URL + "/login", "POST", js);
                 Log.i(TAG, js.toString());
-                int success = 1; //jd.getInt("logged_in");
+                int success = jd.getInt("logged_in");
                 return success == 1;                                                //authentication
             } catch (Exception e) {
-                Log.e("MainActivity", e.toString());
-                Toast.makeText(MainActivity.this, "Check Internet Connection and Try Again Later.", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+                Toast.makeText(MainActivity.this,"Check Internet Connection and Try Again Later.",Toast.LENGTH_LONG).show();
 
             }
 
@@ -179,7 +184,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (dialog.isShowing())
+            if(dialog.isShowing())
                 dialog.dismiss();
             if (aBoolean) {
                 SharedPreferences share1 = getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -188,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
                 SharedPreferences.Editor editor = share.edit();
                 editor.putString(RNO, usernme);
                 editor.putString("pass", pass);
-                startService(new Intent(MainActivity.this, APIManagerService.class));
+                startService(new Intent(MainActivity.this,APIManagerService.class));
                 editor.apply();
                 ParsePush.subscribeInBackground("nlr" + usernme.substring(0, Math.min(6, usernme.length())));
                 Log.i("parse init", "nlr" + usernme.substring(0, Math.min(6, usernme.length())));
@@ -221,7 +226,7 @@ public class MainActivity extends ActionBarActivity {
     private void wrongpassword() {
         Intent i = new Intent(MainActivity.this, MainActivity.class);
         i.putExtra("wrong", true);
-        startActivity(i);
+        startActivity(i);  //TODO: enhance with textview "Wrong password"
 
     }
 

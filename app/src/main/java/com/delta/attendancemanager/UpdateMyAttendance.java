@@ -1,7 +1,6 @@
 package com.delta.attendancemanager;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,9 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.delta.attendancemanager.Info.CardInfo;
+import com.delta.attendancemanager.adapters.AtAdapter;
+import com.delta.attendancemanager.adapters.AttendanceAdapter;
+import com.delta.attendancemanager.services.AttendanceServerService;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -48,31 +51,29 @@ public class UpdateMyAttendance extends ActionBarActivity {
     }
 
     private List<CardInfo> createList(ArrayList<String> subject, ArrayList<String> datetime) {
-        CardInfo ci;
+
+        Date date=null;
         List<CardInfo> result = new ArrayList<CardInfo>();
         for (int i=0; i < subject.size(); i++) {
-            ci = new CardInfo();
+            CardInfo ci = new CardInfo();
             ci.coursename = subject.get(i);
-            ci.classdate = formatDate(datetime.get(i));
-            ci.classtime = formatHour(datetime.get(i));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            try{
+                date = sdf.parse(datetime.get(i));
+            }
+            catch(Exception e){
+                Log.d("hel",e.toString());
+            }
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy");                      //do not change the time format here. giving error in database. change it while displaying if necessary.
+            SimpleDateFormat sdf2 = new SimpleDateFormat("h:m");
+            ci.classdate = sdf1.format(date);
+            ci.classtime = sdf2.format(date);
+
             result.add(ci);
 
         }
 
         return result;
-    }
-
-    private String formatDate(String fullDate){
-        String year = fullDate.substring(0, 4);
-        String month = fullDate.substring(5, 7);
-        String day = fullDate.substring(8, 10);
-        String out = day + "/"+ month + "/" + year;
-        return out;
-    }
-
-    private String formatHour(String fullDate){
-        String entire = fullDate.substring(11);
-        return entire;
     }
 
 
